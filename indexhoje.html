@@ -1,0 +1,2272 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NET FILMS - Plataforma de Filmes</title>
+    <style>
+        :root {
+            --bg-body: #060913;
+            --bg-card: #11162d;
+            --bg-input: #171e36;
+            --accent: #ff8c00;
+            --accent2: #32ff7e;
+            --red: #ff0000;
+            --text: #ffffff;
+            --text2: #c0c0c0;
+            --border: rgba(255, 140, 0, 0.3);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        body {
+            background: var(--bg-body);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            position: relative;
+            -webkit-user-select: none;
+            user-select: none;
+            transition: background 0.5s;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-body);
+            z-index: 0;
+            pointer-events: none;
+            transition: background 0.5s;
+        }
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            animation: floatUp 15s infinite;
+        }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.2;
+            }
+            90% {
+                opacity: 0.1;
+            }
+            100% {
+                transform: translateY(-100px) scale(1);
+                opacity: 0;
+            }
+        }
+        .main-container {
+            width: 420px;
+            max-width: 95%;
+            z-index: 2;
+            position: relative;
+            padding: 20px 0;
+        }
+        .auth-card {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 28px 22px;
+            border: 2px solid var(--border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            transition: background 0.5s, border-color 0.5s;
+        }
+        .brand-logo-large {
+            font-size: 80px;
+            text-align: center;
+            animation: pulse 2s infinite;
+            cursor: pointer;
+            color: #ff0000;
+            text-shadow: 0 2px 15px rgba(255, 0, 0, 0.4);
+        }
+        @keyframes pulse {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+        .brand-name {
+            font-size: 24px;
+            font-weight: 900;
+            color: #ff0000;
+            text-align: center;
+            cursor: pointer;
+            text-shadow: 0 1px 3px rgba(255, 0, 0, 0.3);
+        }
+        .brand-slogan {
+            text-align: center;
+            color: var(--text2);
+            font-weight: 500;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+        .initial-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .initial-btn {
+            padding: 18px 12px;
+            border-radius: 16px;
+            border: none;
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 15px;
+            background: #32ff7e;
+            color: #000000;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(50, 255, 126, 0.2);
+            transition: all 0.3s;
+        }
+        .initial-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(50, 255, 126, 0.4);
+        }
+        .btn-entrar {
+            background: #ff8c00;
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+        }
+        .btn-entrar:hover {
+            box-shadow: 0 8px 25px rgba(255, 140, 0, 0.5);
+        }
+        .auth-input {
+            width: 100%;
+            padding: 14px;
+            margin: 8px 0;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: var(--bg-input);
+            color: #ffffff;
+            font-size: 15px;
+            transition: border 0.3s;
+        }
+        .auth-input:focus {
+            outline: none;
+            border-color: #ff8c00;
+        }
+        .auth-input::placeholder {
+            color: #888888;
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 15px;
+            border-radius: 14px;
+            border: none;
+            font-weight: 700;
+            margin-top: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            transform: scale(1.02);
+        }
+        .btn-gold {
+            background: #ff8c00;
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+        }
+        .btn-green {
+            background: #32ff7e;
+            color: #000000;
+            box-shadow: 0 4px 15px rgba(50, 255, 126, 0.2);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #ff8c00;
+            color: #ff8c00;
+            width: 100%;
+            padding: 13px;
+            border-radius: 14px;
+            margin-top: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+        .btn-outline:hover {
+            background: rgba(255, 140, 0, 0.1);
+        }
+        .error-msg {
+            color: #ff4444;
+            font-size: 12px;
+            text-align: center;
+            min-height: 20px;
+            margin: 4px 0;
+        }
+        .switch-link {
+            color: #ff8c00;
+            cursor: pointer;
+            text-decoration: underline;
+            font-weight: 600;
+        }
+        .switch-text {
+            text-align: center;
+            margin-top: 12px;
+            color: #c0c0c0;
+            font-size: 13px;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .forgot-link {
+            text-align: right;
+            margin-top: 2px;
+            margin-bottom: 6px;
+        }
+        .forgot-link span {
+            color: #ff8c00;
+            cursor: pointer;
+            font-size: 12px;
+            text-decoration: underline;
+        }
+        .social-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 14px 0;
+            flex-wrap: wrap;
+        }
+        .social-btn {
+            padding: 10px 16px;
+            border-radius: 25px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #fff;
+        }
+        .social-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        .social-btn.fb {
+            background: #1877f2;
+        }
+        .social-btn.wa {
+            background: #25D366;
+            color: #000;
+        }
+        .social-btn.yt {
+            background: #ff0000;
+        }
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            height: 100vh;
+            background: var(--bg-body);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.5s;
+        }
+        .app-header {
+            background: var(--bg-card);
+            padding: 16px;
+            border-bottom: 2px solid #ff8c00;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.5s;
+        }
+        .app-brand {
+            cursor: pointer;
+            font-weight: 900;
+            color: #ff0000;
+            font-size: 16px;
+            text-shadow: 0 1px 2px rgba(255, 0, 0, 0.3);
+        }
+        .timer-badge,
+        .balance-badge {
+            background: var(--bg-input);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            color: #ff8c00;
+            border: 1px solid #ff8c00;
+            font-size: 12px;
+            transition: background 0.5s;
+        }
+        .bottom-nav {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 480px;
+            background: #000000;
+            padding: 16px 10px;
+            border-top: 2px solid #ff8c00;
+            z-index: 100;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.8);
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 4px;
+            border-radius: 20px;
+            background: transparent;
+            color: #ffffff;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.3s;
+        }
+        .nav-item.active {
+            background: rgba(255, 140, 0, 0.2);
+            color: #ff8c00;
+            transform: translateY(-2px);
+        }
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            padding-bottom: 90px;
+            background: var(--bg-body);
+            transition: background 0.5s;
+        }
+        .balance-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 17px;
+            margin-bottom: 10px;
+            text-align: center;
+            border: 2px solid #ff8c00;
+            transition: background 0.5s;
+        }
+        .balance-value {
+            font-size: 28px;
+            font-weight: 900;
+            color: #ff8c00;
+        }
+        .country-banners {
+            width: 100%;
+            overflow: hidden;
+            margin: 16px 0;
+            border-radius: 16px;
+            position: relative;
+            background: var(--bg-card);
+            border: 2px solid #ff8c00;
+            padding: 4px 0;
+            transition: background 0.5s;
+        }
+        .country-banners-track {
+            display: flex;
+            animation: scrollBanners 60s linear infinite;
+            width: max-content;
+        }
+        .country-banner-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            background: var(--bg-input);
+            border-radius: 12px;
+            margin: 0 8px;
+            white-space: nowrap;
+            border: 2px solid #32ff7e;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            min-width: 200px;
+            transition: background 0.5s;
+        }
+        .country-flag {
+            font-size: 36px;
+        }
+        .country-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .country-name {
+            font-weight: 900;
+            color: #ffffff;
+            font-size: 14px;
+        }
+        .country-invest {
+            color: #ff8c00;
+            font-weight: 700;
+            font-size: 13px;
+        }
+        .country-badge {
+            background: #32ff7e;
+            color: #000000;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+        @keyframes scrollBanners {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+        .vip-card-colorida {
+            border-radius: 20px;
+            padding: 18px;
+            margin: 12px 0;
+            cursor: pointer;
+            border: 2px solid #ff8c00;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            background: var(--bg-card);
+        }
+        .vip-card-colorida:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(255, 140, 0, 0.3);
+        }
+        .vip-card-colorida>* {
+            position: relative;
+            z-index: 1;
+        }
+        .vip-card-colorida.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .vip-card-colorida.disabled:hover {
+            transform: none;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+        .fundo-card-colorida {
+            border-radius: 20px;
+            padding: 18px;
+            margin: 12px 0;
+            cursor: pointer;
+            border: 2px solid #32ff7e;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            background: var(--bg-card);
+        }
+        .fundo-card-colorida:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(50, 255, 126, 0.3);
+        }
+        .fundo-card-colorida>* {
+            position: relative;
+            z-index: 1;
+        }
+        .btn-comprar {
+            background: #ffffff !important;
+            color: #000000 !important;
+            font-weight: 900 !important;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3) !important;
+        }
+        .btn-comprar:hover {
+            background: #f0f0f0 !important;
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.5) !important;
+        }
+        .action-btn {
+            padding: 14px;
+            border-radius: 14px;
+            font-weight: 800;
+            border: none;
+            margin: 8px 0;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        .action-btn:hover {
+            transform: scale(1.02);
+        }
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .btn-coletar {
+            background: #ff8c00;
+            color: #000000;
+            animation: pulseColeta 1.5s infinite;
+        }
+        @keyframes pulseColeta {
+            0% {
+                box-shadow: 0 0 10px #ff8c00;
+            }
+            100% {
+                box-shadow: 0 0 25px #ff8c00;
+            }
+        }
+        .countdown-timer {
+            font-size: 14px;
+            color: #ff8c00;
+            text-align: center;
+            margin: 10px 0;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 200;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-box {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 24px;
+            width: 90%;
+            max-width: 400px;
+            border: 3px solid #ff8c00;
+            color: #ffffff;
+            text-align: center;
+            max-height: 80vh;
+            overflow-y: auto;
+            transition: background 0.5s;
+        }
+        .install-btn {
+            position: fixed;
+            bottom: 85px;
+            right: 16px;
+            background: #32ff7e;
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-weight: 800;
+            cursor: pointer;
+            z-index: 150;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .gains-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .gain-card {
+            padding: 14px;
+            border-radius: 16px;
+            text-align: center;
+            background: var(--bg-card);
+            border: 1px solid #ff8c00;
+            color: #ffffff;
+            transition: background 0.5s;
+        }
+        .invited-item {
+            background: var(--bg-input);
+            padding: 12px;
+            border-radius: 12px;
+            margin: 6px 0;
+            display: flex;
+            justify-content: space-between;
+            color: #ffffff;
+            transition: background 0.5s;
+        }
+        .saque-amount-btn {
+            background: var(--bg-card);
+            padding: 14px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            margin: 6px;
+            font-weight: 700;
+            display: inline-block;
+            width: calc(33% - 12px);
+            transition: all 0.3s;
+            color: #ffffff;
+            border: 1px solid #ff8c00;
+        }
+        .saque-amount-btn:hover {
+            background: var(--bg-input);
+            transform: scale(1.05);
+            border-color: #32ff7e;
+        }
+        .saque-amount-btn.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            border-color: #333;
+        }
+        .admin-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-body);
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+            color: #ffffff;
+            transition: background 0.5s;
+        }
+        .admin-section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 16px;
+            margin: 12px 0;
+            border: 1px solid rgba(255, 140, 0, 0.3);
+            transition: background 0.5s;
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #333;
+            border-radius: 24px;
+            transition: 0.3s;
+        }
+        input:checked+.toggle-slider {
+            background: #32ff7e;
+        }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+        input:checked+.toggle-slider:before {
+            transform: translateX(26px);
+        }
+        .referral-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .reward-card {
+            background: var(--bg-input);
+            border-radius: 16px;
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ff8c00;
+            color: #ffffff;
+            transition: background 0.5s;
+        }
+        .reward-card.claimed {
+            opacity: 0.5;
+            border-color: #32ff7e;
+            background: rgba(50, 255, 126, 0.1);
+        }
+        .admin-btn-sm {
+            padding: 6px 12px;
+            margin: 2px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        .admin-btn-sm:hover {
+            transform: scale(1.05);
+        }
+        .btn-approve {
+            background: #32ff7e;
+            color: #000000;
+        }
+        .btn-reject {
+            background: #ff0000;
+            color: white;
+        }
+        .btn-edit {
+            background: #ff8c00;
+            color: #000000;
+        }
+        .btn-block {
+            background: #333;
+            color: white;
+        }
+        .floating-notifications {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+            overflow: hidden;
+        }
+        .floating-notification {
+            position: absolute;
+            padding: 10px 18px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 13px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            animation: peekDown 1.8s ease-in-out forwards;
+            white-space: nowrap;
+            max-width: 90%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .floating-notification.deposit {
+            background: linear-gradient(135deg, #32ff7e, #00b894);
+            color: #000000;
+            border: 1px solid #00b894;
+        }
+        .floating-notification.withdraw {
+            background: linear-gradient(135deg, #ff8c00, #e17055);
+            color: #ffffff;
+            border: 1px solid #e17055;
+        }
+        @keyframes peekDown {
+            0% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            15% {
+                transform: translateY(8px);
+                opacity: 1;
+            }
+            25% {
+                transform: translateY(0px);
+                opacity: 1;
+            }
+            75% {
+                transform: translateY(0px);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(-80px);
+                opacity: 0;
+            }
+        }
+        .invited-banner {
+            background: var(--bg-card);
+            border: 2px solid #32ff7e;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            margin-bottom: 12px;
+            color: #32ff7e;
+            font-weight: 700;
+            transition: background 0.5s;
+        }
+        .fundo-card-colorida.blocked-fund {
+            border-color: #ff0000 !important;
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .fundo-card-colorida.blocked-fund:hover {
+            transform: none;
+            box-shadow: 0 4px 16px rgba(255, 0, 0, 0.3);
+        }
+        .lock-icon {
+            font-size: 24px;
+            color: #ff0000;
+        }
+        .theme-btn {
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 12px;
+            margin: 4px;
+            transition: all 0.3s;
+            color: #fff;
+        }
+        .theme-btn:hover {
+            transform: scale(1.05);
+            border-color: #fff;
+        }
+        .theme-btn.active-theme {
+            border-color: #fff !important;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div class="floating-notifications" id="floatingNotifications"></div>
+
+    <!-- TELA DE AUTENTICAÇÃO -->
+    <div id="authScreen" class="main-container">
+        <div class="auth-card">
+            <div class="brand-logo-large" onclick="window.handleBrandClick()">🎬</div>
+            <div class="brand-name" onclick="window.handleBrandClick()">NET FILMS</div>
+            <div class="brand-slogan">PLATAFORMA BRASILEIRA | GANHE 10X BÔNUS</div>
+
+            <div id="invitedBanner" class="invited-banner hidden"></div>
+
+            <!-- Redes sociais (configuráveis pelo admin) -->
+            <div class="social-buttons" id="socialButtonsAuth"></div>
+
+            <div id="initialButtons" class="initial-buttons">
+                <button class="initial-btn" onclick="window.showRegisterForm()">✨ CRIAR CONTA</button>
+                <button class="initial-btn btn-entrar" onclick="window.showLoginForm()">🔐 ENTRAR</button>
+            </div>
+
+            <!-- FORMULÁRIO DE LOGIN -->
+            <div id="formLogin" class="hidden">
+                <input type="text" id="loginPhone" class="auth-input" placeholder="Telefone (ex: 84xxxxxxxx)">
+                <input type="password" id="loginPassword" class="auth-input" placeholder="Senha">
+                <div class="forgot-link"><span onclick="window.showForgotPassword()">🔑 Esqueci a senha</span></div>
+                <div class="error-msg" id="loginError"></div>
+                <button class="btn-primary btn-gold" onclick="window.handleLogin()">🔐 ENTRAR</button>
+                <div class="switch-text"><span class="switch-link" onclick="window.goBackToInitial()">⬅️ Voltar</span></div>
+            </div>
+
+            <!-- FORMULÁRIO DE REGISTRO -->
+            <div id="formRegister" class="hidden">
+                <input type="text" id="registerName" class="auth-input" placeholder="Nome Completo">
+                <input type="text" id="registerPhone" class="auth-input" placeholder="Telefone (ex: 84xxxxxxxx)">
+                <input type="password" id="registerPassword" class="auth-input" placeholder="Senha (mín. 4 caracteres)">
+                <input type="password" id="registerConfirm" class="auth-input" placeholder="Confirmar Senha">
+                <div class="error-msg" id="registerError"></div>
+                <button class="btn-primary btn-green" onclick="window.handleRegister()">✨ CRIAR CONTA</button>
+                <div class="switch-text"><span class="switch-link" onclick="window.goBackToInitial()">⬅️ Voltar</span></div>
+            </div>
+
+            <!-- FORMULÁRIO DE REDEFINIR SENHA -->
+            <div id="formForgot" class="hidden">
+                <p style="color:#c0c0c0;text-align:center;font-size:13px;">Digite seu telefone para redefinir a senha</p>
+                <input type="text" id="forgotPhone" class="auth-input" placeholder="Telefone cadastrado">
+                <div class="error-msg" id="forgotError"></div>
+                <button class="btn-primary btn-gold" onclick="window.handleForgotPassword()">📩 REDEFINIR SENHA</button>
+                <div class="switch-text"><span class="switch-link" onclick="window.goBackToInitial()">⬅️ Voltar</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TELA DO APP -->
+    <div id="appScreen" class="app-container hidden">
+        <div class="app-header">
+            <span class="app-brand" onclick="window.handleAppBrandClick()">🎬 NET FILMS</span>
+            <span class="timer-badge" id="taskTimer">24:00:00</span>
+            <span class="balance-badge" id="userBalance">0 MT</span>
+        </div>
+        <div class="main-content" id="mainContent"></div>
+        <div class="bottom-nav" id="bottomNav">
+            <div class="nav-item active" onclick="window.showTab('home')">🏠 Home</div>
+            <div class="nav-item" onclick="window.showTab('vips')">🎬 VIPs</div>
+            <div class="nav-item" onclick="window.showTab('fundos')">📈 Fundos</div>
+            <div class="nav-item" onclick="window.showTab('convidar')">👥 Convidar</div>
+        </div>
+        <button id="installButton" class="install-btn hidden" onclick="window.installApp()">📲 Instalar</button>
+    </div>
+
+    <script type="module">
+        // ==================== FIREBASE (REALTIME DATABASE) ====================
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, set, get, update, push, query, orderByChild, equalTo,
+            remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        // Chave ofuscada em Base64
+        const _b64 = "eyJhcGlLZXkiOiJBSXphU3lCUUswWmwwTVlaYWxvTC1JSnJGNnB4VzlSLW1fVWlVSUUiLCJhdXRoRG9tYWluIjoibmV0LTZkMTg0LmZpcmViYXNlYXBwLmNvbSIsInByb2plY3RJZCI6Im5ldC02ZDE4NCIsInN0b3JhZ2VCdWNrZXQiOiJuZXQtNmQxODQuZmlyZWJhc2VzdG9yYWdlLmFwcCIsIm1lc3NhZ2luZ1NlbmRlcklkIjoiNDAzNDY1MDcxMDEiLCJhcHBJZCI6IjE6NDAzNDY1MDcxMDE6d2ViOjdhNjZmOGZiYTQ5OTc4Y2JiNWJhYjQiLCJtZWFzdXJlbWVudElkIjoiRy1MVzhEVE5WOFNGIn0=";
+        const _config = JSON.parse(atob(_b64));
+        const app = initializeApp(_config);
+        const db = getDatabase(app);
+
+        // Suprimir erros no console (segurança)
+        window.onerror = function() { return true; };
+        const _origConsoleError = console.error;
+        console.error = function(...args) {
+            const msg = args.join(' ');
+            if (msg.includes('firebase') || msg.includes('permission') || msg.includes('unauthorized')) return;
+            _origConsoleError.apply(console, args);
+        };
+
+        console.log("✅ Firebase Realtime Database inicializado!");
+
+        // ==================== CONFIGURAÇÕES ====================
+        const VIP_NAMES = ["Estagiário", "VIP 1", "VIP 2", "VIP 3", "VIP 4", "VIP 5", "VIP 6", "VIP 7", "VIP 8"];
+        const VIP_INVEST = [0, 650, 1250, 2550, 6000, 12600, 20000, 50000, 100000];
+        const VIP_DAILY = [5, 45, 75, 150, 315, 700, 2500, 5000, 17500];
+        const VIP_DAYS = [4, 365, 365, 365, 365, 365, 365, 365, 365];
+        const VIP_TOTAL = VIP_DAYS.map((d, i) => d * VIP_DAILY[i]);
+        const VIP_ALERT_LABELS = ["", "", "", "", "", "FIQUE ATENTO", "FIQUE ATENTO", "FIQUE ATENTO", "FIQUE ATENTO"];
+        const VIP_EM_BREVE = [7, 8];
+
+        const WITHDRAW_TIMES = { start: "9:30", end: "16:30" };
+        const WITHDRAW_VALUES = [90, 200, 1500, 5000, 10000, 30000, 50000, 100000];
+        const WITHDRAW_MIN_VIP = [1, 1, 2, 2, 3, 3, 4, 5];
+        const VIP_WITHDRAW_DAYS = { 7: 1, 6: 2, 5: 3, 4: 4, 3: 5, 2: 1, 1: 2, 0: 3 };
+
+        // Fundos padrão (carregados do banco depois)
+        let FUNDOS = [
+            { name: "Fundo Pro", min: 1000, base: 2500, retorno: 4250, dias: 17, percent: 70, blocked: false },
+            { name: "Fundo Elite", min: 2500, base: 6000, retorno: 6600, dias: 22, percent: 10, blocked: false },
+            { name: "Fundo Premium", min: 5000, base: 12000, retorno: 15600, dias: 30, percent: 30, blocked: false },
+            { name: "Fundo Black", min: 10000, base: 25000, retorno: 37500, dias: 60, percent: 50, blocked: false }
+        ];
+
+        const REFERRAL_REWARDS = [
+            { level: 1, name: "Iniciante NET", required: 4, reward: 200, icon: "🌱" },
+            { level: 2, name: "Bronze NET", required: 8, reward: 400, icon: "🥉" },
+            { level: 3, name: "Prata NET", required: 12, reward: 600, icon: "🥈" },
+            { level: 4, name: "Ouro NET", required: 15, reward: 900, icon: "🥇" },
+            { level: 5, name: "Platina NET", required: 20, reward: 1500, icon: "💠" },
+            { level: 6, name: "Diamante NET", required: 25, reward: 2000, icon: "💎" },
+            { level: 7, name: "Master NET", required: 30, reward: 3000, icon: "👑" },
+            { level: 8, name: "Elite NET", required: 40, reward: 5000, icon: "⭐" },
+            { level: 9, name: "Lenda NET", required: 50, reward: 8000, icon: "🔥" },
+            { level: 10, name: "NET Imortal", required: 60, reward: 12000, icon: "🏆" }
+        ];
+
+        const INVESTOR_COUNTRIES = [
+            { flag: "🇧🇷", name: "Brasil", invest: "2.500.000 MT" }, { flag: "🇺🇸", name: "EUA",
+            invest: "5.800.000 MT" }, { flag: "🇵🇹", name: "Portugal", invest: "1.200.000 MT" }, { flag: "🇦🇴",
+                name: "Angola", invest: "3.400.000 MT" }, { flag: "🇲🇿", name: "Moçambique",
+            invest: "4.100.000 MT" }, { flag: "🇬🇧", name: "Reino Unido", invest: "2.900.000 MT" }, { flag: "🇫🇷",
+                name: "França", invest: "3.700.000 MT" }, { flag: "🇩🇪", name: "Alemanha",
+            invest: "4.500.000 MT" }, { flag: "🇯🇵", name: "Japão", invest: "6.200.000 MT" }, { flag: "🇨🇦",
+                name: "Canadá", invest: "2.100.000 MT" }, { flag: "🇿🇦", name: "África do Sul",
+            invest: "1.800.000 MT" }, { flag: "🇦🇪", name: "Emirados Árabes", invest: "7.300.000 MT" }
+        ];
+
+        // 10 Temas
+        const THEMES = [
+            { name: "Dark", bg: "#060913", card: "#11162d", input: "#171e36", accent: "#ff8c00", accent2: "#32ff7e" },
+            { name: "Ocean", bg: "#0a1628", card: "#0f1f3d", input: "#152544", accent: "#00b4d8", accent2: "#90e0ef" },
+            { name: "Sunset", bg: "#1a0a0a", card: "#2d1111", input: "#361717", accent: "#ff6b35", accent2: "#ffb347" },
+            { name: "Forest", bg: "#0a1a0a", card: "#112d11", input: "#173617", accent: "#2ecc71", accent2: "#a8e6cf" },
+            { name: "Royal", bg: "#0d0a1a", card: "#191136", input: "#1f1642", accent: "#9b59b6", accent2: "#d4a5ff" },
+            { name: "Midnight", bg: "#000510", card: "#0a0f25", input: "#101835", accent: "#3498db", accent2: "#85c1e9" },
+            { name: "Candy", bg: "#1a0a14", card: "#2d1122", input: "#36172a", accent: "#e91e63", accent2: "#ff80ab" },
+            { name: "Cyber", bg: "#001a0a", card: "#003320", input: "#004d2e", accent: "#00ff88", accent2: "#00ffcc" },
+            { name: "Lime", bg: "#0a1a00", card: "#1a2d00", input: "#253600", accent: "#aaff00", accent2: "#ccff44" },
+            { name: "Blossom", bg: "#1a0a18", card: "#2d1128", input: "#361730", accent: "#ff6b9d", accent2: "#ffb3c6" }
+        ];
+
+        // Variáveis globais
+        let currentUser = null;
+        let currentUserId = null;
+        let brandClickCount = 0;
+        let adminPassword = "MANOMANO%";
+        let deferredPrompt = null;
+        let currentThemeIndex = 0;
+        let globalSettings = {
+            withdrawsEnabled: true,
+            withdrawDays: [1, 2, 3, 4, 5],
+            whatsappGroup: '',
+            telegramChannel: '',
+            supportWhatsapp: '',
+            facebookPage: '',
+            youtubeChannel: '',
+            socialWhatsapp: ''
+        };
+        let isOnAuthScreen = true;
+        let notificationQueue = [];
+        let activeNotifications = 0;
+        const MAX_NOTIFICATIONS = 3;
+        const NOTIFICATION_DURATION = 1800;
+        const mockNames = ["Maria S.", "João P.", "Ana C.", "Pedro M.", "Carla R.", "Lucas F.", "Julia B.", "Marcos A."];
+
+        // ==================== FUNÇÕES DO REALTIME DATABASE ====================
+        async function loadSettings() {
+            try {
+                const snap = await get(ref(db, 'settings/global'));
+                if (snap.exists()) globalSettings = snap.val();
+                return globalSettings;
+            } catch (e) { return globalSettings; }
+        }
+        async function saveSettings(s) {
+            try { globalSettings = s;
+                await set(ref(db, 'settings/global'), s); } catch (e) {}
+        }
+        async function loadFundos() {
+            try {
+                const snap = await get(ref(db, 'settings/fundos'));
+                if (snap.exists() && snap.val().fundos) FUNDOS = snap.val().fundos;
+                return FUNDOS;
+            } catch (e) { return FUNDOS; }
+        }
+        async function saveFundos(fundos) {
+            try { FUNDOS = fundos;
+                await set(ref(db, 'settings/fundos'), { fundos }); } catch (e) {}
+        }
+        async function loadThemeIndex() {
+            try {
+                const snap = await get(ref(db, 'settings/themeIndex'));
+                if (snap.exists()) currentThemeIndex = snap.val();
+            } catch (e) { currentThemeIndex = 0; }
+            applyTheme(currentThemeIndex);
+        }
+        async function saveThemeIndex(idx) {
+            try { currentThemeIndex = idx;
+                await set(ref(db, 'settings/themeIndex'), idx); } catch (e) {}
+        }
+        async function loadUserByPhone(phone) {
+            try {
+                const snap = await get(query(ref(db, 'users'), orderByChild('phone'), equalTo(phone)));
+                if (snap.exists()) {
+                    const data = snap.val();
+                    const id = Object.keys(data)[0];
+                    return { id, ...data[id] };
+                }
+                return null;
+            } catch (e) { return null; }
+        }
+        async function saveCurrentUser() {
+            if (currentUser && currentUserId) {
+                try {
+                    const userData = { ...currentUser };
+                    delete userData.id;
+                    await update(ref(db, 'users/' + currentUserId), userData);
+                } catch (e) {}
+            }
+        }
+        async function createUser(userData) {
+            const newRef = push(ref(db, 'users'));
+            await set(newRef, userData);
+            return newRef.key;
+        }
+        async function getAllUsers() {
+            const snap = await get(ref(db, 'users'));
+            if (snap.exists()) {
+                const data = snap.val();
+                return Object.keys(data).map(id => ({ id, ...data[id] }));
+            }
+            return [];
+        }
+        async function getUserById(uid) {
+            const snap = await get(ref(db, 'users/' + uid));
+            if (snap.exists()) return { id: uid, ...snap.val() };
+            return null;
+        }
+        async function updateUser(uid, updates) {
+            await update(ref(db, 'users/' + uid), updates);
+        }
+        async function loadDeposits() {
+            const snap = await get(ref(db, 'deposits'));
+            if (snap.exists()) {
+                const data = snap.val();
+                return Object.keys(data).map(id => ({ id, ...data[id] }));
+            }
+            return [];
+        }
+        async function saveDeposit(d) {
+            const newRef = push(ref(db, 'deposits'));
+            await set(newRef, d);
+            return newRef.key;
+        }
+        async function updateDeposit(did, updates) {
+            await update(ref(db, 'deposits/' + did), updates);
+        }
+        async function loadWithdrawals() {
+            const snap = await get(ref(db, 'withdrawals'));
+            if (snap.exists()) {
+                const data = snap.val();
+                return Object.keys(data).map(id => ({ id, ...data[id] }));
+            }
+            return [];
+        }
+        async function saveWithdrawal(w) {
+            const newRef = push(ref(db, 'withdrawals'));
+            await set(newRef, w);
+            return newRef.key;
+        }
+        async function updateWithdrawal(wid, updates) {
+            await update(ref(db, 'withdrawals/' + wid), updates);
+        }
+
+        // ==================== APLICAR TEMA ====================
+        function applyTheme(idx) {
+            const t = THEMES[idx] || THEMES[0];
+            const root = document.documentElement;
+            root.style.setProperty('--bg-body', t.bg);
+            root.style.setProperty('--bg-card', t.card);
+            root.style.setProperty('--bg-input', t.input);
+            root.style.setProperty('--accent', t.accent);
+            root.style.setProperty('--accent2', t.accent2);
+            root.style.setProperty('--border', t.accent + '55');
+            document.body.style.background = t.bg;
+            const beforeEl = document.querySelector('body::before');
+            if (beforeEl) beforeEl.style.background = t.bg;
+        }
+
+        // ==================== FUNÇÕES DA INTERFACE DE AUTENTICAÇÃO ====================
+        function showRegisterForm() {
+            document.getElementById('initialButtons').classList.add('hidden');
+            document.getElementById('formLogin').classList.add('hidden');
+            document.getElementById('formForgot').classList.add('hidden');
+            document.getElementById('formRegister').classList.remove('hidden');
+            document.getElementById('registerError').innerText = '';
+        }
+
+        function showLoginForm() {
+            document.getElementById('initialButtons').classList.add('hidden');
+            document.getElementById('formRegister').classList.add('hidden');
+            document.getElementById('formForgot').classList.add('hidden');
+            document.getElementById('formLogin').classList.remove('hidden');
+            document.getElementById('loginError').innerText = '';
+        }
+
+        function showForgotPassword() {
+            document.getElementById('initialButtons').classList.add('hidden');
+            document.getElementById('formRegister').classList.add('hidden');
+            document.getElementById('formLogin').classList.add('hidden');
+            document.getElementById('formForgot').classList.remove('hidden');
+            document.getElementById('forgotError').innerText = '';
+        }
+
+        function goBackToInitial() {
+            document.getElementById('formLogin').classList.add('hidden');
+            document.getElementById('formRegister').classList.add('hidden');
+            document.getElementById('formForgot').classList.add('hidden');
+            document.getElementById('initialButtons').classList.remove('hidden');
+        }
+
+        async function handleForgotPassword() {
+            const phone = document.getElementById('forgotPhone')?.value.trim();
+            const errorEl = document.getElementById('forgotError');
+            if (!phone) { errorEl.innerText = 'Digite o telefone'; return; }
+            errorEl.innerText = 'Buscando...';
+            try {
+                const userData = await loadUserByPhone(phone);
+                if (!userData) { errorEl.innerText = '❌ Telefone não encontrado'; return; }
+                const newPass = Math.random().toString(36).slice(-6);
+                await updateUser(userData.id, { password: newPass });
+                errorEl.innerText = '';
+                alert(
+                    `✅ Senha redefinida!\n\n📱 Telefone: ${phone}\n🔑 Nova senha: ${newPass}\n\n⚠️ Anote sua nova senha!`);
+                goBackToInitial();
+            } catch (e) {
+                errorEl.innerText = '❌ Erro ao redefinir. Tente novamente.';
+            }
+        }
+
+        async function handleLogin() {
+            const phone = document.getElementById('loginPhone').value.trim();
+            const pass = document.getElementById('loginPassword').value.trim();
+            const errorEl = document.getElementById('loginError');
+            if (!phone || !pass) { errorEl.innerText = 'Preencha todos os campos'; return; }
+            errorEl.innerText = 'Entrando...';
+            try {
+                const userData = await loadUserByPhone(phone);
+                if (userData && userData.password === pass) {
+                    if (userData.blocked) { errorEl.innerText = '❌ Esta conta foi bloqueada!'; return; }
+                    currentUser = userData;
+                    currentUserId = userData.id;
+                    errorEl.innerText = '';
+                    openApp();
+                } else {
+                    errorEl.innerText = '❌ Número ou senha incorretos';
+                }
+            } catch (e) {
+                errorEl.innerText = '❌ Erro ao fazer login.';
+            }
+        }
+
+        function generateInviteCode() {
+            let hash = '';
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            for (let i = 0; i < 10; i++) hash += chars.charAt(Math.floor(Math.random() * chars.length));
+            return 'NET' + hash;
+        }
+
+        async function handleRegister() {
+            const name = document.getElementById('registerName').value.trim();
+            const phone = document.getElementById('registerPhone').value.trim();
+            const pass = document.getElementById('registerPassword').value.trim();
+            const confirm = document.getElementById('registerConfirm').value.trim();
+            const errorEl = document.getElementById('registerError');
+            if (!name || !phone || !pass) { errorEl.innerText = 'Preencha todos os campos'; return; }
+            if (pass !== confirm) { errorEl.innerText = 'Senhas não conferem'; return; }
+            if (pass.length < 4) { errorEl.innerText = 'Senha deve ter no mínimo 4 caracteres'; return; }
+            errorEl.innerText = 'Criando conta...';
+            try {
+                const existing = await loadUserByPhone(phone);
+                if (existing) { errorEl.innerText = '❌ Número já cadastrado'; return; }
+                const inviteCode = generateInviteCode();
+                let newUser = {
+                    name,
+                    phone,
+                    password: pass,
+                    balance: 0,
+                    vipLevel: 0,
+                    vipType: 'estagiario',
+                    vipStartDate: new Date().toISOString(),
+                    vipLastCollect: null,
+                    invitedUsers: [],
+                    invitedNames: [],
+                    commission: 0,
+                    totalInvited: 0,
+                    lastWithdrawDate: null,
+                    earningsHistory: [],
+                    videoBonusHistory: [],
+                    fundInvestments: [],
+                    claimedRewards: [],
+                    depositHistory: [],
+                    lastVideoBonusDate: null,
+                    purchasedVips: [0],
+                    inviteCode: inviteCode,
+                    commissionsPaid: 0,
+                    blocked: false,
+                    createdAt: new Date().toISOString()
+                };
+                const urlRef = new URLSearchParams(window.location.search).get('ref');
+                if (urlRef && urlRef !== phone) {
+                    const allUsers = await getAllUsers();
+                    const refUser = allUsers.find(u => u.inviteCode === urlRef);
+                    if (refUser) {
+                        newUser.referredBy = refUser.id;
+                        if (!refUser.invitedUsers) refUser.invitedUsers = [];
+                        if (!refUser.invitedUsers.includes(phone)) refUser.invitedUsers.push(phone);
+                        if (!refUser.invitedNames) refUser.invitedNames = [];
+                        refUser.invitedNames.push(name);
+                        refUser.totalInvited = (refUser.totalInvited || 0) + 1;
+                        await updateUser(refUser.id, {
+                            invitedUsers: refUser.invitedUsers,
+                            invitedNames: refUser.invitedNames,
+                            totalInvited: refUser.totalInvited
+                        });
+                    }
+                }
+                const uid = await createUser(newUser);
+                currentUser = { id: uid, ...newUser };
+                currentUserId = uid;
+                errorEl.innerText = '';
+                openApp();
+            } catch (e) {
+                errorEl.innerText = '❌ Erro ao criar conta.';
+            }
+        }
+
+        function openApp() {
+            isOnAuthScreen = false;
+            document.getElementById('authScreen').style.display = 'none';
+            document.getElementById('appScreen').classList.remove('hidden');
+            updateBalanceDisplay();
+            showTab('home');
+            startTimer();
+        }
+
+        function updateBalanceDisplay() {
+            document.getElementById('userBalance').innerHTML = (currentUser?.balance || 0).toLocaleString() + ' MT';
+        }
+
+        // ==================== FUNÇÕES DE NEGÓCIO ====================
+        function getVipInfo() {
+            let level = currentUser?.vipLevel || 0;
+            if (currentUser?.vipType === 'estagiario') level = 0;
+            return { name: VIP_NAMES[level], daily: VIP_DAILY[level], invest: VIP_INVEST[level], level: level,
+                days: VIP_DAYS[level], total: VIP_TOTAL[level] };
+        }
+
+        function getCollectCooldown() {
+            if (!currentUser?.vipLastCollect) return 0;
+            return Math.max(0, 86400000 - (Date.now() - new Date(currentUser.vipLastCollect).getTime()));
+        }
+
+        function getWithdrawCooldown() {
+            if (!currentUser?.lastWithdrawDate) return 0;
+            return Math.max(0, 86400000 - (Date.now() - new Date(currentUser.lastWithdrawDate).getTime()));
+        }
+
+        function canLevelWithdrawToday() {
+            if (globalSettings.withdrawsEnabled) return true;
+            let today = new Date().getDay();
+            let adjustedDay = today === 0 ? 7 : today;
+            let currentLvl = currentUser?.vipType === 'estagiario' ? 0 : (currentUser?.vipLevel || 0);
+            let allowedDay = VIP_WITHDRAW_DAYS[currentLvl] || 1;
+            return adjustedDay === allowedDay;
+        }
+
+        function canUserWithdraw() {
+            if (currentUser && currentUser.vipType === 'estagiario' && currentUser.vipLevel === 0)
+                return { allow: false, msg: '❌ Você precisa comprar um VIP para poder sacar!' };
+            return { allow: true, msg: 'OK' };
+        }
+
+        function canBuyVip(level) {
+            if (!currentUser) return { allow: false, msg: 'Usuário não autenticado' };
+            if (VIP_EM_BREVE.includes(level)) return { allow: false, msg: '🚫 Este VIP estará disponível em breve!' };
+            if (level === 0) {
+                if (currentUser.vipType === 'estagiario') return { allow: false,
+                msg: '❌ Você já possui o Estagiário!' };
+                return { allow: true, msg: 'OK' };
+            }
+            if (currentUser.vipLevel === level && currentUser.vipType !== 'estagiario') return { allow: false,
+                msg: '❌ Você já possui este VIP!' };
+            let currentLevel = currentUser.vipType === 'estagiario' ? 0 : currentUser.vipLevel;
+            if (level <= currentLevel) return { allow: false, msg: '❌ Não pode comprar um VIP inferior ou igual!' };
+            return { allow: true, msg: 'OK' };
+        }
+
+        function canWithdraw(amount) {
+            let idx = WITHDRAW_VALUES.indexOf(amount);
+            if (idx === -1) return { allow: false, msg: 'Valor inválido' };
+            let vipCheck = canUserWithdraw();
+            if (!vipCheck.allow) return vipCheck;
+            if (!canLevelWithdrawToday()) {
+                let dayNames = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+                let currentLvl = currentUser?.vipType === 'estagiario' ? 0 : (currentUser?.vipLevel || 0);
+                let allowedDay = VIP_WITHDRAW_DAYS[currentLvl] || 1;
+                return { allow: false, msg: `Seu nível saca apenas: ${dayNames[allowedDay]}` };
+            }
+            let required = WITHDRAW_MIN_VIP[idx];
+            let currentLvl = (currentUser?.vipType === 'estagiario') ? 0 : (currentUser?.vipLevel || 0);
+            if (currentLvl < required) return { allow: false, msg: `Nível mínimo: ${VIP_NAMES[required]}` };
+            let wdCooldown = getWithdrawCooldown();
+            if (wdCooldown > 0) return { allow: false,
+                msg: `⏳ Aguarde ${Math.floor(wdCooldown/3600000)}h ${Math.floor((wdCooldown%3600000)/60000)}m` };
+            let now = new Date();
+            let hour = now.getHours();
+            let minute = now.getMinutes();
+            let [startH, startM] = WITHDRAW_TIMES.start.split(':').map(Number);
+            let [endH, endM] = WITHDRAW_TIMES.end.split(':').map(Number);
+            if (hour < startH || (hour === startH && minute < startM) || hour > endH || (hour === endH && minute > endM))
+                return { allow: false, msg: `Horário: ${WITHDRAW_TIMES.start} - ${WITHDRAW_TIMES.end}` };
+            return { allow: true, msg: 'OK' };
+        }
+
+        async function collectDaily() {
+            if (!currentUser) return;
+            let today = new Date().getDay();
+            if (today === 0) { alert('🔒 DOMINGO - Coleta pausada'); return; }
+            let cd = getCollectCooldown();
+            if (cd > 0) { alert(`⏳ Aguarde ${Math.floor(cd/3600000)}h ${Math.floor((cd%3600000)/60000)}m`); return; }
+            let vip = getVipInfo();
+            if (vip.daily === 0) { alert('Compre um filme primeiro'); return; }
+            currentUser.balance += vip.daily;
+            currentUser.vipLastCollect = new Date().toISOString();
+            if (!currentUser.earningsHistory) currentUser.earningsHistory = [];
+            currentUser.earningsHistory.push({ amount: vip.daily, date: new Date().toISOString() });
+            await saveCurrentUser();
+            alert(`💰 +${vip.daily.toLocaleString()} MT coletado! Saldo: ${currentUser.balance.toLocaleString()} MT`);
+            showTab('home');
+        }
+
+        function openYoutubeAndEarn() {
+            window.open('https://youtu.be/_s8sicMMk4w?si=zHYwT5EJcazPsNAI', '_blank');
+            alert('🎬 Assista ao vídeo e se inscreva no canal!\n📢 Em breve você ganhará 25MT/dia por assistir!');
+        }
+
+        async function buyMovie(level) {
+            if (!currentUser) return;
+            let check = canBuyVip(level);
+            if (!check.allow) { alert(check.msg); return; }
+            let price = VIP_INVEST[level];
+            if (currentUser.balance < price) { alert(`Saldo insuficiente: ${price.toLocaleString()} MT`); return; }
+            let alertLabel = VIP_ALERT_LABELS[level] ? `\n⚠️ ${VIP_ALERT_LABELS[level]}` : '';
+            if (confirm(
+                    `🎬 Comprar ${VIP_NAMES[level]} por ${price.toLocaleString()} MT?\n💰 Ganho Diário: ${VIP_DAILY[level].toLocaleString()} MT\n📅 ${VIP_DAYS[level]} dias\n💵 Ganho Total: ${VIP_TOTAL[level].toLocaleString()} MT${alertLabel}`
+                    )) {
+                currentUser.balance -= price;
+                currentUser.vipLevel = level;
+                currentUser.vipType = (level === 0) ? 'estagiario' : 'normal';
+                currentUser.vipStartDate = new Date().toISOString();
+                currentUser.vipLastCollect = null;
+                if (!currentUser.purchasedVips) currentUser.purchasedVips = [];
+                if (!currentUser.purchasedVips.includes(level)) currentUser.purchasedVips.push(level);
+                await saveCurrentUser();
+                alert(`✅ ${VIP_NAMES[level]} comprado!`);
+                showTab('home');
+            }
+        }
+
+        async function investFundo(index) {
+            let f = FUNDOS[index];
+            if (f.blocked) { alert('🔒 Este fundo está bloqueado temporariamente!'); return; }
+            let amount = Number(prompt(
+                `Investir em ${f.name}\nValor mínimo: ${f.min.toLocaleString()} MT\nBase recomendada: ${f.base.toLocaleString()} MT\nRetorno: ${f.retorno.toLocaleString()} MT`,
+                f.base));
+            if (!amount || amount < f.min) { alert(`Mínimo ${f.min.toLocaleString()} MT`); return; }
+            if (currentUser.balance < amount) { alert('Saldo insuficiente'); return; }
+            let retorno = Math.round(amount * (1 + f.percent / 100));
+            if (confirm(
+                    `Investir ${amount.toLocaleString()} MT?\n📈 Retorno: ${retorno.toLocaleString()} MT\n⏳ ${f.dias} dias`)) {
+                currentUser.balance -= amount;
+                if (!currentUser.fundInvestments) currentUser.fundInvestments = [];
+                let inv = { fundo: f.name, amount, retorno, startDate: new Date().toISOString(), endDate: new Date(Date.now() +
+                        f.dias * 86400000).toISOString(), status: 'active' };
+                currentUser.fundInvestments.push(inv);
+                await saveCurrentUser();
+                alert(`✅ Investimento realizado! Receberá ${retorno.toLocaleString()} MT em ${f.dias} dias`);
+                showTab('fundos');
+            }
+        }
+
+        async function requestWithdraw(amount) {
+            let check = canWithdraw(amount);
+            if (!check.allow) { alert(check.msg); return; }
+            let fee = Math.round(amount * 0.1);
+            let net = amount - fee;
+            if (currentUser.balance < amount) { alert('Saldo insuficiente'); return; }
+            if (confirm(
+                    `💸 Sacar ${amount.toLocaleString()} MT?\n📊 Taxa (10%): ${fee.toLocaleString()} MT\n💰 Valor a receber: ${net.toLocaleString()} MT`
+                    )) {
+                currentUser.balance -= amount;
+                currentUser.lastWithdrawDate = new Date().toISOString();
+                await saveWithdrawal({
+                    phone: currentUser.phone,
+                    name: currentUser.name,
+                    amount,
+                    fee,
+                    netAmount: net,
+                    date: new Date().toISOString(),
+                    status: 'pending'
+                });
+                await saveCurrentUser();
+                alert(`✅ Saque solicitado! Valor a receber: ${net.toLocaleString()} MT`);
+                showTab('saques');
+            }
+        }
+
+        async function checkAndClaimReferralReward() {
+            let claimed = currentUser.claimedRewards || [];
+            let nextReward = REFERRAL_REWARDS.find(r => !claimed.includes(r.level));
+            if (!nextReward) { alert('🏆 Todos os níveis completos!'); return; }
+            let invitedCount = (currentUser.invitedUsers || []).length;
+            if (invitedCount >= nextReward.required) {
+                currentUser.balance += nextReward.reward;
+                if (!currentUser.claimedRewards) currentUser.claimedRewards = [];
+                currentUser.claimedRewards.push(nextReward.level);
+                await saveCurrentUser();
+                alert(`🎉 Nível ${nextReward.level} - ${nextReward.name}\n💰 +${nextReward.reward} MT!`);
+                showTab('convidar');
+            } else {
+                alert(
+                    `📊 Nível ${nextReward.level}: ${nextReward.name}\n👥 ${invitedCount}/${nextReward.required}\n💰 Prêmio: ${nextReward.reward} MT`);
+            }
+        }
+
+        function generateInviteLink() {
+            let code = currentUser?.inviteCode || '';
+            let link = window.location.origin + window.location.pathname + '?ref=' + code;
+            return { code, link };
+        }
+
+        function copyInvite() {
+            let { code, link } = generateInviteLink();
+            navigator.clipboard.writeText(code).then(() => {
+                alert('✅ Código copiado: ' + code + '\n\n📋 Link completo:\n' + link);
+            }).catch(() => { prompt('Copie o código:', code); });
+        }
+
+        function copyInviteLink() {
+            let { code, link } = generateInviteLink();
+            navigator.clipboard.writeText(link).then(() => {
+                alert('✅ Link copiado!\n\n' + link);
+            }).catch(() => { prompt('Copie o link:', link); });
+        }
+
+        function createCountryBanners() {
+            const duplicated = [...INVESTOR_COUNTRIES, ...INVESTOR_COUNTRIES];
+            return `
+            <div class="country-banners">
+                <div class="country-banners-track">
+                    ${duplicated.map(c => `
+                        <div class="country-banner-item">
+                            <span class="country-flag">${c.flag}</span>
+                            <div class="country-info">
+                                <span class="country-name">${c.name}</span>
+                                <span class="country-invest">💰 ${c.invest}</span>
+                            </div>
+                            <span class="country-badge">INVESTIDOR</span>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>`;
+        }
+
+        // ==================== NOTIFICAÇÕES FLUTUANTES ====================
+        function addFloatingNotification(message, type = 'deposit') {
+            if (!isOnAuthScreen) return;
+            notificationQueue.push({ message, type });
+            processNotificationQueue();
+        }
+
+        function processNotificationQueue() {
+            if (!isOnAuthScreen) return;
+            if (notificationQueue.length === 0 || activeNotifications >= MAX_NOTIFICATIONS) return;
+            const { message, type } = notificationQueue.shift();
+            activeNotifications++;
+            const container = document.getElementById('floatingNotifications');
+            if (!container) return;
+            const notification = document.createElement('div');
+            notification.className = 'floating-notification ' + type;
+            const icon = type === 'deposit' ? '💰' : '💸';
+            notification.textContent = icon + ' ' + message;
+            const randomLeft = Math.random() * 70;
+            notification.style.left = randomLeft + '%';
+            container.appendChild(notification);
+            setTimeout(() => {
+                if (notification.parentNode) notification.remove();
+                activeNotifications--;
+                if (isOnAuthScreen) processNotificationQueue();
+            }, NOTIFICATION_DURATION);
+        }
+
+        function startFloatingNotifications() {
+            setInterval(() => {
+                if (isOnAuthScreen) {
+                    const isDeposit = Math.random() > 0.5;
+                    const name = mockNames[Math.floor(Math.random() * mockNames.length)];
+                    const amount = Math.floor(Math.random() * 5000) + 100;
+                    if (isDeposit) addFloatingNotification(`${name} depositou ${amount.toLocaleString()} MT`,
+                        'deposit');
+                    else addFloatingNotification(`${name} sacou ${amount.toLocaleString()} MT`, 'withdraw');
+                }
+            }, 2200);
+        }
+
+        async function checkInviteBanner() {
+            let urlRef = new URLSearchParams(window.location.search).get('ref');
+            if (urlRef) {
+                const allUsers = await getAllUsers();
+                const inviter = allUsers.find(u => u.inviteCode === urlRef);
+                if (inviter) {
+                    let banner = document.getElementById('invitedBanner');
+                    banner.innerHTML = `🎉 Você foi convidado por <strong>${inviter.name}</strong>!`;
+                    banner.classList.remove('hidden');
+                }
+            }
+        }
+
+        function updateSocialButtons() {
+            const container = document.getElementById('socialButtonsAuth');
+            if (!container) return;
+            let html = '';
+            if (globalSettings.facebookPage) html +=
+                `<a href="${globalSettings.facebookPage}" target="_blank" class="social-btn fb">📘 Facebook</a>`;
+            if (globalSettings.socialWhatsapp) html +=
+                `<a href="https://wa.me/${globalSettings.socialWhatsapp}" target="_blank" class="social-btn wa">📱 WhatsApp</a>`;
+            if (globalSettings.youtubeChannel) html +=
+                `<a href="${globalSettings.youtubeChannel}" target="_blank" class="social-btn yt">▶️ YouTube</a>`;
+            container.innerHTML = html;
+        }
+
+        // ==================== RENDERIZAÇÃO DAS TELAS ====================
+        function renderHome() {
+            if (!currentUser) return '';
+            let vip = getVipInfo();
+            let cd = getCollectCooldown();
+            let canCollect = (cd === 0 && new Date().getDay() !== 0 && vip.daily > 0);
+            let wdCooldown = getWithdrawCooldown();
+            let settings = globalSettings;
+            return `
+            ${createCountryBanners()}
+            <div class="balance-card">
+                <div class="balance-value">${(currentUser.balance || 0).toLocaleString()} MT</div>
+                <div style="color:#c0c0c0;">SALDO NET FILMS</div>
+            </div>
+            ${settings.whatsappGroup || settings.telegramChannel ? `
+            <div style="display:flex; gap:8px; margin:12px 0; flex-wrap:wrap;">
+                ${settings.whatsappGroup ? `<a href="${settings.whatsappGroup}" target="_blank" style="flex:1; padding:12px; background:#25D366; color:white; text-align:center; border-radius:12px; text-decoration:none; font-weight:700;">📱 WhatsApp</a>` : ''}
+                ${settings.telegramChannel ? `<a href="${settings.telegramChannel}" target="_blank" style="flex:1; padding:12px; background:#0088cc; color:white; text-align:center; border-radius:12px; text-decoration:none; font-weight:700;">✈️ Telegram</a>` : ''}
+                ${settings.supportWhatsapp ? `<a href="https://wa.me/${settings.supportWhatsapp}" target="_blank" style="flex:1; padding:12px; background:#25D366; color:white; text-align:center; border-radius:12px; text-decoration:none; font-weight:700;">🎧 Suporte</a>` : ''}
+            </div>` : ''}
+            <div class="gains-grid">
+                <div class="gain-card">📅 ONTEM: <strong style="color:#ff8c00;">${(currentUser.earningsHistory || []).filter(e => new Date(e.date).toDateString() === new Date(Date.now()-86400000).toDateString()).reduce((a,b) => a+b.amount, 0).toLocaleString()} MT</strong></div>
+                <div class="gain-card">🟢 HOJE: <strong style="color:#32ff7e;">${(currentUser.earningsHistory || []).filter(e => new Date(e.date).toDateString() === new Date().toDateString()).reduce((a,b) => a+b.amount, 0).toLocaleString()} MT</strong></div>
+            </div>
+            <div class="vip-card-colorida" style="border-color:#ff0000;" onclick="window.openYoutubeAndEarn()">
+                <div style="font-size:20px; font-weight:900; color:#ff0000;">🎬 ASSISTA E SE INSCREVA</div>
+                <div style="font-size:16px; color:#c0c0c0;">GANHE <strong style="color:#32ff7e;">25MT/DIA</strong></div>
+                <button class="action-btn" style="background:#ff0000; color:#ffffff; margin-top:10px;" onclick="event.stopPropagation(); window.openYoutubeAndEarn();">▶️ ASSISTIR VÍDEO AGORA</button>
+                <small style="color:#888;">ASSISTA: ganhe 25MT por dia assistindo!</small>
+            </div>
+            <div class="vip-card-colorida" style="border-color:#ff8c00;">
+                <div style="font-size:20px; font-weight:900; color:#ff8c00;">💎 ${vip.name}</div>
+                <div style="font-size:14px; color:#c0c0c0;">💰 Diário: <strong style="color:#32ff7e;">${vip.daily.toLocaleString()} MT</strong> | 📅 <strong style="color:#ff8c00;">${vip.days} dias</strong> | 💵 Total: <strong style="color:#ff0000;">${vip.total.toLocaleString()} MT</strong></div>
+                ${canCollect ? `<button class="action-btn btn-coletar" onclick="event.stopPropagation(); window.collectDaily();" style="margin-top:10px;">💰 COLETAR +${vip.daily.toLocaleString()} MT</button>` : (cd > 0 ? `<div class="countdown-timer">⏳ Próxima coleta em ${Math.floor(cd/3600000)}h ${Math.floor((cd%3600000)/60000)}m</div>` : '<button class="action-btn" disabled style="opacity:0.5; margin-top:10px; background:#333; color:#666;">🔒 Indisponível</button>')}
+            </div>
+            <div style="display:flex; gap:10px;">
+                <button class="action-btn btn-comprar" onclick="window.showTab('vips')" style="flex:1;">🎬 COMPRAR FILME</button>
+                <button class="action-btn" style="flex:1; background:#ff0000; color:#ffffff;" onclick="window.showTab('saques')">💸 SACAR</button>
+                <button class="action-btn btn-green" onclick="window.showDepositModal()" style="flex:1; color:#000000;">💰 DEPOSITAR</button>
+            </div>
+            ${wdCooldown > 0 ? `<div class="countdown-timer" style="color:#ff4444;">⏳ Próximo saque em ${Math.floor(wdCooldown/3600000)}h ${Math.floor((wdCooldown%3600000)/60000)}m</div>` : ''}
+            ${createCountryBanners()}`;
+        }
+
+        function renderVips() {
+            let html =
+                '<h3 style="color:#ff8c00; text-align:center; font-size:22px; margin-bottom:16px;">🎬 COMPRAR FILMES</h3>';
+            let purchasedVips = currentUser?.purchasedVips || [];
+            for (let i = 0; i < VIP_NAMES.length; i++) {
+                let active = (currentUser?.vipLevel === i && currentUser?.vipType !== 'estagiario') || (i === 0 && currentUser
+                    ?.vipType === 'estagiario');
+                let isEmBreve = VIP_EM_BREVE.includes(i);
+                let alreadyPurchased = purchasedVips.includes(i);
+                let disabled = isEmBreve || (alreadyPurchased && !active);
+                let disabledReason = isEmBreve ? '🚫 EM BREVE' : (alreadyPurchased && !active ? '✅ JÁ COMPRADO' : '');
+                html += `
+                <div class="vip-card-colorida ${disabled ? 'disabled' : ''}" style="border-color:${isEmBreve ? '#ff0000' : '#ff8c00'};" ${!disabled ? `onclick="window.buyMovie(${i})"` : ''}>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size:18px; font-weight:900; color:#ffffff;">🎬 ${VIP_NAMES[i]}</span>
+                        <div>${active ? '<span style="background:#32ff7e; color:#000; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:900; margin-right:4px;">ATIVO</span>' : ''}${isEmBreve ? '<span style="background:#ff0000; color:white; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:900;">🔒 EM BREVE</span>' : ''}${alreadyPurchased && !active ? '<span style="background:#32ff7e; color:#000; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:900;">✅ COMPRADO</span>' : ''}</div>
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px;">
+                        <div style="background:var(--bg-input); padding:8px 12px; border-radius:10px;"><div style="font-size:10px; color:#888;">💰 PREÇO</div><div style="font-size:16px; font-weight:900; color:#ffffff;">${VIP_INVEST[i].toLocaleString()} MT</div></div>
+                        <div style="background:var(--bg-input); padding:8px 12px; border-radius:10px;"><div style="font-size:10px; color:#888;">💵 DIÁRIO</div><div style="font-size:16px; font-weight:900; color:#32ff7e;">${VIP_DAILY[i].toLocaleString()} MT</div></div>
+                        <div style="background:var(--bg-input); padding:8px 12px; border-radius:10px;"><div style="font-size:10px; color:#888;">📅 DIAS</div><div style="font-size:16px; font-weight:900; color:#ffffff;">${VIP_DAYS[i]}</div></div>
+                        <div style="background:var(--bg-input); padding:8px 12px; border-radius:10px;"><div style="font-size:10px; color:#888;">💵 TOTAL</div><div style="font-size:16px; font-weight:900; color:#ff8c00;">${VIP_TOTAL[i].toLocaleString()} MT</div></div>
+                    </div>
+                    ${disabled ? `<button class="action-btn" disabled style="margin-top:10px; background:#333; color:#666;">${disabledReason}</button>` : `<button class="action-btn btn-comprar" onclick="event.stopPropagation(); window.buyMovie(${i});" style="margin-top:10px;">🎬 COMPRAR FILME</button>`}
+                </div>`;
+            }
+            return html;
+        }
+
+        function renderFundos() {
+            let html =
+                '<h3 style="color:#32ff7e; text-align:center; font-size:22px; margin-bottom:16px;">📈 FUNDOS DE INVESTIMENTO</h3>';
+            FUNDOS.forEach((f, idx) => {
+                const isBlocked = f.blocked;
+                html += `
+                <div class="fundo-card-colorida ${isBlocked ? 'blocked-fund' : ''}" style="border-color:${isBlocked ? '#ff0000' : '#32ff7e'};" onclick="${isBlocked ? `alert('🔒 Este fundo está bloqueado!')` : `window.investFundo(${idx})`}">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div style="font-size:20px; font-weight:900; color:#32ff7e;">📊 ${f.name}</div>
+                        ${isBlocked ? '<div class="lock-icon">🔒</div>' : ''}
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px;">
+                        <div style="background:var(--bg-input); padding:8px 12px; border-radius:10px;"><div style="font-size:10px; color:#888;">💰 MÍNIMO</div><div style="font-size:16px; font-weight:900; color:#ffffff;">${f.min.toLocaleString()} MT</div></div>
+                        <div style="background:var(--bg-input); padding:8px 12px; border-radius:10px;"><div style="font-size:10px; color:#888;">📌 BASE</div><div style="font-size:16px; font-weight:900; color:#ffffff;">${f.base.toLocaleString()} MT</div></div>
+                        <div style="background:var(--bg-input); padding:8px 12px; border-radius:10px;"><div style="font-size:10px; color:#888;">💵 RETORNO</div><div style="font-size:16px; font-weight:900; color:#32ff7e;">${f.retorno.toLocaleString()} MT</div></div>
+                        <div style="background:var(--bg-input); padding:8px 12px; border-radius:10px;"><div style="font-size:10px; color:#888;">📈 LUCRO</div><div style="font-size:16px; font-weight:900; color:#32ff7e;">${f.percent}%</div></div>
+                    </div>
+                    <div style="margin-top:8px; color:#c0c0c0;">⏳ Prazo: <strong style="color:#ffffff;">${f.dias} dias</strong></div>
+                </div>`;
+            });
+            if (currentUser?.fundInvestments?.length) {
+                html +=
+                    '<div class="admin-section" style="margin-top:20px;"><h4 style="color:#ff8c00;">📌 Meus Investimentos</h4>' +
+                    currentUser.fundInvestments.map(i => `
+                    <div style="display:flex; justify-content:space-between; padding:10px; background:var(--bg-input); border-radius:12px; margin:8px 0; color:#ffffff;">
+                        <span>${i.fundo}</span><span>${(i.amount||0).toLocaleString()} MT</span>
+                        <span style="color:${i.status==='active'?'#ff8c00':'#32ff7e'};">${i.status==='active'?'🔵 Ativo':`✅ +${(i.retorno||0).toLocaleString()} MT`}</span>
+                    </div>`).join('') + '</div>';
+            }
+            return html;
+        }
+
+        function renderConvidar() {
+            let invitedCount = (currentUser?.invitedUsers || []).length;
+            let claimed = currentUser?.claimedRewards || [];
+            let nextReward = REFERRAL_REWARDS.find(r => !claimed.includes(r.level));
+            let { code, link } = generateInviteLink();
+            return `
+            <div style="background:var(--bg-card); padding:20px; border-radius:20px; border:2px solid #ff8c00;">
+                <div style="text-align:center; color:#ff8c00; font-size:18px; font-weight:900;">🔗 SEU LINK DE CONVITE</div>
+                <div style="background:var(--bg-input); padding:12px; font-size:13px; text-align:center; border-radius:12px; margin:12px 0; color:#32ff7e; word-break:break-all;">${link}</div>
+                <div style="display:flex; gap:8px; margin-top:8px;">
+                    <button class="action-btn btn-gold" onclick="window.copyInviteLink()" style="flex:1; color:#000;">📋 COPIAR LINK</button>
+                    <button class="action-btn btn-outline" onclick="window.copyInvite()" style="flex:1; color:#ff8c00;">📱 COPIAR CÓDIGO</button>
+                </div>
+                <div style="background:var(--bg-input); padding:10px; border-radius:10px; margin-top:12px; text-align:center;">
+                    <span style="color:#888;">🎫 Seu código único: </span><strong style="color:#ff8c00; font-size:18px;">${code}</strong>
+                </div>
+                <div class="referral-grid" style="margin-top:16px; color:#ffffff;">
+                    <div style="color:#c0c0c0;">👥 Convidados: <strong style="color:#32ff7e;">${invitedCount}</strong></div>
+                    <div style="color:#c0c0c0;">💰 Comissão: <strong style="color:#ff8c00;">7% depósitos</strong></div>
+                    <div style="color:#c0c0c0;">📊 Comissões: <strong style="color:#ff0000;">${currentUser?.commissionsPaid||0}</strong></div>
+                </div>
+                ${nextReward ? `<button class="action-btn btn-coletar" onclick="window.checkAndClaimReferralReward()" style="margin-top:12px;">🎁 COLETAR PRÊMIO Nível ${nextReward.level}</button>` : '<button class="action-btn" disabled style="opacity:0.5; margin-top:12px; background:#333; color:#666;">🏆 COMPLETO</button>'}
+            </div>
+            <div style="margin-top:20px;"><h4 style="color:#ff8c00; text-align:center; font-size:18px;">🎯 NÍVEIS DE RECOMPENSA</h4><div class="referral-grid">
+            ${REFERRAL_REWARDS.map(r => { let isClaimed=claimed.includes(r.level); let isNext=nextReward?.level===r.level; return `<div class="reward-card ${isClaimed?'claimed':''}" style="${isNext?'border-color:#32ff7e; box-shadow:0 0 15px rgba(50,255,126,0.3);':''}"><div style="font-size:28px;">${r.icon}</div><div style="font-weight:900; color:#ffffff; font-size:14px;">${r.name}</div><div style="color:#c0c0c0;">👥 ${r.required} convidados</div><div style="color:#ff8c00; font-weight:900;">💰 +${r.reward} MT</div><div style="font-size:11px; color:${isClaimed?'#32ff7e':(isNext?'#ff8c00':'#888')};">${isClaimed?'✅ RECEBIDO':(isNext?'🟡 PRÓXIMO':'🔒 BLOQUEADO')}</div></div>`; }).join('')}
+            </div></div>
+            <div style="margin-top:20px; background:var(--bg-card); padding:16px; border-radius:16px;">
+                <strong style="color:#ff8c00;">📋 Convidados (${invitedCount})</strong>
+                ${(currentUser?.invitedNames||[]).length === 0 ? '<p style="color:#888;">Nenhum convidado ainda</p>' : (currentUser?.invitedNames||[]).map(n => `<div class="invited-item">👤 <span style="color:#ffffff;">${n}</span></div>`).join('')}
+            </div>`;
+        }
+
+        async function renderSaques() {
+            let wdCooldown = getWithdrawCooldown();
+            let vipCheck = canUserWithdraw();
+            let html =
+                `<h3 style="color:#ff8c00; text-align:center;">💸 SAQUES</h3><p style="text-align:center; color:#c0c0c0;">Horário: ${WITHDRAW_TIMES.start} - ${WITHDRAW_TIMES.end}</p>`;
+            if (!vipCheck.allow) html +=
+                `<p style="text-align:center; color:#ff0000; background:rgba(255,0,0,0.1); padding:10px; border-radius:12px; font-weight:700;">${vipCheck.msg}</p>`;
+            if (!globalSettings.withdrawsEnabled) {
+                let dayNames = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+                let currentLvl = currentUser?.vipType === 'estagiario' ? 0 : (currentUser?.vipLevel || 0);
+                let allowedDay = VIP_WITHDRAW_DAYS[currentLvl] || 1;
+                html +=
+                    `<p style="text-align:center; color:#ff8c00; background:rgba(255,140,0,0.1); padding:10px; border-radius:12px;">📅 Seu nível saca apenas: <strong>${dayNames[allowedDay]}</strong></p>`;
+            }
+            if (wdCooldown > 0) html +=
+                `<div class="countdown-timer" style="color:#ff4444; font-size:16px;">⏳ Próximo saque em ${Math.floor(wdCooldown/3600000)}h ${Math.floor((wdCooldown%3600000)/60000)}m</div>`;
+            html += '<div style="display:flex; flex-wrap:wrap; justify-content:center; margin-top:16px;">';
+            WITHDRAW_VALUES.forEach(val => {
+                let idx = WITHDRAW_VALUES.indexOf(val);
+                let required = WITHDRAW_MIN_VIP[idx];
+                let currentLvl = (currentUser?.vipType === 'estagiario') ? 0 : (currentUser?.vipLevel || 0);
+                let can = currentLvl >= required;
+                let fee = Math.round(val * 0.1);
+                let net = val - fee;
+                html +=
+                    `<div class="saque-amount-btn ${!can?'disabled':''}" onclick="${can ? `window.requestWithdraw(${val})` : `alert('Nível mínimo: ${VIP_NAMES[required]}')`}"><div style="color:#ffffff;">${val.toLocaleString()} MT</div><small style="color:${can?'#32ff7e':'#ff4444'};">Nível: ${VIP_NAMES[required]}</small><small style="color:#888;">Taxa: ${fee.toLocaleString()} MT</small><small style="color:#32ff7e;">Recebe: ${net.toLocaleString()} MT</small></div>`;
+            });
+            html += '</div>';
+            const withdrawals = await loadWithdrawals();
+            let userWithdrawals = withdrawals.filter(w => w.phone === currentUser?.phone);
+            html +=
+                `<div class="admin-section" style="margin-top:20px;"><h4 style="color:#ff8c00;">📜 Histórico</h4>${userWithdrawals.length === 0 ? '<p style="color:#888;">Nenhum</p>' : userWithdrawals.slice(-10).reverse().map(w => `<div style="display:flex; justify-content:space-between; padding:8px; background:var(--bg-input); border-radius:8px; margin:4px 0; color:#ffffff;"><span>Solicitado: ${(w.amount||0).toLocaleString()} MT</span><span style="color:#32ff7e;">Recebe: ${(w.netAmount||0).toLocaleString()} MT</span><span>${w.status==='pending'?'⏳':w.status==='approved'?'✅':'❌'}</span><small>${new Date(w.date).toLocaleDateString()}</small></div>`).join('')}</div>`;
+            return html;
+        }
+
+        function showDepositModal() {
+            let modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+            <div class="modal-box">
+                <h3 style="color:#ff8c00; font-size:22px;">💰 DEPOSITAR</h3>
+                <div style="background:var(--bg-input); padding:12px; border-radius:12px; margin:12px 0; color:#c0c0c0;">
+                    <p>📱 Emola: <strong style="color:#ff8c00;">850000000</strong></p>
+                    <p>📱 M-Pesa: <strong style="color:#ff8c00;">870000000</strong></p>
+                </div>
+                <input type="text" id="depName" class="auth-input" placeholder="Nome completo" value="${currentUser?.name || ''}">
+                <input type="text" id="depPhone" class="auth-input" placeholder="Número" value="${currentUser?.phone || ''}">
+                <input type="number" id="depAmount" placeholder="Valor (mín 200 MT)" class="auth-input" min="200">
+                <button onclick="window.submitDeposit()" class="btn-primary btn-green" style="margin-top:8px; color:#000000;">📤 ENVIAR</button>
+                <button onclick="this.closest('.modal-overlay').remove()" class="btn-outline" style="margin-top:8px; color:#ff8c00;">Fechar</button>
+            </div>`;
+            document.body.appendChild(modal);
+        }
+
+        function showTab(tab) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            let main = document.getElementById('mainContent');
+            if (tab === 'home') { document.querySelector('.nav-item').classList.add('active');
+                main.innerHTML = renderHome(); }
+            if (tab === 'vips') { document.querySelectorAll('.nav-item')[1].classList.add('active');
+                main.innerHTML = renderVips(); }
+            if (tab === 'fundos') { document.querySelectorAll('.nav-item')[2].classList.add('active');
+                main.innerHTML = renderFundos(); }
+            if (tab === 'convidar') { document.querySelectorAll('.nav-item')[3].classList.add('active');
+                main.innerHTML = renderConvidar(); }
+            if (tab === 'saques') { renderSaques().then(html => main.innerHTML = html); }
+        }
+
+        function startTimer() {
+            setInterval(() => {
+                let now = new Date();
+                let end = new Date();
+                end.setHours(23, 59, 59, 999);
+                let diff = end - now;
+                if (diff < 0) diff = 0;
+                const timerEl = document.getElementById('taskTimer');
+                if (timerEl) timerEl.innerHTML = String(Math.floor(diff / 3600000)).padStart(2, '0') + ':' + String(
+                    Math.floor((diff % 3600000) / 60000)).padStart(2, '0') + ':' + String(Math.floor((diff % 60000) /
+                    1000)).padStart(2, '0');
+            }, 1000);
+        }
+
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(() => { document.getElementById('installButton').classList.add(
+                    'hidden'); });
+            } else { alert('Use o menu do navegador para instalar'); }
+        }
+
+        // ==================== HANDLERS DE MARCA ====================
+        function handleBrandClick() {
+            brandClickCount++;
+            if (brandClickCount >= 10) { brandClickCount = 0;
+                checkAdminAccess(); }
+        }
+
+        function handleAppBrandClick() {
+            brandClickCount++;
+            if (brandClickCount >= 10) { brandClickCount = 0;
+                checkAdminAccess(); }
+        }
+
+        function checkAdminAccess() {
+            let p = prompt('🔐 SENHA ADMIN:');
+            if (p === adminPassword) showAdminPanel();
+            else alert('Senha incorreta!');
+        }
+
+        // ==================== ADMIN PANEL ====================
+        async function showAdminPanel() {
+            await loadFundos();
+            let panel = document.createElement('div');
+            panel.className = 'admin-panel';
+            panel.id = 'adminPanel';
+            const deposits = await loadDeposits();
+            const pendDep = deposits.filter(d => d.status === 'pending');
+            const withdrawals = await loadWithdrawals();
+            const pendW = withdrawals.filter(w => w.status === 'pending');
+            const usersList = await getAllUsers();
+            let settings = globalSettings;
+            let totalUsers = usersList.length;
+
+            panel.innerHTML = `
+            <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
+                <h2 style="color:#ff0000;">🔧 Admin NET FILMS</h2>
+                <button onclick="window.closeAdminPanel()" style="background:red; padding:8px 16px; border-radius:10px; border:none; cursor:pointer; color:white;">❌ Fechar</button>
+            </div>
+            <div class="admin-section" style="background: linear-gradient(135deg, #ff0000, #ff8c00); color: white; text-align: center;">
+                <h3>👥 Total de Usuários: ${totalUsers}</h3>
+            </div>
+
+            <!-- TEMAS -->
+            <div class="admin-section">
+                <h4 style="color:#ff8c00;">🎨 TEMA (10 opções)</h4>
+                <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                    ${THEMES.map((t, i) => `<button class="theme-btn ${i===currentThemeIndex?'active-theme':''}" style="background:${t.bg}; border-color:${t.accent};" onclick="window.setThemeAdmin(${i})">${t.name}</button>`).join('')}
+                </div>
+            </div>
+
+            <!-- REDES SOCIAIS -->
+            <div class="admin-section">
+                <h4 style="color:#ff8c00;">📱 REDES SOCIAIS (visíveis na autenticação)</h4>
+                <div style="margin:8px 0;"><label style="color:#c0c0c0;">Facebook (URL):</label><input type="text" id="fbPage" class="auth-input" value="${settings.facebookPage || ''}" placeholder="https://facebook.com/..."></div>
+                <div style="margin:8px 0;"><label style="color:#c0c0c0;">WhatsApp (número):</label><input type="text" id="socialWa" class="auth-input" value="${settings.socialWhatsapp || ''}" placeholder="55xxxxxxxxxxx"></div>
+                <div style="margin:8px 0;"><label style="color:#c0c0c0;">YouTube (URL):</label><input type="text" id="ytChannel" class="auth-input" value="${settings.youtubeChannel || ''}" placeholder="https://youtube.com/..."></div>
+                <button onclick="window.saveSocialAdmin()" class="action-btn btn-gold">💾 Salvar Redes Sociais</button>
+            </div>
+
+            <!-- CONFIGURAÇÕES DE SAQUES -->
+            <div class="admin-section">
+                <h4 style="color:#ff8c00;">⚙️ CONFIGURAÇÕES</h4>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin:10px 0;">
+                    <span style="color:#ffffff;">🔒 Saques Diários:</span>
+                    <label class="toggle-switch"><input type="checkbox" id="toggleWithdraws" ${settings.withdrawsEnabled ? 'checked' : ''} onchange="window.toggleWithdrawSettingsAdmin()"><span class="toggle-slider"></span></label>
+                    <span id="withdrawStatusText" style="color:${settings.withdrawsEnabled ? '#32ff7e' : '#ff4444'};">${settings.withdrawsEnabled ? '✅ ATIVO' : '❌ DESLIGADO'}</span>
+                </div>
+            </div>
+
+            <!-- BLOQUEAR/DESBLOQUEAR FUNDOS -->
+            <div class="admin-section">
+                <h4 style="color:#ff8c00;">🔒 BLOQUEAR/DESBLOQUEAR FUNDOS</h4>
+                ${FUNDOS.map((f, idx) => `
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; margin:6px 0; background:var(--bg-input); border-radius:10px;">
+                    <span style="color:#ffffff;">📊 ${f.name} (${f.percent}%)</span>
+                    <button class="admin-btn-sm ${f.blocked ? 'btn-approve' : 'btn-block'}" onclick="window.toggleBlockFundAdmin(${idx})">${f.blocked ? '✅ DESBLOQUEAR' : '🔒 BLOQUEAR'}</button>
+                </div>`).join('')}
+            </div>
+
+            <!-- ALTERAR PERCENTAGEM DOS FUNDOS -->
+            <div class="admin-section">
+                <h4 style="color:#ff8c00;">📊 ALTERAR PERCENTAGEM DOS FUNDOS</h4>
+                ${FUNDOS.map((f, idx) => `
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; margin:6px 0; background:var(--bg-input); border-radius:10px;">
+                    <span style="color:#ffffff;">📊 ${f.name}</span>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="color:#32ff7e;">${f.percent}%</span>
+                        <button class="admin-btn-sm btn-edit" onclick="window.changeFundPercentAdmin(${idx})">✏️ MUDAR</button>
+                    </div>
+                </div>`).join('')}
+            </div>
+
+            <!-- EDITAR TODOS OS FUNDOS (EXPANDIR) -->
+            <div class="admin-section">
+                <h4 style="color:#ff8c00;">📊 EDITAR TODOS OS FUNDOS</h4>
+                <button class="action-btn btn-outline" style="color:#ff8c00;" onclick="window.expandFundsEditAdmin()">🔽 Expandir Edição</button>
+                <div id="fundsEditExpanded" class="hidden" style="margin-top:12px;">
+                    ${FUNDOS.map((f, idx) => `
+                    <div style="border:1px solid #ff8c00; border-radius:12px; padding:12px; margin:8px 0; background:var(--bg-input);">
+                        <strong style="color:#ff8c00;">📊 ${f.name}</strong>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:8px;">
+                            <div><small style="color:#888;">Mín (MT)</small><input type="number" id="fundMin${idx}" class="auth-input" value="${f.min}" style="padding:8px;"></div>
+                            <div><small style="color:#888;">Base (MT)</small><input type="number" id="fundBase${idx}" class="auth-input" value="${f.base}" style="padding:8px;"></div>
+                            <div><small style="color:#888;">Retorno (MT)</small><input type="number" id="fundRet${idx}" class="auth-input" value="${f.retorno}" style="padding:8px;"></div>
+                            <div><small style="color:#888;">Dias</small><input type="number" id="fundDias${idx}" class="auth-input" value="${f.dias}" style="padding:8px;"></div>
+                            <div><small style="color:#888;">% Lucro</small><input type="number" id="fundPerc${idx}" class="auth-input" value="${f.percent}" style="padding:8px;"></div>
+                            <div style="display:flex;align-items:center;gap:8px;"><small style="color:#888;">Bloqueado</small><input type="checkbox" id="fundBlock${idx}" ${f.blocked?'checked':''}></div>
+                        </div>
+                        <button class="action-btn btn-gold" onclick="window.saveSingleFundAdmin(${idx})" style="margin-top:6px;">💾 Salvar ${f.name}</button>
+                    </div>`).join('')}
+                </div>
+            </div>
+
+            <!-- CONFIGURAR VIPs -->
+            <div class="admin-section">
+                <h4 style="color:#ff8c00;">⚙️ CONFIGURAR VIPs</h4>
+                ${VIP_NAMES.map((name, i) => `
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; margin:6px 0; background:var(--bg-input); border-radius:10px;">
+                    <span style="color:#ffffff;">🎬 ${name} | 💰 ${VIP_INVEST[i].toLocaleString()} MT | 💵 ${VIP_DAILY[i].toLocaleString()} MT/dia</span>
+                    <button class="admin-btn-sm btn-edit" onclick="window.editVipAdmin(${i})">✏️ Editar</button>
+                </div>`).join('')}
+                <button class="action-btn btn-gold" onclick="window.saveVipsAdmin()" style="margin-top:8px;">💾 Salvar VIPs</button>
+            </div>
+
+            <!-- LINKS E CONTATOS -->
+            <div class="admin-section">
+                <h4 style="color:#ff8c00;">📱 Links e Contatos</h4>
+                <div style="margin:8px 0;"><label style="color:#c0c0c0;">Grupo WhatsApp:</label><input type="text" id="whatsappGroup" class="auth-input" value="${settings.whatsappGroup || ''}" placeholder="Link do grupo"></div>
+                <div style="margin:8px 0;"><label style="color:#c0c0c0;">Canal Telegram:</label><input type="text" id="telegramChannel" class="auth-input" value="${settings.telegramChannel || ''}" placeholder="Link do canal"></div>
+                <div style="margin:8px 0;"><label style="color:#c0c0c0;">WhatsApp Suporte:</label><input type="text" id="supportWhatsapp" class="auth-input" value="${settings.supportWhatsapp || ''}" placeholder="Número suporte"></div>
+                <button onclick="window.saveLinksAdmin()" class="action-btn btn-gold">💾 Salvar Links</button>
+            </div>
+
+            <!-- DEPÓSITOS PENDENTES -->
+            <div class="admin-section">
+                <h4 style="color:#ff8c00;">💰 Depósitos Pendentes (${pendDep.length})</h4>
+                ${pendDep.length === 0 ? '<p style="color:#888;">Nenhum</p>' : pendDep.map(d => `
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; margin:6px 0; background:var(--bg-input); border-radius:10px;">
+                    <div><span style="color:#ffffff;"><strong>${d.name}</strong> - ${d.phone}</span><br><span style="color:#ff8c00;">Valor: <strong>${d.amount.toLocaleString()} MT</strong></span></div>
+                    <div><button class="admin-btn-sm btn-approve" onclick="window.approveDepositAdmin('${d.id}')">✅</button><button class="admin-btn-sm btn-reject" onclick="window.rejectDepositAdmin('${d.id}')">❌</button></div>
+                </div>`).join('')}
+            </div>
+
+            <!-- SAQUES PENDENTES -->
+            <div class="admin-section">
+                <h4 style="color:#ff8c00;">💸 Saques Pendentes (${pendW.length})</h4>
+                ${pendW.length === 0 ? '<p style="color:#888;">Nenhum</p>' : pendW.map(w => `
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; margin:6px 0; background:var(--bg-input); border-radius:10px;">
+                    <div><span style="color:#ffffff;"><strong>${w.name}</strong> - ${w.phone}</span><br><span style="color:#c0c0c0;">Solicitado: ${w.amount?.toLocaleString()||'0'} MT</span><br><span style="color:#ff8c00;">Taxa 10%: ${w.fee?.toLocaleString()||'0'} MT</span><br><span style="color:#32ff7e;">A enviar: <strong>${w.netAmount?.toLocaleString()||'0'} MT</strong></span></div>
+                    <div><button class="admin-btn-sm btn-approve" onclick="window.approveWithdrawAdmin('${w.id}')">✅</button><button class="admin-btn-sm btn-reject" onclick="window.rejectWithdrawAdmin('${w.id}')">❌</button></div>
+                </div>`).join('')}
+            </div>
+
+            <!-- USUÁRIOS -->
+            <div class="admin-section">
+                <h4 style="color:#ff8c00;">👥 Usuários (${totalUsers})</h4>
+                <div style="display:flex; gap:8px; margin-bottom:10px;">
+                    <input type="text" id="searchUserAdmin" placeholder="🔍 Pesquisar nome ou número..." style="flex:1; padding:10px; border-radius:8px; border:1px solid #ff8c00; background:var(--bg-input); color:#ffffff;">
+                    <button onclick="window.searchUserAdminPanel()" class="admin-btn-sm btn-edit" style="padding:10px 16px;">🔍</button>
+                </div>
+                <div id="userListResult" style="max-height:400px; overflow-y:auto;">
+                    ${usersList.slice(0,10).map(u => `
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; margin:6px 0; background:var(--bg-input); border-radius:10px;">
+                        <div><strong style="color:#ffffff;">${u.name}</strong><br><small style="color:#c0c0c0;">📞 ${u.phone} | VIP: ${VIP_NAMES[u.vipLevel||0]} | 💰 ${(u.balance||0).toLocaleString()} MT</small><br><small style="color:#888;">🔑 Senha: ${u.password} | 🎫 Código: ${u.inviteCode || 'N/A'}</small>${u.blocked ? '<br><span style="color:red; font-weight:bold;">🚫 BLOQUEADO</span>' : ''}</div>
+                        <div style="display:flex; gap:4px; flex-wrap:wrap;">
+                            <button class="admin-btn-sm btn-edit" onclick="window.editUserBalanceAdmin('${u.id}')">💰</button>
+                            <button class="admin-btn-sm btn-edit" onclick="window.resetUserPasswordAdmin('${u.id}')">🔑</button>
+                            <button class="admin-btn-sm btn-reject" onclick="window.removeUserAdmin('${u.id}')">🗑️</button>
+                            <button class="admin-btn-sm ${u.blocked ? 'btn-approve' : 'btn-block'}" onclick="window.toggleBlockUserAdmin('${u.id}')">${u.blocked ? '✅' : '🚫'}</button>
+                        </div>
+                    </div>`).join('')}
+                </div>
+                <button onclick="window.listAllUsersAdmin()" class="action-btn btn-outline" style="margin-top:8px; color:#ff8c00;">📋 Listar Todos</button>
+            </div>
+
+            <div class="admin-section">
+                <h4 style="color:#ff8c00;">🔒 Segurança</h4>
+                <button onclick="window.changeAdminPassAdmin()" class="action-btn btn-gold">🔐 Mudar Senha Admin</button>
+            </div>`;
+            document.body.appendChild(panel);
+            document.getElementById('appScreen').style.display = 'none';
+
+            // Funções admin globais
+            window.setThemeAdmin = async function(idx) {
+                applyTheme(idx);
+                await saveThemeIndex(idx);
+                closeAdminPanel();
+                showAdminPanel();
+            };
+            window.saveSocialAdmin = async function() {
+                globalSettings.facebookPage = document.getElementById('fbPage')?.value || '';
+                globalSettings.socialWhatsapp = document.getElementById('socialWa')?.value || '';
+                globalSettings.youtubeChannel = document.getElementById('ytChannel')?.value || '';
+                await saveSettings(globalSettings);
+                updateSocialButtons();
+                alert('✅ Redes sociais salvas!');
+            };
+            window.toggleBlockFundAdmin = async function(index) {
+                FUNDOS[index].blocked = !FUNDOS[index].blocked;
+                await saveFundos(FUNDOS);
+                closeAdminPanel();
+                showAdminPanel();
+            };
+            window.changeFundPercentAdmin = async function(index) {
+                let np = Number(prompt(`Nova percentagem para ${FUNDOS[index].name}:`, FUNDOS[index].percent));
+                if (np && np > 0 && np <= 1000) {
+                    FUNDOS[index].percent = np;
+                    FUNDOS[index].retorno = Math.round(FUNDOS[index].base * (1 + np / 100));
+                    await saveFundos(FUNDOS);
+                    closeAdminPanel();
+                    showAdminPanel();
+                }
+            };
+            window.expandFundsEditAdmin = function() {
+                document.getElementById('fundsEditExpanded').classList.toggle('hidden');
+            };
+            window.saveSingleFundAdmin = async function(idx) {
+                FUNDOS[idx].min = Number(document.getElementById('fundMin' + idx)?.value) || FUNDOS[idx].min;
+                FUNDOS[idx].base = Number(document.getElementById('fundBase' + idx)?.value) || FUNDOS[idx].base;
+                FUNDOS[idx].retorno = Number(document.getElementById('fundRet' + idx)?.value) || FUNDOS[idx].retorno;
+                FUNDOS[idx].dias = Number(document.getElementById('fundDias' + idx)?.value) || FUNDOS[idx].dias;
+                FUNDOS[idx].percent = Number(document.getElementById('fundPerc' + idx)?.value) || FUNDOS[idx].percent;
+                FUNDOS[idx].blocked = document.getElementById('fundBlock' + idx)?.checked || false;
+                await saveFundos(FUNDOS);
+                alert(`✅ Fundo ${FUNDOS[idx].name} salvo!`);
+                closeAdminPanel();
+                showAdminPanel();
+            };
+            window.editVipAdmin = function(i) {
+                let nn = prompt('Nome do VIP:', VIP_NAMES[i]);
+                let ni = Number(prompt('Investimento:', VIP_INVEST[i]));
+                let nd = Number(prompt('Diário:', VIP_DAILY[i]));
+                let ndias = Number(prompt('Dias:', VIP_DAYS[i]));
+                let nalert = prompt('Alerta:', VIP_ALERT_LABELS[i] || '');
+                let embreve = confirm('Marcar como "Em Breve"?');
+                if (nn) VIP_NAMES[i] = nn;
+                if (!isNaN(ni)) VIP_INVEST[i] = ni;
+                if (!isNaN(nd)) VIP_DAILY[i] = nd;
+                if (!isNaN(ndias)) VIP_DAYS[i] = ndias;
+                VIP_ALERT_LABELS[i] = nalert;
+                if (embreve && !VIP_EM_BREVE.includes(i)) VIP_EM_BREVE.push(i);
+                if (!embreve) VIP_EM_BREVE = VIP_EM_BREVE.filter(x => x !== i);
+                VIP_TOTAL[i] = VIP_DAYS[i] * VIP_DAILY[i];
+                alert('✅ VIP editado! (Alterações locais - salve permanentemente se necessário)');
+            };
+            window.saveVipsAdmin = async function() {
+                await set(ref(db, 'settings/vips'), {
+                    names: VIP_NAMES,
+                    invest: VIP_INVEST,
+                    daily: VIP_DAILY,
+                    days: VIP_DAYS,
+                    emBreve: VIP_EM_BREVE,
+                    alertLabels: VIP_ALERT_LABELS
+                });
+                alert('✅ VIPs salvos no banco!');
+            };
+            window.toggleWithdrawSettingsAdmin = async function() {
+                let en = document.getElementById('toggleWithdraws').checked;
+                globalSettings.withdrawsEnabled = en;
+                await saveSettings(globalSettings);
+                document.getElementById('withdrawStatusText').textContent = en ? '✅ ATIVO' : '❌ DESLIGADO';
+                document.getElementById('withdrawStatusText').style.color = en ? '#32ff7e' : '#ff4444';
+            };
+            window.saveLinksAdmin = async function() {
+                globalSettings.whatsappGroup = document.getElementById('whatsappGroup')?.value || '';
+                globalSettings.telegramChannel = document.getElementById('telegramChannel')?.value || '';
+                globalSettings.supportWhatsapp = document.getElementById('supportWhatsapp')?.value || '';
+                await saveSettings(globalSettings);
+                alert('✅ Links salvos!');
+            };
+            window.approveDepositAdmin = async function(did) {
+                const snap = await get(ref(db, 'deposits/' + did));
+                if (!snap.exists()) return;
+                const d = snap.val();
+                await updateDeposit(did, { status: 'approved' });
+                const userData = await loadUserByPhone(d.phone);
+                if (userData) {
+                    userData.balance = (userData.balance || 0) + d.amount;
+                    if (!userData.depositHistory) userData.depositHistory = [];
+                    userData.depositHistory.push(d);
+                    if (userData.referredBy) {
+                        const refU = await getUserById(userData.referredBy);
+                        if (refU) {
+                            let maxCom = (refU.vipType === 'estagiario' && refU.vipLevel === 0) ? 2 : Infinity;
+                            let paid = refU.commissionsPaid || 0;
+                            if (paid < maxCom) {
+                                refU.balance = (refU.balance || 0) + Math.round(d.amount * 0.07);
+                                refU.commissionsPaid = (refU.commissionsPaid || 0) + 1;
+                                await updateUser(userData.referredBy, refU);
+                            }
+                        }
+                    }
+                    await updateUser(userData.id, userData);
+                    if (currentUser?.phone === d.phone) currentUser = { ...userData, id: userData.id };
+                }
+                alert('✅ Depósito aprovado!');
+                closeAdminPanel();
+                showAdminPanel();
+            };
+            window.rejectDepositAdmin = async function(did) {
+                await updateDeposit(did, { status: 'rejected' });
+                alert('❌ Depósito recusado');
+                closeAdminPanel();
+                showAdminPanel();
+            };
+            window.approveWithdrawAdmin = async function(wid) {
+                await updateWithdrawal(wid, { status: 'approved' });
+                alert('✅ Saque aprovado!');
+                closeAdminPanel();
+                showAdminPanel();
+            };
+            window.rejectWithdrawAdmin = async function(wid) {
+                const snap = await get(ref(db, 'withdrawals/' + wid));
+                if (!snap.exists()) return;
+                const w = snap.val();
+                await updateWithdrawal(wid, { status: 'rejected' });
+                const userData = await loadUserByPhone(w.phone);
+                if (userData) {
+                    userData.balance = (userData.balance || 0) + w.amount;
+                    await updateUser(userData.id, userData);
+                    if (currentUser?.phone === w.phone) currentUser = { ...userData, id: userData.id };
+                }
+                alert('❌ Saque recusado - Saldo devolvido');
+                closeAdminPanel();
+                showAdminPanel();
+            };
+            window.editUserBalanceAdmin = async function(uid) {
+                const u = await getUserById(uid);
+                if (!u) return;
+                let nb = Number(prompt('Novo saldo para ' + u.name + ':', u.balance || 0));
+                if (!isNaN(nb) && nb >= 0) {
+                    await updateUser(uid, { balance: nb });
+                    if (currentUserId === uid) currentUser.balance = nb;
+                    closeAdminPanel();
+                    showAdminPanel();
+                }
+            };
+            window.resetUserPasswordAdmin = async function(uid) {
+                const u = await getUserById(uid);
+                if (!u) return;
+                let np = prompt('Nova senha para ' + u.name + ' (mín 4):');
+                if (np && np.length >= 4) { await updateUser(uid, { password: np });
+                    alert('✅ Senha alterada!'); }
+            };
+            window.removeUserAdmin = async function(uid) {
+                const u = await getUserById(uid);
+                if (!u) return;
+                if (confirm(`⚠️ Remover permanentemente ${u.name} (${u.phone})?\nEsta ação é irreversível!`)) {
+                    await remove(ref(db, 'users/' + uid));
+                    alert('🗑️ Usuário removido!');
+                    closeAdminPanel();
+                    showAdminPanel();
+                }
+            };
+            window.toggleBlockUserAdmin = async function(uid) {
+                const u = await getUserById(uid);
+                if (!u) return;
+                await updateUser(uid, { blocked: !u.blocked });
+                closeAdminPanel();
+                showAdminPanel();
+            };
+            window.searchUserAdminPanel = async function() {
+                let term = (document.getElementById('searchUserAdmin')?.value || '').toLowerCase();
+                const all = await getAllUsers();
+                let filtered = all.filter(u => u.name.toLowerCase().includes(term) || u.phone.includes(term));
+                document.getElementById('userListResult').innerHTML = filtered.map(u => `
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; margin:6px 0; background:var(--bg-input); border-radius:10px;">
+                    <div><strong style="color:#ffffff;">${u.name}</strong><br><small style="color:#c0c0c0;">📞 ${u.phone} | VIP: ${VIP_NAMES[u.vipLevel||0]} | 💰 ${(u.balance||0).toLocaleString()} MT</small>${u.blocked ? '<br><span style="color:red;">🚫 BLOQUEADO</span>' : ''}</div>
+                    <div style="display:flex; gap:4px; flex-wrap:wrap;">
+                        <button class="admin-btn-sm btn-edit" onclick="window.editUserBalanceAdmin('${u.id}')">💰</button>
+                        <button class="admin-btn-sm btn-edit" onclick="window.resetUserPasswordAdmin('${u.id}')">🔑</button>
+                        <button class="admin-btn-sm btn-reject" onclick="window.removeUserAdmin('${u.id}')">🗑️</button>
+                        <button class="admin-btn-sm ${u.blocked ? 'btn-approve' : 'btn-block'}" onclick="window.toggleBlockUserAdmin('${u.id}')">${u.blocked ? '✅' : '🚫'}</button>
+                    </div>
+                </div>`).join('') || '<p style="color:#888;">Nenhum encontrado</p>';
+            };
+            window.listAllUsersAdmin = async function() {
+                const all = await getAllUsers();
+                document.getElementById('userListResult').innerHTML = all.map(u => `
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; margin:6px 0; background:var(--bg-input); border-radius:10px;">
+                    <div><strong style="color:#ffffff;">${u.name}</strong><br><small style="color:#c0c0c0;">📞 ${u.phone} | VIP: ${VIP_NAMES[u.vipLevel||0]} | 💰 ${(u.balance||0).toLocaleString()} MT</small>${u.blocked ? '<br><span style="color:red;">🚫 BLOQUEADO</span>' : ''}</div>
+                    <div style="display:flex; gap:4px; flex-wrap:wrap;">
+                        <button class="admin-btn-sm btn-edit" onclick="window.editUserBalanceAdmin('${u.id}')">💰</button>
+                        <button class="admin-btn-sm btn-edit" onclick="window.resetUserPasswordAdmin('${u.id}')">🔑</button>
+                        <button class="admin-btn-sm btn-reject" onclick="window.removeUserAdmin('${u.id}')">🗑️</button>
+                        <button class="admin-btn-sm ${u.blocked ? 'btn-approve' : 'btn-block'}" onclick="window.toggleBlockUserAdmin('${u.id}')">${u.blocked ? '✅' : '🚫'}</button>
+                    </div>
+                </div>`).join('') || '<p style="color:#888;">Nenhum</p>';
+            };
+            window.changeAdminPassAdmin = function() {
+                let np = prompt('Nova senha admin:');
+                if (np && np.length >= 4) { adminPassword = np;
+                    localStorage.setItem('netfilms_adminPass', adminPassword);
+                    alert('✅ Senha admin alterada!'); }
+            };
+        }
+
+        function closeAdminPanel() {
+            let panel = document.getElementById('adminPanel');
+            if (panel) panel.remove();
+            document.getElementById('appScreen').style.display = 'flex';
+            updateBalanceDisplay();
+            showTab('home');
+        }
+
+        // ==================== EXPORTAÇÃO GLOBAL ====================
+        window.showRegisterForm = showRegisterForm;
+        window.showLoginForm = showLoginForm;
+        window.showForgotPassword = showForgotPassword;
+        window.goBackToInitial = goBackToInitial;
+        window.handleLogin = handleLogin;
+        window.handleRegister = handleRegister;
+        window.handleForgotPassword = handleForgotPassword;
+        window.handleBrandClick = handleBrandClick;
+        window.handleAppBrandClick = handleAppBrandClick;
+        window.collectDaily = collectDaily;
+        window.openYoutubeAndEarn = openYoutubeAndEarn;
+        window.buyMovie = buyMovie;
+        window.investFundo = investFundo;
+        window.requestWithdraw = requestWithdraw;
+        window.checkAndClaimReferralReward = checkAndClaimReferralReward;
+        window.copyInvite = copyInvite;
+        window.copyInviteLink = copyInviteLink;
+        window.showTab = showTab;
+        window.showDepositModal = showDepositModal;
+        window.installApp = installApp;
+        window.closeAdminPanel = closeAdminPanel;
+        window.submitDeposit = async () => {
+            let name = document.getElementById('depName')?.value?.trim() || currentUser?.name || '';
+            let phone = document.getElementById('depPhone')?.value?.trim() || currentUser?.phone || '';
+            let amount = Number(document.getElementById('depAmount')?.value);
+            if (!amount || amount < 200) { alert('Mínimo 200 MT'); return; }
+            if (!name || !phone) { alert('Preencha nome e número'); return; }
+            await saveDeposit({ phone, name, amount, date: new Date().toISOString(), status: 'pending' });
+            document.querySelector('.modal-overlay')?.remove();
+            alert(`✅ Depósito de ${amount.toLocaleString()} MT registrado!`);
+        };
+
+        // ==================== INICIALIZAÇÃO ====================
+        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installButton')?.classList.remove('hidden'); });
+        let savedPass = localStorage.getItem('netfilms_adminPass');
+        if (savedPass) adminPassword = savedPass;
+
+        // Partículas
+        for (let i = 0; i < 30; i++) {
+            let p = document.createElement('div');
+            p.className = 'particle';
+            p.style.width = Math.random() * 6 + 2 + 'px';
+            p.style.height = p.style.width;
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDelay = Math.random() * 15 + 's';
+            p.style.animationDuration = Math.random() * 10 + 8 + 's';
+            document.getElementById('particles').appendChild(p);
+        }
+
+        async function init() {
+            await loadSettings();
+            await loadFundos();
+            await loadThemeIndex();
+            updateSocialButtons();
+            await checkInviteBanner();
+            startFloatingNotifications();
+            console.log('✅ NET FILMS pronto! (Realtime Database)');
+        }
+        init();
+    </script>
+</body>
+</html>
