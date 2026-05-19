@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NET FILMS - Plataforma de Filmes</title>
+    <style>
+        :root { --bg-body: #060913; --bg-card: #11162d; --bg-input: #171e36; --accent: #ff8c00; --accent2: #32ff7e; --red: #ff0000; --text: #ffffff; --text2: #c0c0c0; --border: rgba(255, 140, 0, 0.3); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background: var(--bg-body); min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow-y: auto; position: relative; -webkit-user-select: none; user-select: none; transition: background 0.5s; }
+        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-body); z-index: 0; pointer-events: none; transition: background 0.5s; }
+        .particles { position: fixed; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        .particle { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.08); animation: floatUp 15s infinite; }
+        @keyframes floatUp { 0% { transform: translateY(100vh) scale(0); opacity: 0; } 10% { opacity: 0.2; } 90% { opacity: 0.1; } 100% { transform: translateY(-100px) scale(1); opacity: 0; } }
+        .main-container { width: 420px; max-width: 95%; z-index: 2; position: relative; padding: 20px 0; }
+        .auth-card { background: var(--bg-card); border-radius: 24px; padding: 28px 22px; border: 2px solid var(--border); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); transition: background 0.5s, border-color 0.5s; }
+        .brand-logo-large { font-size: 80px; text-align: center; animation: pulse 2s infinite; cursor: pointer; color: #ff0000; text-shadow: 0 2px 15px rgba(255, 0, 0, 0.4); }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        .brand-name { font-size: 24px; font-weight: 900; color: #ff0000; text-align: center; cursor: pointer; text-shadow: 0 1px 3px rgba(255, 0, 0, 0.3); }
+        .brand-slogan { text-align: center; color: var(--text2); font-weight: 500; font-size: 13px; margin-bottom: 6px; }
+        .initial-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+        .initial-btn { padding: 18px 12px; border-radius: 16px; border: none; font-weight: 800; cursor: pointer; font-size: 15px; background: #32ff7e; color: #000000; text-align: center; box-shadow: 0 4px 15px rgba(50, 255, 126, 0.2); transition: all 0.3s; }
+        .initial-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(50, 255, 126, 0.4); }
+        .btn-entrar { background: #ff8c00; color: #ffffff; box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3); }
+        .btn-entrar:hover { box-shadow: 0 8px 25px rgba(255, 140, 0, 0.5); }
+        .auth-input { width: 100%; padding: 14px; margin: 8px 0; border-radius: 12px; border: 2px solid rgba(255, 255, 255, 0.1); background: var(--bg-input); color: #ffffff; font-size: 15px; transition: border 0.3s; }
+        .auth-input:focus { outline: none; border-color: #ff8c00; }
+        .auth-input::placeholder { color: #888888; }
+        .btn-primary { width: 100%; padding: 15px; border-radius: 14px; border: none; font-weight: 700; margin-top: 8px; cursor: pointer; font-size: 16px; transition: all 0.3s; }
+        .btn-primary:hover { transform: scale(1.02); }
+        .btn-gold { background: #ff8c00; color: #ffffff; box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3); }
+        .btn-green { background: #32ff7e; color: #000000; box-shadow: 0 4px 15px rgba(50, 255, 126, 0.2); }
+        .btn-outline { background: transparent; border: 2px solid #ff8c00; color: #ff8c00; width: 100%; padding: 13px; border-radius: 14px; margin-top: 8px; cursor: pointer; font-weight: 700; transition: all 0.3s; }
+        .btn-outline:hover { background: rgba(255, 140, 0, 0.1); }
+        .error-msg { color: #ff4444; font-size: 12px; text-align: center; min-height: 20px; margin: 4px 0; }
+        .switch-link { color: #ff8c00; cursor: pointer; text-decoration: underline; font-weight: 600; }
+        .switch-text { text-align: center; margin-top: 12px; color: #c0c0c0; font-size: 13px; }
+        .hidden { display: none !important; }
+        .forgot-link { text-align: right; margin-top: 2px; margin-bottom: 6px; }
+        .forgot-link span { color: #ff8c00; cursor: pointer; font-size: 12px; text-decoration: underline; }
+        .social-buttons { display: flex; gap: 10px; justify-content: center; margin: 14px 0; flex-wrap: wrap; }
+        .social-btn { padding: 10px 16px; border-radius: 25px; border: none; font-weight: 700; cursor: pointer; font-size: 13px; transition: all 0.3s; text-decoration: none; display: flex; align-items: center; gap: 6px; color: #fff; }
+        .social-btn:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); }
+        .social-btn.fb { background: #1877f2; }
+        .social-btn.wa { background: #25D366; color: #000; }
+        .social-btn.yt { background: #ff0000; }
+        .app-container { width: 100%; max-width: 480px; height: 100vh; background: var(--bg-body); display: flex; flex-direction: column; position: relative; overflow: hidden; transition: background 0.5s; }
+        .app-header { background: var(--bg-card); padding: 16px; border-bottom: 2px solid #ff8c00; display: flex; justify-content: space-between; align-items: center; transition: background 0.5s; }
+        .app-brand { cursor: pointer; font-weight: 900; color: #ff0000; font-size: 16px; text-shadow: 0 1px 2px rgba(255, 0, 0, 0.3); }
+        .timer-badge, .balance-badge { background: var(--bg-input); padding: 6px 12px; border-radius: 20px; font-weight: 700; color: #ff8c00; border: 1px solid #ff8c00; font-size: 12px; transition: background 0.5s; }
+        .bottom-nav { display: grid; grid-template-columns: repeat(4, 1fr); position: fixed; bottom: 0; width: 100%; max-width: 480px; background: #000000; padding: 16px 10px; border-top: 2px solid #ff8c00; z-index: 100; box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.8); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 4px; border-radius: 20px; background: transparent; color: #ffffff; font-weight: 700; cursor: pointer; font-size: 11px; transition: all 0.3s; }
+        .nav-item.active { background: rgba(255, 140, 0, 0.2); color: #ff8c00; transform: translateY(-2px); }
+        .main-content { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 90px; background: var(--bg-body); transition: background 0.5s; }
+        .balance-card { background: var(--bg-card); border-radius: 20px; padding: 17px; margin-bottom: 10px; text-align: center; border: 2px solid #ff8c00; transition: background 0.5s; }
+        .balance-value { font-size: 28px; font-weight: 900; color: #ff8c00; }
+        .country-banners { width: 100%; overflow: hidden; margin: 16px 0; border-radius: 16px; position: relative; background: var(--bg-card); border: 2px solid #ff8c00; padding: 4px 0; transition: background 0.5s; }
+        .country-banners-track { display: flex; animation: scrollBanners 60s linear infinite; width: max-content; }
+        .country-banner-item { display: flex; align-items: center; gap: 10px; padding: 12px 20px; background: var(--bg-input); border-radius: 12px; margin: 0 8px; white-space: nowrap; border: 2px solid #32ff7e; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); min-width: 200px; transition: background 0.5s; }
+        .country-flag { font-size: 36px; }
+        .country-info { display: flex; flex-direction: column; }
+        .country-name { font-weight: 900; color: #ffffff; font-size: 14px; }
+        .country-invest { color: #ff8c00; font-weight: 700; font-size: 13px; }
+        .country-badge { background: #32ff7e; color: #000000; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 800; }
+        @keyframes scrollBanners { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .vip-card-colorida { border-radius: 20px; padding: 18px; margin: 12px 0; cursor: pointer; border: 2px solid #ff8c00; transition: 0.3s; position: relative; overflow: hidden; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3); background: var(--bg-card); }
+        .vip-card-colorida:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(255, 140, 0, 0.3); }
+        .vip-card-colorida>* { position: relative; z-index: 1; }
+        .vip-card-colorida.disabled { opacity: 0.4; cursor: not-allowed; }
+        .vip-card-colorida.disabled:hover { transform: none; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3); }
+        .fundo-card-colorida { border-radius: 20px; padding: 18px; margin: 12px 0; cursor: pointer; border: 2px solid #32ff7e; transition: 0.3s; position: relative; overflow: hidden; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3); background: var(--bg-card); }
+        .fundo-card-colorida:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(50, 255, 126, 0.3); }
+        .fundo-card-colorida>* { position: relative; z-index: 1; }
+        .btn-comprar { background: #ffffff !important; color: #000000 !important; font-weight: 900 !important; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3) !important; }
+        .btn-comprar:hover { background: #f0f0f0 !important; box-shadow: 0 6px 20px rgba(255, 255, 255, 0.5) !important; }
+        .action-btn { padding: 14px; border-radius: 14px; font-weight: 800; border: none; margin: 8px 0; cursor: pointer; width: 100%; transition: all 0.3s; }
+        .action-btn:hover { transform: scale(1.02); }
+        .action-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .btn-coletar { background: #ff8c00; color: #000000; animation: pulseColeta 1.5s infinite; }
+        @keyframes pulseColeta { 0% { box-shadow: 0 0 10px #ff8c00; } 100% { box-shadow: 0 0 25px #ff8c00; } }
+        .countdown-timer { font-size: 14px; color: #ff8c00; text-align: center; margin: 10px 0; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 200; display: flex; justify-content: center; align-items: center; }
+        .modal-box { background: var(--bg-card); border-radius: 24px; padding: 24px; width: 90%; max-width: 400px; border: 3px solid #ff8c00; color: #ffffff; text-align: center; max-height: 80vh; overflow-y: auto; transition: background 0.5s; }
+        .install-btn { position: fixed; bottom: 85px; right: 16px; background: #32ff7e; padding: 12px 20px; border-radius: 50px; font-weight: 800; cursor: pointer; z-index: 150; display: flex; gap: 8px; align-items: center; }
+        .gains-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+        .gain-card { padding: 14px; border-radius: 16px; text-align: center; background: var(--bg-card); border: 1px solid #ff8c00; color: #ffffff; transition: background 0.5s; }
+        .invited-item { background: var(--bg-input); padding: 12px; border-radius: 12px; margin: 6px 0; display: flex; justify-content: space-between; color: #ffffff; transition: background 0.5s; }
+        .saque-amount-btn { background: var(--bg-card); padding: 14px; border-radius: 12px; text-align: center; cursor: pointer; margin: 6px; font-weight: 700; display: inline-block; width: calc(33% - 12px); transition: all 0.3s; color: #ffffff; border: 1px solid #ff8c00; }
+        .saque-amount-btn:hover { background: var(--bg-input); transform: scale(1.05); border-color: #32ff7e; }
+        .saque-amount-btn.disabled { opacity: 0.3; cursor: not-allowed; border-color: #333; }
+        .admin-panel { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-body); z-index: 1000; padding: 20px; overflow-y: auto; color: #ffffff; transition: background 0.5s; }
+        .admin-section { background: var(--bg-card); border-radius: 16px; padding: 16px; margin: 12px 0; border: 1px solid rgba(255, 140, 0, 0.3); transition: background 0.5s; }
+        .toggle-switch { position: relative; display: inline-block; width: 50px; height: 24px; }
+        .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #333; border-radius: 24px; transition: 0.3s; }
+        input:checked+.toggle-slider { background: #32ff7e; }
+        .toggle-slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; }
+        input:checked+.toggle-slider:before { transform: translateX(26px); }
+        .referral-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+        .reward-card { background: var(--bg-input); border-radius: 16px; padding: 12px; text-align: center; border: 1px solid #ff8c00; color: #ffffff; transition: background 0.5s; }
+        .reward-card.claimed { opacity: 0.5; border-color: #32ff7e; background: rgba(50, 255, 126, 0.1); }
+        .admin-btn-sm { padding: 6px 12px; margin: 2px; border-radius: 8px; border: none; cursor: pointer; font-weight: 700; font-size: 12px; transition: all 0.2s; }
+        .admin-btn-sm:hover { transform: scale(1.05); }
+        .btn-approve { background: #32ff7e; color: #000000; }
+        .btn-reject { background: #ff0000; color: white; }
+        .btn-edit { background: #ff8c00; color: #000000; }
+        .btn-block { background: #333; color: white; }
+        .btn-delete { background: #ff0000; color: white; }
+        .floating-notifications { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; overflow: hidden; }
+        .floating-notification { position: absolute; padding: 10px 18px; border-radius: 20px; font-weight: 700; font-size: 13px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); animation: peekDown 1.8s ease-in-out forwards; white-space: nowrap; max-width: 90%; overflow: hidden; text-overflow: ellipsis; }
+        .floating-notification.deposit { background: linear-gradient(135deg, #32ff7e, #00b894); color: #000000; border: 1px solid #00b894; }
+        .floating-notification.withdraw { background: linear-gradient(135deg, #ff8c00, #e17055); color: #ffffff; border: 1px solid #e17055; }
+        @keyframes peekDown { 0% { transform: translateY(-100px); opacity: 0; } 15% { transform: translateY(8px); opacity: 1; } 25% { transform: translateY(0px); opacity: 1; } 75% { transform: translateY(0px); opacity: 0.9; } 100% { transform: translateY(-80px); opacity: 0; } }
+        .invited-banner { background: var(--bg-card); border: 2px solid #32ff7e; border-radius: 12px; padding: 12px; text-align: center; margin-bottom: 12px; color: #32ff7e; font-weight: 700; transition: background 0.5s; }
+        .fundo-card-colorida.blocked-fund { border-color: #ff0000 !important; opacity: 0.6; cursor: not-allowed; }
+        .fundo-card-colorida.blocked-fund:hover { transform: none; box-shadow: 0 4px 16px rgba(255, 0, 0, 0.3); }
+        .lock-icon { font-size: 24px; color: #ff0000; }
+        .theme-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; }
+        .theme-option { padding: 12px; border-radius: 12px; text-align: center; cursor: pointer; font-weight: 700; border: 2px solid transparent; transition: 0.2s; color: #fff; }
+        .theme-option:hover { border-color: #fff; transform: scale(1.02); }
+        .theme-option.active-theme { border-color: #fff !important; box-shadow: 0 0 15px rgba(255,255,255,0.4); }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div class="floating-notifications" id="floatingNotifications"></div>
+
+    <div id="authScreen" class="main-container">
+        <div class="auth-card">
+            <div class="brand-logo-large" onclick="window.handleBrandClick()">🎬</div>
+            <div class="brand-name" onclick="window.handleBrandClick()">NET FILMS</div>
+            <div class="brand-slogan">PLATAFORMA BRASILEIRA | GANHE 10X BÔNUS</div>
+            <div id="invitedBanner" class="invited-banner hidden"></div>
+            <div class="social-buttons" id="socialButtonsAuth"></div>
+            <div id="initialButtons" class="initial-buttons">
+                <button class="initial-btn" onclick="window.showRegisterForm()">✨ CRIAR CONTA</button>
+                <button class="initial-btn btn-entrar" onclick="window.showLoginForm()">🔐 ENTRAR</button>
+            </div>
+            <div id="formLogin" class="hidden">
+                <input type="text" id="loginPhone" class="auth-input" placeholder="Telefone (ex: 84xxxxxxxx)">
+                <input type="password" id="loginPassword" class="auth-input" placeholder="Senha">
+                <div class="forgot-link"><span onclick="window.showForgotPassword()">🔑 Esqueci a senha</span></div>
+                <div class="error-msg" id="loginError"></div>
+                <button class="btn-primary btn-gold" onclick="window.handleLogin()">🔐 ENTRAR</button>
+                <div class="switch-text"><span class="switch-link" onclick="window.goBackToInitial()">⬅️ Voltar</span></div>
+            </div>
+            <div id="formRegister" class="hidden">
+                <input type="text" id="registerName" class="auth-input" placeholder="Nome Completo">
+                <input type="text" id="registerPhone" class="auth-input" placeholder="Telefone (ex: 84xxxxxxxx)">
+                <input type="password" id="registerPassword" class="auth-input" placeholder="Senha (mín. 4 caracteres)">
+                <input type="password" id="registerConfirm" class="auth-input" placeholder="Confirmar Senha">
+                <div class="error-msg" id="registerError"></div>
+                <button class="btn-primary btn-green" onclick="window.handleRegister()">✨ CRIAR CONTA</button>
+                <div class="switch-text"><span class="switch-link" onclick="window.goBackToInitial()">⬅️ Voltar</span></div>
+            </div>
+            <div id="formForgot" class="hidden">
+                <p style="color:#c0c0c0;text-align:center;font-size:13px;">Digite seu telefone para redefinir a senha</p>
+                <input type="text" id="forgotPhone" class="auth-input" placeholder="Telefone cadastrado">
+                <div class="error-msg" id="forgotError"></div>
+                <button class="btn-primary btn-gold" onclick="window.handleForgotPassword()">📩 REDEFINIR SENHA</button>
+                <div class="switch-text"><span class="switch-link" onclick="window.goBackToInitial()">⬅️ Voltar</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="appScreen" class="app-container hidden">
+        <div class="app-header">
+            <span class="app-brand" onclick="window.handleAppBrandClick()">🎬 NET FILMS</span>
+            <span class="timer-badge" id="taskTimer">24:00:00</span>
+            <span class="balance-badge" id="userBalance">0 MT</span>
+        </div>
+        <div class="main-content" id="mainContent"></div>
+        <div class="bottom-nav" id="bottomNav">
+            <div class="nav-item active" onclick="window.showTab('home')">🏠 Home</div>
+            <div class="nav-item" onclick="window.showTab('vips')">🎬 VIPs</div>
+            <div class="nav-item" onclick="window.showTab('fundos')">📈 Fundos</div>
+            <div class="nav-item" onclick="window.showTab('convidar')">👥 Convidar</div>
+        </div>
+        <button id="installButton" class="install-btn hidden" onclick="window.installApp()">📲 Instalar</button>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, set, get, update, push, query, orderByChild, equalTo, remove, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAuJZNzJQjar5AHncOBfHvMPamLooStme0",
+            authDomain: "net-1a6f9.firebaseapp.com",
+            projectId: "net-1a6f9",
+            storageBucket: "net-1a6f9.firebasestorage.app",
+            messagingSenderId: "327285081232",
+            appId: "1:327285081232:web:ebebad036c3fbfe50fc415",
+            measurementId: "G-6Z5F7ER1Y5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Constantes
+        const DEFAULT_VIP_CONFIG = [
+            { level:0, name:"Estagiário", invest:0, daily:5, days:4, alert:"", emBreve:false },
+            { level:1, name:"VIP 1", invest:650, daily:45, days:365, alert:"", emBreve:false },
+            { level:2, name:"VIP 2", invest:1250, daily:75, days:365, alert:"", emBreve:false },
+            { level:3, name:"VIP 3", invest:2550, daily:150, days:365, alert:"", emBreve:false },
+            { level:4, name:"VIP 4", invest:6000, daily:315, days:365, alert:"", emBreve:false },
+            { level:5, name:"VIP 5", invest:12600, daily:700, days:365, alert:"FIQUE ATENTO", emBreve:false },
+            { level:6, name:"VIP 6", invest:20000, daily:2500, days:365, alert:"FIQUE ATENTO", emBreve:false },
+            { level:7, name:"VIP 7", invest:50000, daily:5000, days:365, alert:"FIQUE ATENTO", emBreve:true },
+            { level:8, name:"VIP 8", invest:100000, daily:17500, days:365, alert:"FIQUE ATENTO", emBreve:true }
+        ];
+        
+        let vipConfig = [...DEFAULT_VIP_CONFIG];
+        let VIP_NAMES = [], VIP_INVEST = [], VIP_DAILY = [], VIP_DAYS = [], VIP_TOTAL = [], VIP_ALERT_LABELS = [], VIP_EM_BREVE = [];
+        
+        function updateVipArrays() {
+            VIP_NAMES = vipConfig.map(v => v.name);
+            VIP_INVEST = vipConfig.map(v => v.invest);
+            VIP_DAILY = vipConfig.map(v => v.daily);
+            VIP_DAYS = vipConfig.map(v => v.days);
+            VIP_ALERT_LABELS = vipConfig.map(v => v.alert);
+            VIP_EM_BREVE = vipConfig.filter(v => v.emBreve).map(v => v.level);
+            VIP_TOTAL = vipConfig.map((v,i) => v.days * v.daily);
+        }
+        updateVipArrays();
+
+        const WITHDRAW_TIMES = { start: "9:30", end: "16:30" };
+        const WITHDRAW_VALUES = [90, 200, 1500, 5000, 10000, 30000, 50000, 100000];
+        const WITHDRAW_MIN_VIP = [1, 1, 2, 2, 3, 3, 4, 5];
+        const VIP_WITHDRAW_DAYS = { 7: 1, 6: 2, 5: 3, 4: 4, 3: 5, 2: 1, 1: 2, 0: 3 };
+
+        const DEFAULT_FUNDOS = [
+            { name: "Fundo Pro", min: 1000, base: 2500, retorno: 4250, dias: 17, percent: 70, blocked: false },
+            { name: "Fundo Elite", min: 2500, base: 6000, retorno: 6600, dias: 22, percent: 10, blocked: false },
+            { name: "Fundo Premium", min: 5000, base: 12000, retorno: 15600, dias: 30, percent: 30, blocked: false },
+            { name: "Fundo Black", min: 10000, base: 25000, retorno: 37500, dias: 60, percent: 50, blocked: false }
+        ];
+        let FUNDOS = [...DEFAULT_FUNDOS];
+
+        const REFERRAL_REWARDS = [
+            { level: 1, name: "Iniciante NET", required: 4, reward: 200, icon: "🌱" },
+            { level: 2, name: "Bronze NET", required: 8, reward: 400, icon: "🥉" },
+            { level: 3, name: "Prata NET", required: 12, reward: 600, icon: "🥈" },
+            { level: 4, name: "Ouro NET", required: 15, reward: 900, icon: "🥇" },
+            { level: 5, name: "Platina NET", required: 20, reward: 1500, icon: "💠" },
+            { level: 6, name: "Diamante NET", required: 25, reward: 2000, icon: "💎" },
+            { level: 7, name: "Master NET", required: 30, reward: 3000, icon: "👑" },
+            { level: 8, name: "Elite NET", required: 40, reward: 5000, icon: "⭐" },
+            { level: 9, name: "Lenda NET", required: 50, reward: 8000, icon: "🔥" },
+            { level: 10, name: "NET Imortal", required: 60, reward: 12000, icon: "🏆" }
+        ];
+
+        const INVESTOR_COUNTRIES = [
+            { flag: "🇧🇷", name: "Brasil", invest: "2.500.000 MT" }, { flag: "🇺🇸", name: "EUA", invest: "5.800.000 MT" },
+            { flag: "🇵🇹", name: "Portugal", invest: "1.200.000 MT" }, { flag: "🇦🇴", name: "Angola", invest: "3.400.000 MT" },
+            { flag: "🇲🇿", name: "Moçambique", invest: "4.100.000 MT" }, { flag: "🇬🇧", name: "Reino Unido", invest: "2.900.000 MT" },
+            { flag: "🇫🇷", name: "França", invest: "3.700.000 MT" }, { flag: "🇩🇪", name: "Alemanha", invest: "4.500.000 MT" },
+            { flag: "🇯🇵", name: "Japão", invest: "6.200.000 MT" }, { flag: "🇨🇦", name: "Canadá", invest: "2.100.000 MT" },
+            { flag: "🇿🇦", name: "África do Sul", invest: "1.800.000 MT" }, { flag: "🇦🇪", name: "Emirados Árabes", invest: "7.300.000 MT" }
+        ];
+
+        const THEMES = [
+            { name: "Dark", bg: "#060913", card: "#11162d", input: "#171e36", accent: "#ff8c00", accent2: "#32ff7e" },
+            { name: "Ocean", bg: "#0a1628", card: "#0f1f3d", input: "#152544", accent: "#00b4d8", accent2: "#90e0ef" },
+            { name: "Sunset", bg: "#1a0a0a", card: "#2d1111", input: "#361717", accent: "#ff6b35", accent2: "#ffb347" },
+            { name: "Forest", bg: "#0a1a0a", card: "#112d11", input: "#173617", accent: "#2ecc71", accent2: "#a8e6cf" },
+            { name: "Royal", bg: "#0d0a1a", card: "#191136", input: "#1f1642", accent: "#9b59b6", accent2: "#d4a5ff" },
+            { name: "Midnight", bg: "#000510", card: "#0a0f25", input: "#101835", accent: "#3498db", accent2: "#85c1e9" },
+            { name: "Candy", bg: "#1a0a14", card: "#2d1122", input: "#36172a", accent: "#e91e63", accent2: "#ff80ab" },
+            { name: "Cyber", bg: "#001a0a", card: "#003320", input: "#004d2e", accent: "#00ff88", accent2: "#00ffcc" },
+            { name: "Lime", bg: "#0a1a00", card: "#1a2d00", input: "#253600", accent: "#aaff00", accent2: "#ccff44" },
+            { name: "Blossom", bg: "#1a0a18", card: "#2d1128", input: "#361730", accent: "#ff6b9d", accent2: "#ffb3c6" }
+        ];
+
+        // Variáveis globais
+        let currentUser = null;
+        let currentUserId = null;
+        let userListenerUnsubscribe = null;
+        let brandClickCount = 0;
+        let adminPassword = "MANOMANO%";
+        let deferredPrompt = null;
+        let currentThemeIndex = 0;
+        let globalSettings = { withdrawsEnabled: true, withdrawDays: [1, 2, 3, 4, 5], whatsappGroup: '', telegramChannel: '', supportWhatsapp: '', facebookPage: '', youtubeChannel: '', socialWhatsapp: '' };
+        let isOnAuthScreen = true;
+        let notificationQueue = [];
+        let activeNotifications = 0;
+        const MAX_NOTIFICATIONS = 3;
+        const NOTIFICATION_DURATION = 1800;
+        const mockNames = ["Maria S.", "João P.", "Ana C.", "Pedro M.", "Carla R.", "Lucas F.", "Julia B.", "Marcos A."];
+
+        // ========== FUNÇÕES DO BANCO (REALTIME DATABASE) ==========
+        async function loadSettings() { try { const snap = await get(ref(db, 'settings/global')); if (snap.exists()) globalSettings = snap.val(); return globalSettings; } catch (e) { return globalSettings; } }
+        async function saveSettings(s) { try { globalSettings = s; await set(ref(db, 'settings/global'), s); } catch (e) {} }
+        async function loadFundos() { try { const snap = await get(ref(db, 'settings/fundos')); if (snap.exists() && snap.val().fundos) FUNDOS = snap.val().fundos; return FUNDOS; } catch (e) { return FUNDOS; } }
+        async function saveFundos(fundos) { try { FUNDOS = fundos; await set(ref(db, 'settings/fundos'), { fundos }); } catch (e) {} }
+        async function loadVipConfig() { try { const snap = await get(ref(db, 'settings/vipConfig')); if (snap.exists() && snap.val().config) { vipConfig = snap.val().config; updateVipArrays(); } } catch (e) {} }
+        async function saveVipConfig() { try { await set(ref(db, 'settings/vipConfig'), { config: vipConfig }); updateVipArrays(); } catch (e) {} }
+        async function loadThemeIndex() { try { const snap = await get(ref(db, 'settings/themeIndex')); if (snap.exists()) currentThemeIndex = snap.val(); } catch (e) { currentThemeIndex = 0; } applyTheme(currentThemeIndex); }
+        async function saveThemeIndex(idx) { try { currentThemeIndex = idx; await set(ref(db, 'settings/themeIndex'), idx); } catch (e) {} }
+        async function loadUserByPhone(phone) { try { const snap = await get(query(ref(db, 'users'), orderByChild('phone'), equalTo(phone))); if (snap.exists()) { const data = snap.val(); const id = Object.keys(data)[0]; return { id, ...data[id] }; } return null; } catch (e) { throw e; } }
+        async function saveCurrentUser() { if (currentUser && currentUserId) { try { const userData = { ...currentUser }; delete userData.id; await update(ref(db, 'users/' + currentUserId), userData); return true; } catch (e) { return false; } } return false; }
+        async function createUser(userData) { try { const newRef = push(ref(db, 'users')); await set(newRef, userData); return newRef.key; } catch (e) { throw e; } }
+        async function getAllUsers() { try { const snap = await get(ref(db, 'users')); if (snap.exists()) { const data = snap.val(); return Object.keys(data).map(id => ({ id, ...data[id] })); } return []; } catch (e) { throw e; } }
+        async function getUserById(uid) { try { const snap = await get(ref(db, 'users/' + uid)); if (snap.exists()) return { id: uid, ...snap.val() }; return null; } catch (e) { throw e; } }
+        async function updateUser(uid, updates) { try { await update(ref(db, 'users/' + uid), updates); } catch (e) { throw e; } }
+        async function deleteUser(uid) { try { await remove(ref(db, 'users/' + uid)); } catch (e) { throw e; } }
+        async function loadDeposits() { try { const snap = await get(ref(db, 'deposits')); if (snap.exists()) { const data = snap.val(); return Object.keys(data).map(id => ({ id, ...data[id] })); } return []; } catch (e) { return []; } }
+        async function saveDeposit(d) { try { const newRef = push(ref(db, 'deposits')); await set(newRef, d); return newRef.key; } catch (e) { throw e; } }
+        async function updateDeposit(did, updates) { try { await update(ref(db, 'deposits/' + did), updates); } catch (e) { throw e; } }
+        async function loadWithdrawals() { try { const snap = await get(ref(db, 'withdrawals')); if (snap.exists()) { const data = snap.val(); return Object.keys(data).map(id => ({ id, ...data[id] })); } return []; } catch (e) { return []; } }
+        async function saveWithdrawal(w) { try { const newRef = push(ref(db, 'withdrawals')); await set(newRef, w); return newRef.key; } catch (e) { throw e; } }
+        async function updateWithdrawal(wid, updates) { try { await update(ref(db, 'withdrawals/' + wid), updates); } catch (e) { throw e; } }
+
+        // Listener em tempo real
+        function startRealtimeUserListener() {
+            if (!currentUserId) return;
+            if (typeof userListenerUnsubscribe === 'function') userListenerUnsubscribe();
+            const userRef = ref(db, 'users/' + currentUserId);
+            userListenerUnsubscribe = onValue(userRef, (snap) => {
+                if (snap.exists()) {
+                    const d = snap.val();
+                    const oldBalance = currentUser ? Number(currentUser.balance) : 0;
+                    const newBalance = Number(d.balance) || 0;
+                    currentUser = { 
+                        id: currentUserId, name: d.name || '', phone: d.phone || '', password: d.password || '', 
+                        balance: newBalance, vipLevel: Number(d.vipLevel) || 0, vipType: d.vipType || 'estagiario', 
+                        vipStartDate: d.vipStartDate || new Date().toISOString(), vipLastCollect: d.vipLastCollect || null, 
+                        invitedUsers: d.invitedUsers || [], invitedNames: d.invitedNames || [], 
+                        commission: Number(d.commission) || 0, totalInvited: Number(d.totalInvited) || 0, 
+                        lastWithdrawDate: d.lastWithdrawDate || null, earningsHistory: d.earningsHistory || [], 
+                        videoBonusHistory: d.videoBonusHistory || [], fundInvestments: d.fundInvestments || [], 
+                        claimedRewards: d.claimedRewards || [], depositHistory: d.depositHistory || [], 
+                        lastVideoBonusDate: d.lastVideoBonusDate || null, purchasedVips: d.purchasedVips || [0], 
+                        inviteCode: d.inviteCode || '', commissionsPaid: Number(d.commissionsPaid) || 0, 
+                        blocked: d.blocked || false, createdAt: d.createdAt || new Date().toISOString(), 
+                        referredBy: d.referredBy || null 
+                    };
+                    updateBalanceDisplay();
+                    if (oldBalance !== newBalance) {
+                        const saldoEl = document.getElementById('saldoDisplay');
+                        if (saldoEl) {
+                            saldoEl.textContent = newBalance.toLocaleString() + ' MT';
+                            saldoEl.style.transform = 'scale(1.15)';
+                            saldoEl.style.color = '#32ff7e';
+                            setTimeout(() => { saldoEl.style.transform = 'scale(1)'; saldoEl.style.color = '#ff8c00'; }, 500);
+                        }
+                    }
+                }
+            }, (error) => { console.error("Erro no listener:", error); });
+        }
+
+        function applyTheme(idx) { 
+            const t = THEMES[idx] || THEMES[0]; 
+            const root = document.documentElement; 
+            root.style.setProperty('--bg-body', t.bg); 
+            root.style.setProperty('--bg-card', t.card); 
+            root.style.setProperty('--bg-input', t.input); 
+            root.style.setProperty('--accent', t.accent); 
+            root.style.setProperty('--accent2', t.accent2); 
+            root.style.setProperty('--border', t.accent + '55'); 
+            document.body.style.background = t.bg; 
+        }
+
+        // ========== FUNÇÕES DE INTERFACE (MANTIDAS DO ORIGINAL) ==========
+        function showRegisterForm() { 
+            document.getElementById('initialButtons').classList.add('hidden'); 
+            document.getElementById('formLogin').classList.add('hidden'); 
+            document.getElementById('formForgot').classList.add('hidden'); 
+            document.getElementById('formRegister').classList.remove('hidden'); 
+            document.getElementById('registerError').innerText = ''; 
+        }
+        function showLoginForm() { 
+            document.getElementById('initialButtons').classList.add('hidden'); 
+            document.getElementById('formRegister').classList.add('hidden'); 
+            document.getElementById('formForgot').classList.add('hidden'); 
+            document.getElementById('formLogin').classList.remove('hidden'); 
+            document.getElementById('loginError').innerText = ''; 
+        }
+        function showForgotPassword() { 
+            document.getElementById('initialButtons').classList.add('hidden'); 
+            document.getElementById('formRegister').classList.add('hidden'); 
+            document.getElementById('formLogin').classList.add('hidden'); 
+            document.getElementById('formForgot').classList.remove('hidden'); 
+            document.getElementById('forgotError').innerText = ''; 
+        }
+        function goBackToInitial() { 
+            document.getElementById('formLogin').classList.add('hidden'); 
+            document.getElementById('formRegister').classList.add('hidden'); 
+            document.getElementById('formForgot').classList.add('hidden'); 
+            document.getElementById('initialButtons').classList.remove('hidden'); 
+        }
+        function generateInviteCode() { 
+            let hash = ''; 
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'; 
+            for (let i = 0; i < 10; i++) hash += chars.charAt(Math.floor(Math.random() * chars.length)); 
+            return 'NET' + hash; 
+        }
+
+        async function handleRegister() {
+            const name = document.getElementById('registerName').value.trim();
+            const phone = document.getElementById('registerPhone').value.trim();
+            const pass = document.getElementById('registerPassword').value.trim();
+            const confirm = document.getElementById('registerConfirm').value.trim();
+            const errorEl = document.getElementById('registerError');
+            
+            if (!name || !phone || !pass) { errorEl.innerText = 'Preencha todos os campos'; return; }
+            if (pass !== confirm) { errorEl.innerText = 'Senhas não conferem'; return; }
+            if (pass.length < 4) { errorEl.innerText = 'Senha mínima: 4 caracteres'; return; }
+            
+            errorEl.innerText = 'Criando conta...';
+            
+            try {
+                const existing = await loadUserByPhone(phone);
+                if (existing) { errorEl.innerText = '❌ Número já cadastrado'; return; }
+                
+                const inviteCode = generateInviteCode();
+                let newUser = {
+                    name, phone, password: pass, balance: 0, vipLevel: 0, vipType: 'estagiario',
+                    vipStartDate: new Date().toISOString(), vipLastCollect: null,
+                    invitedUsers: [], invitedNames: [], commission: 0, totalInvited: 0,
+                    lastWithdrawDate: null, earningsHistory: [], videoBonusHistory: [],
+                    fundInvestments: [], claimedRewards: [], depositHistory: [],
+                    lastVideoBonusDate: null, purchasedVips: [0], inviteCode,
+                    commissionsPaid: 0, blocked: false, createdAt: new Date().toISOString()
+                };
+                
+                const urlRef = new URLSearchParams(window.location.search).get('ref');
+                if (urlRef && urlRef !== phone) {
+                    const allUsers = await getAllUsers();
+                    const refUser = allUsers.find(u => u.inviteCode === urlRef);
+                    if (refUser) {
+                        newUser.referredBy = refUser.id;
+                        if (!refUser.invitedUsers) refUser.invitedUsers = [];
+                        if (!refUser.invitedUsers.includes(phone)) refUser.invitedUsers.push(phone);
+                        if (!refUser.invitedNames) refUser.invitedNames = [];
+                        refUser.invitedNames.push(name);
+                        refUser.totalInvited = (refUser.totalInvited || 0) + 1;
+                        await updateUser(refUser.id, { invitedUsers: refUser.invitedUsers, invitedNames: refUser.invitedNames, totalInvited: refUser.totalInvited });
+                    }
+                }
+                
+                const uid = await createUser(newUser);
+                if (!uid) { errorEl.innerText = '❌ Erro ao salvar dados.'; return; }
+                
+                currentUserId = uid;
+                currentUser = { id: uid, ...newUser };
+                
+                errorEl.innerText = '';
+                openApp();
+            } catch (e) { 
+                errorEl.innerText = '❌ Erro no banco de dados: ' + e.message; 
+            }
+        }
+
+        async function handleLogin() {
+            const phone = document.getElementById('loginPhone').value.trim();
+            const pass = document.getElementById('loginPassword').value.trim();
+            const errorEl = document.getElementById('loginError');
+            
+            if (!phone || !pass) { errorEl.innerText = 'Preencha todos os campos'; return; }
+            errorEl.innerText = 'Entrando...';
+            
+            try {
+                const userData = await loadUserByPhone(phone);
+                if (!userData) { errorEl.innerText = '❌ Número de telefone não cadastrado.'; return; }
+                if (userData.password !== pass) { errorEl.innerText = '❌ Senha incorreta.'; return; }
+                if (userData.blocked) { errorEl.innerText = '❌ Esta conta foi bloqueada pelo Administrador.'; return; }
+                
+                currentUserId = userData.id;
+                currentUser = { 
+                    id: userData.id, name: userData.name || '', phone: userData.phone || phone, 
+                    password: userData.password || pass, balance: Number(userData.balance) || 0, 
+                    vipLevel: Number(userData.vipLevel) || 0, vipType: userData.vipType || 'estagiario', 
+                    vipStartDate: userData.vipStartDate || new Date().toISOString(), 
+                    vipLastCollect: userData.vipLastCollect || null, 
+                    invitedUsers: userData.invitedUsers || [], invitedNames: userData.invitedNames || [], 
+                    commission: Number(userData.commission) || 0, totalInvited: Number(userData.totalInvited) || 0, 
+                    lastWithdrawDate: userData.lastWithdrawDate || null, 
+                    earningsHistory: userData.earningsHistory || [], 
+                    videoBonusHistory: userData.videoBonusHistory || [], 
+                    fundInvestments: userData.fundInvestments || [], 
+                    claimedRewards: userData.claimedRewards || [], 
+                    depositHistory: userData.depositHistory || [], 
+                    lastVideoBonusDate: userData.lastVideoBonusDate || null, 
+                    purchasedVips: userData.purchasedVips || [0], 
+                    inviteCode: userData.inviteCode || '', 
+                    commissionsPaid: Number(userData.commissionsPaid) || 0, 
+                    blocked: userData.blocked || false, 
+                    createdAt: userData.createdAt || new Date().toISOString(), 
+                    referredBy: userData.referredBy || null 
+                };
+                
+                errorEl.innerText = '';
+                openApp();
+            } catch (e) { 
+                errorEl.innerText = '❌ Falha na conexão: ' + e.message; 
+            }
+        }
+
+        async function handleForgotPassword() {
+            const phone = document.getElementById('forgotPhone')?.value.trim();
+            const errorEl = document.getElementById('forgotError');
+            if (!phone) { errorEl.innerText = 'Digite o telefone'; return; }
+            errorEl.innerText = 'Buscando...';
+            try {
+                const userData = await loadUserByPhone(phone);
+                if (!userData) { errorEl.innerText = '❌ Telefone não encontrado'; return; }
+                const newPass = Math.random().toString(36).slice(-6);
+                await updateUser(userData.id, { password: newPass });
+                errorEl.innerText = '';
+                alert(`✅ Senha redefinida!\n\n📱 ${phone}\n🔑 Nova senha: ${newPass}`);
+                goBackToInitial();
+            } catch (e) { errorEl.innerText = '❌ Erro ao redefinir: ' + e.message; }
+        }
+
+        async function openApp() {
+            if (!currentUser || !currentUserId) { alert('❌ Erro: dados não carregados.'); location.reload(); return; }
+            startRealtimeUserListener();
+            isOnAuthScreen = false;
+            document.getElementById('authScreen').style.display = 'none';
+            document.getElementById('appScreen').classList.remove('hidden');
+            updateBalanceDisplay();
+            showTab('home');
+            startTimer();
+        }
+
+        function updateBalanceDisplay() { 
+            const balance = Number(currentUser?.balance) || 0;
+            document.getElementById('userBalance').innerHTML = balance.toLocaleString() + ' MT'; 
+        }
+
+        function getVipInfo() { 
+            let level = currentUser?.vipLevel || 0; 
+            if (currentUser?.vipType === 'estagiario') level = 0; 
+            return { name: VIP_NAMES[level] || 'Estagiário', daily: VIP_DAILY[level] || 5, invest: VIP_INVEST[level] || 0, level, days: VIP_DAYS[level] || 4, total: VIP_TOTAL[level] || 20 }; 
+        }
+        function getCollectCooldown() { if (!currentUser?.vipLastCollect) return 0; return Math.max(0, 86400000 - (Date.now() - new Date(currentUser.vipLastCollect).getTime())); }
+        function getWithdrawCooldown() { if (!currentUser?.lastWithdrawDate) return 0; return Math.max(0, 86400000 - (Date.now() - new Date(currentUser.lastWithdrawDate).getTime())); }
+        function canLevelWithdrawToday() { if (globalSettings.withdrawsEnabled) return true; let today = new Date().getDay(); let adjustedDay = today === 0 ? 7 : today; let currentLvl = currentUser?.vipType === 'estagiario' ? 0 : (currentUser?.vipLevel || 0); let allowedDay = VIP_WITHDRAW_DAYS[currentLvl] || 1; return adjustedDay === allowedDay; }
+        function canUserWithdraw() { if (currentUser && currentUser.vipType === 'estagiario' && currentUser.vipLevel === 0) return { allow: false, msg: '❌ Você precisa comprar um VIP para poder sacar!' }; return { allow: true, msg: 'OK' }; }
+        function canBuyVip(level) { if (!currentUser) return { allow: false, msg: 'Usuário não autenticado' }; if (VIP_EM_BREVE.includes(level)) return { allow: false, msg: '🚫 Este VIP estará disponível em breve!' }; if (level === 0) { if (currentUser.vipType === 'estagiario') return { allow: false, msg: '❌ Você já possui o Estagiário!' }; return { allow: true, msg: 'OK' }; } if (currentUser.vipLevel === level && currentUser.vipType !== 'estagiario') return { allow: false, msg: '❌ Você já possui este VIP!' }; let currentLevel = currentUser.vipType === 'estagiario' ? 0 : currentUser.vipLevel; if (level <= currentLevel) return { allow: false, msg: '❌ Não pode comprar um VIP inferior ou igual!' }; return { allow: true, msg: 'OK' }; }
+        function canWithdraw(amount) { let idx = WITHDRAW_VALUES.indexOf(amount); if (idx === -1) return { allow: false, msg: 'Valor inválido' }; let vipCheck = canUserWithdraw(); if (!vipCheck.allow) return vipCheck; if (!canLevelWithdrawToday()) { let dayNames = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado']; let currentLvl = currentUser?.vipType === 'estagiario' ? 0 : (currentUser?.vipLevel || 0); let allowedDay = VIP_WITHDRAW_DAYS[currentLvl] || 1; return { allow: false, msg: `Seu nível saca apenas: ${dayNames[allowedDay]}` }; } let required = WITHDRAW_MIN_VIP[idx]; let currentLvl = (currentUser?.vipType === 'estagiario') ? 0 : (currentUser?.vipLevel || 0); if (currentLvl < required) return { allow: false, msg: `Nível mínimo: ${VIP_NAMES[required]}` }; let wdCooldown = getWithdrawCooldown(); if (wdCooldown > 0) return { allow: false, msg: `⏳ Aguarde ${Math.floor(wdCooldown/3600000)}h ${Math.floor((wdCooldown%3600000)/60000)}m` }; let now = new Date(); let hour = now.getHours(); let minute = now.getMinutes(); let [startH, startM] = WITHDRAW_TIMES.start.split(':').map(Number); let [endH, endM] = WITHDRAW_TIMES.end.split(':').map(Number); if (hour < startH || (hour === startH && minute < startM) || hour > endH || (hour === endH && minute > endM)) return { allow: false, msg: `Horário: ${WITHDRAW_TIMES.start} - ${WITHDRAW_TIMES.end}` }; return { allow: true, msg: 'OK' }; }
+
+        async function collectDaily() { 
+            if (!currentUser) return; 
+            let today = new Date().getDay(); 
+            if (today === 0) { alert('🔒 DOMINGO - Coleta pausada'); return; } 
+            let cd = getCollectCooldown(); 
+            if (cd > 0) { alert(`⏳ Aguarde ${Math.floor(cd/3600000)}h ${Math.floor((cd%3600000)/60000)}m`); return; } 
+            let vip = getVipInfo(); 
+            if (vip.daily === 0) { alert('Compre um filme primeiro'); return; } 
+            currentUser.balance = (Number(currentUser.balance) || 0) + vip.daily; 
+            currentUser.vipLastCollect = new Date().toISOString(); 
+            if (!currentUser.earningsHistory) currentUser.earningsHistory = []; 
+            currentUser.earningsHistory.push({ amount: vip.daily, date: new Date().toISOString() }); 
+            const saved = await saveCurrentUser(); 
+            if (!saved) { alert('❌ Erro ao salvar.'); return; } 
+            updateBalanceDisplay(); 
+            alert(`💰 +${vip.daily.toLocaleString()} MT coletado!`); 
+            showTab('home'); 
+        }
+
+        function openYoutubeAndEarn() { window.open('https://youtu.be/_s8sicMMk4w?si=zHYwT5EJcazPsNAI', '_blank'); alert('🎬 Assista ao vídeo e se inscreva!'); }
+
+        async function buyMovie(level) { 
+            if (!currentUser) return; 
+            let check = canBuyVip(level); 
+            if (!check.allow) { alert(check.msg); return; } 
+            let price = Number(VIP_INVEST[level]); 
+            let userBalance = Number(currentUser.balance) || 0; 
+            if (userBalance < price) { alert(`❌ Saldo insuficiente!\n\n💰 Saldo: ${userBalance.toLocaleString()} MT\n💵 Preço: ${price.toLocaleString()} MT\n📊 Faltam: ${(price - userBalance).toLocaleString()} MT`); return; } 
+            if (confirm(`🎬 Comprar ${VIP_NAMES[level]} por ${price.toLocaleString()} MT?\n\n💰 Saldo: ${userBalance.toLocaleString()} MT\n💵 Após: ${(userBalance - price).toLocaleString()} MT`)) { 
+                currentUser.balance = userBalance - price; 
+                currentUser.vipLevel = level; 
+                currentUser.vipType = (level === 0) ? 'estagiario' : 'normal'; 
+                currentUser.vipStartDate = new Date().toISOString(); 
+                currentUser.vipLastCollect = null; 
+                if (!currentUser.purchasedVips) currentUser.purchasedVips = []; 
+                if (!currentUser.purchasedVips.includes(level)) currentUser.purchasedVips.push(level); 
+                const saved = await saveCurrentUser(); 
+                if (!saved) { alert('❌ Erro ao processar compra.'); return; } 
+                updateBalanceDisplay(); 
+                alert(`✅ ${VIP_NAMES[level]} comprado!\n\n💰 Saldo restante: ${currentUser.balance.toLocaleString()} MT`); 
+                showTab('home'); 
+            } 
+        }
+
+        async function investFundo(index) { 
+            let f = FUNDOS[index]; 
+            if (f.blocked) { alert('🔒 Fundo bloqueado!'); return; } 
+            let amount = Number(prompt(`Investir em ${f.name}\nMín: ${f.min.toLocaleString()} MT`, f.base)); 
+            if (!amount || amount < f.min) { alert(`Mínimo ${f.min.toLocaleString()} MT`); return; } 
+            if ((Number(currentUser.balance) || 0) < amount) { alert('Saldo insuficiente'); return; } 
+            let retorno = Math.round(amount * (1 + f.percent / 100)); 
+            if (confirm(`Investir ${amount.toLocaleString()} MT?\nRetorno: ${retorno.toLocaleString()} MT`)) { 
+                currentUser.balance = (Number(currentUser.balance) || 0) - amount; 
+                if (!currentUser.fundInvestments) currentUser.fundInvestments = []; 
+                currentUser.fundInvestments.push({ fundo: f.name, amount, retorno, startDate: new Date().toISOString(), endDate: new Date(Date.now() + f.dias * 86400000).toISOString(), status: 'active' }); 
+                const saved = await saveCurrentUser(); 
+                if (!saved) { return; } 
+                updateBalanceDisplay(); 
+                alert(`✅ Investimento realizado!`); 
+                showTab('fundos'); 
+            } 
+        }
+
+        async function requestWithdraw(amount) { 
+            let check = canWithdraw(amount); 
+            if (!check.allow) { alert(check.msg); return; } 
+            let fee = Math.round(amount * 0.1); let net = amount - fee; 
+            if ((Number(currentUser.balance) || 0) < amount) { alert('Saldo insuficiente'); return; } 
+            if (confirm(`Sacar ${amount.toLocaleString()} MT?\nTaxa: ${fee.toLocaleString()} MT\nRecebe: ${net.toLocaleString()} MT`)) { 
+                currentUser.balance = (Number(currentUser.balance) || 0) - amount; 
+                currentUser.lastWithdrawDate = new Date().toISOString(); 
+                await saveWithdrawal({ phone: currentUser.phone, name: currentUser.name, amount, fee, netAmount: net, date: new Date().toISOString(), status: 'pending' }); 
+                const saved = await saveCurrentUser(); 
+                if (!saved) { return; } 
+                updateBalanceDisplay(); 
+                alert(`✅ Saque solicitado!`); 
+                showTab('saques'); 
+            } 
+        }
+
+        async function checkAndClaimReferralReward() { 
+            let claimed = currentUser.claimedRewards || []; 
+            let nextReward = REFERRAL_REWARDS.find(r => !claimed.includes(r.level)); 
+            if (!nextReward) { alert('🏆 Todos completos!'); return; } 
+            let invitedCount = (currentUser.invitedUsers || []).length; 
+            if (invitedCount >= nextReward.required) { 
+                currentUser.balance = (Number(currentUser.balance) || 0) + nextReward.reward; 
+                if (!currentUser.claimedRewards) currentUser.claimedRewards = []; 
+                currentUser.claimedRewards.push(nextReward.level); 
+                const saved = await saveCurrentUser(); 
+                if (!saved) { return; } 
+                updateBalanceDisplay(); 
+                alert(`🎉 +${nextReward.reward} MT!`); 
+                showTab('convidar'); 
+            } else { alert(`📊 ${invitedCount}/${nextReward.required} convidados`); } 
+        }
+
+        function generateInviteLink() { let code = currentUser?.inviteCode || ''; let link = window.location.origin + window.location.pathname + '?ref=' + code; return { code, link }; }
+        function copyInvite() { let { code } = generateInviteLink(); navigator.clipboard.writeText(code).then(() => alert('✅ Código: ' + code)).catch(() => prompt('Código:', code)); }
+        function copyInviteLink() { let { link } = generateInviteLink(); navigator.clipboard.writeText(link).then(() => alert('✅ Link copiado!')).catch(() => prompt('Link:', link)); }
+
+        function createCountryBanners() { 
+            const duplicated = [...INVESTOR_COUNTRIES, ...INVESTOR_COUNTRIES]; 
+            return `<div class="country-banners"><div class="country-banners-track">${duplicated.map(c => `<div class="country-banner-item"><span class="country-flag">${c.flag}</span><div class="country-info"><span class="country-name">${c.name}</span><span class="country-invest">💰 ${c.invest}</span></div><span class="country-badge">INVESTIDOR</span></div>`).join('')}</div></div>`; 
+        }
+
+        function addFloatingNotification(message, type = 'deposit') { if (!isOnAuthScreen) return; notificationQueue.push({ message, type }); processNotificationQueue(); }
+        function processNotificationQueue() { if (!isOnAuthScreen || notificationQueue.length === 0 || activeNotifications >= MAX_NOTIFICATIONS) return; const { message, type } = notificationQueue.shift(); activeNotifications++; const container = document.getElementById('floatingNotifications'); if (!container) return; const n = document.createElement('div'); n.className = 'floating-notification ' + type; n.textContent = (type === 'deposit' ? '💰 ' : '💸 ') + message; n.style.left = (Math.random() * 70) + '%'; container.appendChild(n); setTimeout(() => { if (n.parentNode) n.remove(); activeNotifications--; if (isOnAuthScreen) processNotificationQueue(); }, NOTIFICATION_DURATION); }
+        function startFloatingNotifications() { setInterval(() => { if (isOnAuthScreen) { const name = mockNames[Math.floor(Math.random() * mockNames.length)]; const amount = Math.floor(Math.random() * 5000) + 100; Math.random() > 0.5 ? addFloatingNotification(`${name} depositou ${amount.toLocaleString()} MT`, 'deposit') : addFloatingNotification(`${name} sacou ${amount.toLocaleString()} MT`, 'withdraw'); } }, 2200); }
+        async function checkInviteBanner() { let urlRef = new URLSearchParams(window.location.search).get('ref'); if (urlRef) { const allUsers = await getAllUsers(); const inviter = allUsers.find(u => u.inviteCode === urlRef); if (inviter) { let banner = document.getElementById('invitedBanner'); banner.innerHTML = `🎉 Convidado por <strong>${inviter.name}</strong>!`; banner.classList.remove('hidden'); } } }
+        function updateSocialButtons() { const c = document.getElementById('socialButtonsAuth'); if (!c) return; let h = ''; if (globalSettings.facebookPage) h += `<a href="${globalSettings.facebookPage}" target="_blank" class="social-btn fb">📘 Facebook</a>`; if (globalSettings.socialWhatsapp) h += `<a href="https://wa.me/${globalSettings.socialWhatsapp}" target="_blank" class="social-btn wa">📱 WhatsApp</a>`; if (globalSettings.youtubeChannel) h += `<a href="${globalSettings.youtubeChannel}" target="_blank" class="social-btn yt">▶️ YouTube</a>`; c.innerHTML = h; }
+
+        function renderHome() { 
+            if (!currentUser) return ''; 
+            let vip = getVipInfo(); 
+            let cd = getCollectCooldown(); 
+            let canCollect = (cd === 0 && new Date().getDay() !== 0 && vip.daily > 0); 
+            let wdCooldown = getWithdrawCooldown(); 
+            let s = globalSettings; 
+            return `${createCountryBanners()}<div class="balance-card"><div class="balance-value" id="saldoDisplay">${(currentUser.balance || 0).toLocaleString()} MT</div><div style="color:#c0c0c0;">SALDO NET FILMS</div><button onclick="window.atualizarSaldoAgora()" style="margin-top:8px;padding:6px 12px;background:transparent;border:1px solid #ff8c00;color:#ff8c00;border-radius:20px;cursor:pointer;font-size:12px;">🔄 Atualizar Saldo</button></div>${s.whatsappGroup || s.telegramChannel ? `<div style="display:flex;gap:8px;margin:12px 0;flex-wrap:wrap;">${s.whatsappGroup?`<a href="${s.whatsappGroup}" target="_blank" style="flex:1;padding:12px;background:#25D366;color:white;text-align:center;border-radius:12px;text-decoration:none;font-weight:700;">📱 WhatsApp</a>`:''}${s.telegramChannel?`<a href="${s.telegramChannel}" target="_blank" style="flex:1;padding:12px;background:#0088cc;color:white;text-align:center;border-radius:12px;text-decoration:none;font-weight:700;">✈️ Telegram</a>`:''}${s.supportWhatsapp?`<a href="https://wa.me/${s.supportWhatsapp}" target="_blank" style="flex:1;padding:12px;background:#25D366;color:white;text-align:center;border-radius:12px;text-decoration:none;font-weight:700;">🎧 Suporte</a>`:''}</div>`:''}<div class="gains-grid"><div class="gain-card">📅 ONTEM: <strong style="color:#ff8c00;">${(currentUser.earningsHistory||[]).filter(e=>new Date(e.date).toDateString()===new Date(Date.now()-86400000).toDateString()).reduce((a,b)=>a+b.amount,0).toLocaleString()} MT</strong></div><div class="gain-card">🟢 HOJE: <strong style="color:#32ff7e;">${(currentUser.earningsHistory||[]).filter(e=>new Date(e.date).toDateString()===new Date().toDateString()).reduce((a,b)=>a+b.amount,0).toLocaleString()} MT</strong></div></div><div class="vip-card-colorida" style="border-color:#ff0000;" onclick="window.openYoutubeAndEarn()"><div style="font-size:20px;font-weight:900;color:#ff0000;">🎬 ASSISTA E SE INSCREVA</div><div style="font-size:16px;color:#c0c0c0;">GANHE <strong style="color:#32ff7e;">25MT/DIA</strong></div><button class="action-btn" style="background:#ff0000;color:#ffffff;margin-top:10px;" onclick="event.stopPropagation();window.openYoutubeAndEarn();">▶️ ASSISTIR VÍDEO AGORA</button></div><div class="vip-card-colorida" style="border-color:#ff8c00;"><div style="font-size:20px;font-weight:900;color:#ff8c00;">💎 ${vip.name}</div><div style="font-size:14px;color:#c0c0c0;">💰 Diário: <strong style="color:#32ff7e;">${vip.daily.toLocaleString()} MT</strong> | 📅 <strong style="color:#ff8c00;">${vip.days} dias</strong> | 💵 Total: <strong style="color:#ff0000;">${vip.total.toLocaleString()} MT</strong></div>${canCollect?`<button class="action-btn btn-coletar" onclick="event.stopPropagation();window.collectDaily();" style="margin-top:10px;">💰 COLETAR +${vip.daily.toLocaleString()} MT</button>`:(cd>0?`<div class="countdown-timer">⏳ ${Math.floor(cd/3600000)}h ${Math.floor((cd%3600000)/60000)}m</div>`:'<button class="action-btn" disabled style="opacity:0.5;margin-top:10px;background:#333;color:#666;">🔒 Indisponível</button>')}</div><div style="display:flex;gap:10px;"><button class="action-btn btn-comprar" onclick="window.showTab('vips')" style="flex:1;">🎬 COMPRAR FILME</button><button class="action-btn" style="flex:1;background:#ff0000;color:#ffffff;" onclick="window.showTab('saques')">💸 SACAR</button><button class="action-btn btn-green" onclick="window.showDepositModal()" style="flex:1;color:#000000;">💰 DEPOSITAR</button></div>${wdCooldown>0?`<div class="countdown-timer" style="color:#ff4444;">⏳ Próximo saque em ${Math.floor(wdCooldown/3600000)}h ${Math.floor((wdCooldown%3600000)/60000)}m</div>`:''}${createCountryBanners()}`; 
+        }
+
+        function renderVips() { 
+            let html = '<h3 style="color:#ff8c00;text-align:center;font-size:22px;margin-bottom:16px;">🎬 COMPRAR FILMES</h3>'; 
+            let pv = currentUser?.purchasedVips || []; 
+            for (let i = 0; i < VIP_NAMES.length; i++) { 
+                let active = (currentUser?.vipLevel === i && currentUser?.vipType !== 'estagiario') || (i === 0 && currentUser?.vipType === 'estagiario'); 
+                let emBreve = VIP_EM_BREVE.includes(i); 
+                let bought = pv.includes(i); 
+                let dis = emBreve || (bought && !active); 
+                let reason = emBreve ? '🚫 EM BREVE' : (bought && !active ? '✅ JÁ COMPRADO' : ''); 
+                html += `<div class="vip-card-colorida ${dis?'disabled':''}" style="border-color:${emBreve?'#ff0000':'#ff8c00'};" ${!dis?`onclick="window.buyMovie(${i})"`:''}><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:18px;font-weight:900;color:#ffffff;">🎬 ${VIP_NAMES[i]}</span><div>${active?'<span style="background:#32ff7e;color:#000;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:900;">ATIVO</span>':''}${emBreve?'<span style="background:#ff0000;color:white;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:900;">🔒 EM BREVE</span>':''}${bought&&!active?'<span style="background:#32ff7e;color:#000;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:900;">✅ COMPRADO</span>':''}</div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;"><div style="background:var(--bg-input);padding:8px 12px;border-radius:10px;"><div style="font-size:10px;color:#888;">💰 PREÇO</div><div style="font-size:16px;font-weight:900;color:#ffffff;">${VIP_INVEST[i].toLocaleString()} MT</div></div><div style="background:var(--bg-input);padding:8px 12px;border-radius:10px;"><div style="font-size:10px;color:#888;">💵 DIÁRIO</div><div style="font-size:16px;font-weight:900;color:#32ff7e;">${VIP_DAILY[i].toLocaleString()} MT</div></div><div style="background:var(--bg-input);padding:8px 12px;border-radius:10px;"><div style="font-size:10px;color:#888;">📅 DIAS</div><div style="font-size:16px;font-weight:900;color:#ffffff;">${VIP_DAYS[i]}</div></div><div style="background:var(--bg-input);padding:8px 12px;border-radius:10px;"><div style="font-size:10px;color:#888;">💵 TOTAL</div><div style="font-size:16px;font-weight:900;color:#ff8c00;">${VIP_TOTAL[i].toLocaleString()} MT</div></div></div>${dis?`<button class="action-btn" disabled style="margin-top:10px;background:#333;color:#666;">${reason}</button>`:`<button class="action-btn btn-comprar" onclick="event.stopPropagation();window.buyMovie(${i});" style="margin-top:10px;">🎬 COMPRAR FILME</button>`}</div>`; 
+            } 
+            return html; 
+        }
+
+        function renderFundos() { 
+            let html = '<h3 style="color:#32ff7e;text-align:center;font-size:22px;margin-bottom:16px;">📈 FUNDOS DE INVESTIMENTO</h3>'; 
+            FUNDOS.forEach((f, idx) => { 
+                const blocked = f.blocked; 
+                html += `<div class="fundo-card-colorida ${blocked?'blocked-fund':''}" style="border-color:${blocked?'#ff0000':'#32ff7e'};" onclick="${blocked?`alert('🔒 Fundo bloqueado!')`:`window.investFundo(${idx})`}"><div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-size:20px;font-weight:900;color:#32ff7e;">📊 ${f.name}</div>${blocked?'<div class="lock-icon">🔒</div>':''}</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;"><div style="background:var(--bg-input);padding:8px 12px;border-radius:10px;"><div style="font-size:10px;color:#888;">💰 MÍNIMO</div><div style="font-size:16px;font-weight:900;color:#ffffff;">${f.min.toLocaleString()} MT</div></div><div style="background:var(--bg-input);padding:8px 12px;border-radius:10px;"><div style="font-size:10px;color:#888;">📌 BASE</div><div style="font-size:16px;font-weight:900;color:#ffffff;">${f.base.toLocaleString()} MT</div></div><div style="background:var(--bg-input);padding:8px 12px;border-radius:10px;"><div style="font-size:10px;color:#888;">💵 RETORNO</div><div style="font-size:16px;font-weight:900;color:#32ff7e;">${f.retorno.toLocaleString()} MT</div></div><div style="background:var(--bg-input);padding:8px 12px;border-radius:10px;"><div style="font-size:10px;color:#888;">📈 LUCRO</div><div style="font-size:16px;font-weight:900;color:#32ff7e;">${f.percent}%</div></div></div><div style="margin-top:8px;color:#c0c0c0;">⏳ Prazo: <strong style="color:#ffffff;">${f.dias} dias</strong></div></div>`; 
+            }); 
+            if (currentUser?.fundInvestments?.length) { 
+                html += '<div class="admin-section" style="margin-top:20px;"><h4 style="color:#ff8c00;">📌 Meus Investimentos</h4>' + currentUser.fundInvestments.map(i => `<div style="display:flex;justify-content:space-between;padding:10px;background:var(--bg-input);border-radius:12px;margin:8px 0;color:#ffffff;"><span>${i.fundo}</span><span>${(i.amount||0).toLocaleString()} MT</span><span style="color:${i.status==='active'?'#ff8c00':'#32ff7e'};">${i.status==='active'?'🔵 Ativo':`✅ +${(i.retorno||0).toLocaleString()} MT`}</span></div>`).join('') + '</div>'; 
+            } 
+            return html; 
+        }
+
+        function renderConvidar() { 
+            let invitedCount = (currentUser?.invitedUsers || []).length; 
+            let claimed = currentUser?.claimedRewards || []; 
+            let nextReward = REFERRAL_REWARDS.find(r => !claimed.includes(r.level)); 
+            let { code, link } = generateInviteLink(); 
+            return `<div style="background:var(--bg-card);padding:20px;border-radius:20px;border:2px solid #ff8c00;"><div style="text-align:center;color:#ff8c00;font-size:18px;font-weight:900;">🔗 SEU LINK DE CONVITE</div><div style="background:var(--bg-input);padding:12px;font-size:13px;text-align:center;border-radius:12px;margin:12px 0;color:#32ff7e;word-break:break-all;">${link}</div><div style="display:flex;gap:8px;margin-top:8px;"><button class="action-btn btn-gold" onclick="window.copyInviteLink()" style="flex:1;color:#000;">📋 COPIAR LINK</button><button class="action-btn btn-outline" onclick="window.copyInvite()" style="flex:1;color:#ff8c00;">📱 COPIAR CÓDIGO</button></div><div style="background:var(--bg-input);padding:10px;border-radius:10px;margin-top:12px;text-align:center;"><span style="color:#888;">🎫 Código: </span><strong style="color:#ff8c00;font-size:18px;">${code}</strong></div><div class="referral-grid" style="margin-top:16px;color:#ffffff;"><div style="color:#c0c0c0;">👥 Convidados: <strong style="color:#32ff7e;">${invitedCount}</strong></div><div style="color:#c0c0c0;">💰 Comissão: <strong style="color:#ff8c00;">7%</strong></div><div style="color:#c0c0c0;">📊 Comissões: <strong style="color:#ff0000;">${currentUser?.commissionsPaid||0}</strong></div></div>${nextReward?`<button class="action-btn btn-coletar" onclick="window.checkAndClaimReferralReward()" style="margin-top:12px;">🎁 COLETAR PRÊMIO Nível ${nextReward.level}</button>`:'<button class="action-btn" disabled style="opacity:0.5;margin-top:12px;background:#333;color:#666;">🏆 COMPLETO</button>'}</div><div style="margin-top:20px;"><h4 style="color:#ff8c00;text-align:center;font-size:18px;">🎯 NÍVEIS DE RECOMPENSA</h4><div class="referral-grid">${REFERRAL_REWARDS.map(r=>{let ic=claimed.includes(r.level);let inn=nextReward?.level===r.level;return`<div class="reward-card ${ic?'claimed':''}" style="${inn?'border-color:#32ff7e;box-shadow:0 0 15px rgba(50,255,126,0.3);':''}"><div style="font-size:28px;">${r.icon}</div><div style="font-weight:900;color:#ffffff;font-size:14px;">${r.name}</div><div style="color:#c0c0c0;">👥 ${r.required}</div><div style="color:#ff8c00;font-weight:900;">💰 +${r.reward} MT</div><div style="font-size:11px;color:${ic?'#32ff7e':(inn?'#ff8c00':'#888')};">${ic?'✅ RECEBIDO':(inn?'🟡 PRÓXIMO':'🔒 BLOQUEADO')}</div></div>`;}).join('')}</div></div><div style="margin-top:20px;background:var(--bg-card);padding:16px;border-radius:16px;"><strong style="color:#ff8c00;">📋 Convidados (${invitedCount})</strong>${(currentUser?.invitedNames||[]).length===0?'<p style="color:#888;">Nenhum</p>':(currentUser?.invitedNames||[]).map(n=>`<div class="invited-item">👤 <span style="color:#ffffff;">${n}</span></div>`).join('')}</div>`; 
+        }
+
+        async function renderSaques() { 
+            let wdCooldown = getWithdrawCooldown(); 
+            let vipCheck = canUserWithdraw(); 
+            let html = `<h3 style="color:#ff8c00;text-align:center;">💸 SAQUES</h3><p style="text-align:center;color:#c0c0c0;">Horário: ${WITHDRAW_TIMES.start} - ${WITHDRAW_TIMES.end}</p>`; 
+            if (!vipCheck.allow) html += `<p style="text-align:center;color:#ff0000;background:rgba(255,0,0,0.1);padding:10px;border-radius:12px;">${vipCheck.msg}</p>`; 
+            if (!globalSettings.withdrawsEnabled) { let dn = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado']; let cl = currentUser?.vipType==='estagiario'?0:(currentUser?.vipLevel||0); let ad = VIP_WITHDRAW_DAYS[cl]||1; html += `<p style="text-align:center;color:#ff8c00;background:rgba(255,140,0,0.1);padding:10px;border-radius:12px;">📅 Seu nível saca: <strong>${dn[ad]}</strong></p>`; } 
+            if (wdCooldown>0) html += `<div class="countdown-timer" style="color:#ff4444;">⏳ ${Math.floor(wdCooldown/3600000)}h ${Math.floor((wdCooldown%3600000)/60000)}m</div>`; 
+            html += '<div style="display:flex;flex-wrap:wrap;justify-content:center;margin-top:16px;">'; 
+            WITHDRAW_VALUES.forEach(val=>{let idx=WITHDRAW_VALUES.indexOf(val);let req=WITHDRAW_MIN_VIP[idx];let cl=(currentUser?.vipType==='estagiario')?0:(currentUser?.vipLevel||0);let can=cl>=req;let fee=Math.round(val*0.1);let net=val-fee;html+=`<div class="saque-amount-btn ${!can?'disabled':''}" onclick="${can?`window.requestWithdraw(${val})`:`alert('Nível mínimo: ${VIP_NAMES[req]}')`}"><div style="color:#ffffff;">${val.toLocaleString()} MT</div><small style="color:${can?'#32ff7e':'#ff4444'};">Nível: ${VIP_NAMES[req]}</small><small style="color:#888;">Taxa: ${fee.toLocaleString()} MT</small><small style="color:#32ff7e;">Recebe: ${net.toLocaleString()} MT</small></div>`;}); 
+            html += '</div>'; 
+            const withdrawals = await loadWithdrawals(); 
+            let uw = withdrawals.filter(w=>w.phone===currentUser?.phone); 
+            html += `<div class="admin-section" style="margin-top:20px;"><h4 style="color:#ff8c00;">📜 Histórico</h4>${uw.length===0?'<p style="color:#888;">Nenhum</p>':uw.slice(-10).reverse().map(w=>`<div style="display:flex;justify-content:space-between;padding:8px;background:var(--bg-input);border-radius:8px;margin:4px 0;color:#ffffff;"><span>${(w.amount||0).toLocaleString()} MT</span><span style="color:#32ff7e;">${(w.netAmount||0).toLocaleString()} MT</span><span>${w.status==='pending'?'⏳':w.status==='approved'?'✅':'❌'}</span></div>`).join('')}</div>`; 
+            return html; 
+        }
+
+        function showDepositModal() { 
+            let m = document.createElement('div'); m.className = 'modal-overlay'; 
+            m.innerHTML = `<div class="modal-box"><h3 style="color:#ff8c00;">💰 DEPOSITAR</h3><div style="background:var(--bg-input);padding:12px;border-radius:12px;margin:12px 0;color:#c0c0c0;"><p>📱 Emola: <strong style="color:#ff8c00;">850000000</strong></p><p>📱 M-Pesa: <strong style="color:#ff8c00;">870000000</strong></p></div><input type="text" id="depName" class="auth-input" placeholder="Nome" value="${currentUser?.name||''}"><input type="text" id="depPhone" class="auth-input" placeholder="Número" value="${currentUser?.phone||''}"><input type="number" id="depAmount" placeholder="Valor (mín 200 MT)" class="auth-input" min="200"><button onclick="window.submitDeposit()" class="btn-primary btn-green" style="margin-top:8px;color:#000;">📤 ENVIAR</button><button onclick="this.closest('.modal-overlay').remove()" class="btn-outline" style="margin-top:8px;color:#ff8c00;">Fechar</button></div>`; 
+            document.body.appendChild(m); 
+        }
+
+        function showTab(tab) { 
+            document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active')); 
+            let main = document.getElementById('mainContent'); 
+            if (tab==='home') { document.querySelector('.nav-item').classList.add('active'); main.innerHTML = renderHome(); } 
+            if (tab==='vips') { document.querySelectorAll('.nav-item')[1].classList.add('active'); main.innerHTML = renderVips(); } 
+            if (tab==='fundos') { document.querySelectorAll('.nav-item')[2].classList.add('active'); main.innerHTML = renderFundos(); } 
+            if (tab==='convidar') { document.querySelectorAll('.nav-item')[3].classList.add('active'); main.innerHTML = renderConvidar(); } 
+            if (tab==='saques') { renderSaques().then(html=>main.innerHTML=html); } 
+        }
+
+        function startTimer() { setInterval(()=>{let now=new Date();let end=new Date();end.setHours(23,59,59,999);let diff=end-now;if(diff<0)diff=0;const el=document.getElementById('taskTimer');if(el)el.innerHTML=String(Math.floor(diff/3600000)).padStart(2,'0')+':'+String(Math.floor((diff%3600000)/60000)).padStart(2,'0')+':'+String(Math.floor((diff%60000)/1000)).padStart(2,'0');},1000); }
+        function installApp() { if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{document.getElementById('installButton').classList.add('hidden');});}else{alert('Use o menu do navegador');} }
+        function handleBrandClick() { brandClickCount++; if (brandClickCount>=10) { brandClickCount=0; checkAdminAccess(); } }
+        function handleAppBrandClick() { brandClickCount++; if (brandClickCount>=10) { brandClickCount=0; checkAdminAccess(); } }
+        function checkAdminAccess() { let p = prompt('🔐 SENHA ADMIN:'); if (p===adminPassword) showAdminPanel(); else alert('Senha incorreta!'); }
+
+        // ========== PAINEL ADMIN COMPLETO ==========
+        async function showAdminPanel() {
+            await loadFundos();
+            await loadVipConfig();
+            let panel = document.createElement('div'); panel.className = 'admin-panel'; panel.id = 'adminPanel';
+            
+            const deposits = await loadDeposits();
+            const pendDep = deposits.filter(d => d.status === 'pending');
+            const withdrawals = await loadWithdrawals();
+            const pendW = withdrawals.filter(w => w.status === 'pending');
+            const usersList = await getAllUsers();
+            let totalUsers = usersList.length;
+            
+            panel.innerHTML = `
+                <div style="display:flex;justify-content:space-between;margin-bottom:16px;">
+                    <h2 style="color:#ff0000;">🔧 Admin NET FILMS</h2>
+                    <button onclick="window.closeAdminPanel()" style="background:red;padding:8px 16px;border-radius:10px;border:none;cursor:pointer;color:white;">❌ Fechar</button>
+                </div>
+                
+                <div class="admin-section" style="background:linear-gradient(135deg,#ff0000,#ff8c00);color:white;text-align:center;">
+                    <h3>👥 Total de Usuários: ${totalUsers}</h3>
+                </div>
+                
+                <!-- TEMAS -->
+                <div class="admin-section">
+                    <h4 style="color:#ff8c00;">🎨 TEMA (10 opções)</h4>
+                    <div class="theme-grid">
+                        ${THEMES.map((t,i) => `
+                            <div class="theme-option ${i===currentThemeIndex?'active-theme':''}" 
+                                 style="background:${t.bg};color:${t.accent};" 
+                                 onclick="window.setThemeAdmin(${i})">
+                                ${t.name}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <!-- CONFIGURAR VIPs -->
+                <div class="admin-section">
+                    <h4 style="color:#ff8c00;">⚙️ CONFIGURAR VIPs</h4>
+                    ${vipConfig.map((v,i) => `
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--bg-input);border-radius:8px;margin:4px 0;">
+                            <span style="color:#fff;">${v.name} (Nível ${v.level}) - Diário: ${v.daily} MT - Invest: ${v.invest} MT ${v.emBreve?'🔒':''}</span>
+                            <button class="admin-btn-sm btn-edit" onclick="window.editVipAdmin(${i})">✏️ Editar</button>
+                        </div>
+                    `).join('')}
+                    <button onclick="window.saveVipConfigFirebase()" class="action-btn btn-gold" style="margin-top:8px;">💾 Salvar VIPs</button>
+                </div>
+                
+                <!-- GERENCIAR FUNDOS -->
+                <div class="admin-section">
+                    <h4 style="color:#ff8c00;">📊 GERENCIAR FUNDOS <button onclick="window.toggleFundsEdit()" class="admin-btn-sm btn-edit">🔽 Expandir</button></h4>
+                    <div id="fundsEditArea" class="hidden">
+                        ${FUNDOS.map((f,idx) => `
+                            <div style="background:var(--bg-input);border-radius:12px;padding:12px;margin:8px 0;">
+                                <strong style="color:#fff;">${f.name}</strong>
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px;">
+                                    <label style="color:#c0c0c0;">Mín: <input type="number" id="fMin${idx}" value="${f.min}" style="width:100%;background:var(--bg-body);color:white;border:1px solid var(--accent);border-radius:6px;padding:4px;"></label>
+                                    <label style="color:#c0c0c0;">Base: <input type="number" id="fBase${idx}" value="${f.base}" style="width:100%;background:var(--bg-body);color:white;border:1px solid var(--accent);border-radius:6px;padding:4px;"></label>
+                                    <label style="color:#c0c0c0;">Retorno: <input type="number" id="fRet${idx}" value="${f.retorno}" style="width:100%;background:var(--bg-body);color:white;border:1px solid var(--accent);border-radius:6px;padding:4px;"></label>
+                                    <label style="color:#c0c0c0;">Dias: <input type="number" id="fDias${idx}" value="${f.dias}" style="width:100%;background:var(--bg-body);color:white;border:1px solid var(--accent);border-radius:6px;padding:4px;"></label>
+                                    <label style="color:#c0c0c0;">%: <input type="number" id="fPerc${idx}" value="${f.percent}" style="width:100%;background:var(--bg-body);color:white;border:1px solid var(--accent);border-radius:6px;padding:4px;"></label>
+                                    <label style="color:#c0c0c0;">Bloqueado: <input type="checkbox" id="fBlock${idx}" ${f.blocked?'checked':''}></label>
+                                </div>
+                                <button class="admin-btn-sm btn-approve" onclick="window.saveFundEdit(${idx})" style="margin-top:8px;">💾 Salvar ${f.name}</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <!-- LINKS -->
+                <div class="admin-section">
+                    <h4 style="color:#ff8c00;">📱 Links e Contatos</h4>
+                    <label style="color:#c0c0c0;">Grupo WhatsApp:</label>
+                    <input type="text" id="waGroup" class="auth-input" value="${globalSettings.whatsappGroup||''}" placeholder="Link do grupo">
+                    <label style="color:#c0c0c0;">Canal Telegram:</label>
+                    <input type="text" id="tgChannel" class="auth-input" value="${globalSettings.telegramChannel||''}" placeholder="Link do canal">
+                    <label style="color:#c0c0c0;">WhatsApp Suporte:</label>
+                    <input type="text" id="supWa" class="auth-input" value="${globalSettings.supportWhatsapp||''}" placeholder="Número suporte">
+                    <label style="color:#c0c0c0;">Facebook:</label>
+                    <input type="text" id="fbPage" class="auth-input" value="${globalSettings.facebookPage||''}" placeholder="Link Facebook">
+                    <label style="color:#c0c0c0;">YouTube:</label>
+                    <input type="text" id="ytChannel" class="auth-input" value="${globalSettings.youtubeChannel||''}" placeholder="Link YouTube">
+                    <label style="color:#c0c0c0;">WhatsApp Social:</label>
+                    <input type="text" id="socialWa" class="auth-input" value="${globalSettings.socialWhatsapp||''}" placeholder="Número WhatsApp">
+                    <button onclick="window.saveLinksAdmin()" class="action-btn btn-gold" style="margin-top:8px;">💾 Salvar Links</button>
+                </div>
+                
+                <!-- SAQUES DIÁRIOS -->
+                <div class="admin-section">
+                    <h4 style="color:#ff8c00;">⚙️ CONFIGURAÇÕES</h4>
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin:10px 0;">
+                        <span style="color:#ffffff;">🔒 Saques Diários:</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggleWithdraws" ${globalSettings.withdrawsEnabled?'checked':''} onchange="window.toggleWithdrawSettingsAdmin()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span id="withdrawStatusText" style="color:${globalSettings.withdrawsEnabled?'#32ff7e':'#ff4444'};">${globalSettings.withdrawsEnabled?'✅ ATIVO':'❌ DESLIGADO'}</span>
+                    </div>
+                </div>
+                
+                <!-- DEPÓSITOS PENDENTES -->
+                <div class="admin-section">
+                    <h4 style="color:#ff8c00;">💰 Depósitos Pendentes (${pendDep.length})</h4>
+                    ${pendDep.length === 0 ? '<p style="color:#888;">Nenhum depósito pendente</p>' : pendDep.map(d => `
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;margin:6px 0;background:var(--bg-input);border-radius:10px;">
+                            <div><span style="color:#ffffff;"><strong>${d.name}</strong> - ${d.phone}</span><br><span style="color:#ff8c00;">Valor: <strong>${(d.amount || 0).toLocaleString()} MT</strong></span></div>
+                            <div><button class="admin-btn-sm btn-approve" onclick="window.approveDepositAdmin('${d.id}')">✅ Aprovar</button><button class="admin-btn-sm btn-reject" onclick="window.rejectDepositAdmin('${d.id}')">❌ Recusar</button></div>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <!-- SAQUES PENDENTES -->
+                <div class="admin-section">
+                    <h4 style="color:#ff8c00;">💸 Saques Pendentes (${pendW.length})</h4>
+                    ${pendW.length === 0 ? '<p style="color:#888;">Nenhum saque pendente</p>' : pendW.map(w => `
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;margin:6px 0;background:var(--bg-input);border-radius:10px;">
+                            <div><span style="color:#ffffff;"><strong>${w.name}</strong> - ${w.phone}</span><br><span style="color:#ff8c00;">Solicitado: ${(w.amount || 0).toLocaleString()} MT</span><br><span style="color:#32ff7e;">Enviar: <strong>${(w.netAmount || 0).toLocaleString()} MT</strong></span></div>
+                            <div><button class="admin-btn-sm btn-approve" onclick="window.approveWithdrawAdmin('${w.id}')">✅</button><button class="admin-btn-sm btn-reject" onclick="window.rejectWithdrawAdmin('${w.id}')">❌</button></div>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <!-- USUÁRIOS (COM BUSCA E REMOÇÃO) -->
+                <div class="admin-section">
+                    <h4 style="color:#ff8c00;">👥 Usuários (${totalUsers})</h4>
+                    <div style="display:flex;gap:8px;margin-bottom:10px;">
+                        <input type="text" id="searchUser" class="auth-input" placeholder="🔍 Pesquisar nome ou telefone..." style="flex:1;">
+                        <button onclick="window.searchUsersAdmin()" class="admin-btn-sm btn-edit" style="padding:10px 16px;">🔍</button>
+                    </div>
+                    <div id="userList" style="max-height:400px;overflow-y:auto;">
+                        ${usersList.slice(0,10).map(u=>`
+                            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;margin:4px 0;background:var(--bg-input);border-radius:10px;">
+                                <div>
+                                    <strong style="color:#fff;">${u.name}</strong><br>
+                                    <small style="color:#c0c0c0;">📞 ${u.phone} | VIP: ${VIP_NAMES[u.vipLevel||0]||'Estagiário'} | 💰 ${(u.balance||0).toLocaleString()} MT</small>
+                                    ${u.blocked?'<br><span style="color:red;">🚫 BLOQUEADO</span>':''}
+                                </div>
+                                <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                                    <button class="admin-btn-sm btn-edit" onclick="window.editBalanceAdmin('${u.id}')">💰</button>
+                                    <button class="admin-btn-sm btn-edit" onclick="window.resetPassAdmin('${u.id}')">🔑</button>
+                                    <button class="admin-btn-sm ${u.blocked?'btn-approve':'btn-block'}" onclick="window.toggleBlockAdmin('${u.id}')">${u.blocked?'✅':'🚫'}</button>
+                                    <button class="admin-btn-sm btn-delete" onclick="window.deleteUserAdmin('${u.id}')">🗑️</button>
+                                </div>
+                            </div>
+                        `).join('')||'<p style="color:#888;">Nenhum</p>'}
+                    </div>
+                    <button onclick="window.listAllUsersAdmin()" class="action-btn btn-outline" style="margin-top:8px;">📋 Listar Todos</button>
+                </div>
+                
+                <!-- SEGURANÇA -->
+                <div class="admin-section">
+                    <h4 style="color:#ff8c00;">🔒 Segurança</h4>
+                    <button onclick="window.changeAdminPassAdmin()" class="action-btn btn-gold">🔐 Mudar Senha Admin</button>
+                </div>
+            `;
+            
+            document.body.appendChild(panel);
+            document.getElementById('appScreen').style.display = 'none';
+
+            // Funções admin globais
+            window.setThemeAdmin = async function(idx) {
+                applyTheme(idx);
+                await saveThemeIndex(idx);
+                closeAdminPanel(); showAdminPanel();
+            };
+            
+            window.toggleFundsEdit = function() {
+                document.getElementById('fundsEditArea').classList.toggle('hidden');
+            };
+            
+            window.saveFundEdit = async function(idx) {
+                FUNDOS[idx].min = Number(document.getElementById(`fMin${idx}`).value);
+                FUNDOS[idx].base = Number(document.getElementById(`fBase${idx}`).value);
+                FUNDOS[idx].retorno = Number(document.getElementById(`fRet${idx}`).value);
+                FUNDOS[idx].dias = Number(document.getElementById(`fDias${idx}`).value);
+                FUNDOS[idx].percent = Number(document.getElementById(`fPerc${idx}`).value);
+                FUNDOS[idx].blocked = document.getElementById(`fBlock${idx}`).checked;
+                await saveFundos(FUNDOS);
+                alert(`${FUNDOS[idx].name} atualizado!`);
+                closeAdminPanel(); showAdminPanel();
+            };
+            
+            window.editVipAdmin = function(i) {
+                let v = vipConfig[i];
+                let n = prompt('Nome:', v.name);
+                let inv = Number(prompt('Investimento (MT):', v.invest));
+                let dly = Number(prompt('Ganho Diário (MT):', v.daily));
+                let dys = Number(prompt('Dias:', v.days));
+                let alrt = prompt('Alerta:', v.alert);
+                let emb = confirm('Em Breve? (OK=Sim, Cancelar=Não)');
+                if (n && !isNaN(inv) && !isNaN(dly) && !isNaN(dys)) {
+                    vipConfig[i] = {...v, name:n, invest:inv, daily:dly, days:dys, alert:alrt, emBreve:emb};
+                    updateVipArrays();
+                }
+                closeAdminPanel(); showAdminPanel();
+            };
+            
+            window.saveVipConfigFirebase = async function() {
+                await saveVipConfig();
+                alert('✅ VIPs salvos com sucesso!');
+            };
+            
+            window.saveLinksAdmin = async function() {
+                globalSettings.whatsappGroup = document.getElementById('waGroup')?.value || '';
+                globalSettings.telegramChannel = document.getElementById('tgChannel')?.value || '';
+                globalSettings.supportWhatsapp = document.getElementById('supWa')?.value || '';
+                globalSettings.facebookPage = document.getElementById('fbPage')?.value || '';
+                globalSettings.youtubeChannel = document.getElementById('ytChannel')?.value || '';
+                globalSettings.socialWhatsapp = document.getElementById('socialWa')?.value || '';
+                await saveSettings(globalSettings);
+                updateSocialButtons();
+                alert('✅ Links salvos!');
+            };
+            
+            window.toggleWithdrawSettingsAdmin = async function() {
+                globalSettings.withdrawsEnabled = document.getElementById('toggleWithdraws').checked;
+                await saveSettings(globalSettings);
+                document.getElementById('withdrawStatusText').textContent = globalSettings.withdrawsEnabled ? '✅ ATIVO' : '❌ DESLIGADO';
+                document.getElementById('withdrawStatusText').style.color = globalSettings.withdrawsEnabled ? '#32ff7e' : '#ff4444';
+            };
+            
+            window.approveDepositAdmin = async function(did) {
+                try {
+                    const snap = await get(ref(db, 'deposits/' + did));
+                    if (!snap.exists()) { alert('❌ Depósito não encontrado'); return; }
+                    const d = snap.val();
+                    await updateDeposit(did, { status: 'approved', approvedAt: new Date().toISOString() });
+                    const allUsers = await getAllUsers();
+                    const userData = allUsers.find(u => u.phone === d.phone);
+                    if (!userData) { alert(`❌ Usuário ${d.phone} não encontrado!`); return; }
+                    const novoSaldo = (Number(userData.balance) || 0) + Number(d.amount);
+                    if (!userData.depositHistory) userData.depositHistory = [];
+                    userData.depositHistory.push({ amount: d.amount, date: d.date || new Date().toISOString(), status: 'approved' });
+                    if (userData.referredBy) {
+                        const refU = await getUserById(userData.referredBy);
+                        if (refU) {
+                            const comissao = Math.round(Number(d.amount) * 0.07);
+                            await updateUser(userData.referredBy, { balance: (Number(refU.balance) || 0) + comissao, commissionsPaid: (Number(refU.commissionsPaid) || 0) + 1 });
+                        }
+                    }
+                    await updateUser(userData.id, { balance: novoSaldo, depositHistory: userData.depositHistory });
+                    alert(`✅ Depósito de ${d.amount.toLocaleString()} MT aprovado!\n👤 ${userData.name}`);
+                    closeAdminPanel(); showAdminPanel();
+                } catch (e) { alert('❌ Erro: ' + e.message); }
+            };
+            
+            window.rejectDepositAdmin = async function(did) {
+                await updateDeposit(did, { status: 'rejected', rejectedAt: new Date().toISOString() });
+                alert('❌ Depósito recusado!');
+                closeAdminPanel(); showAdminPanel();
+            };
+            
+            window.approveWithdrawAdmin = async function(wid) {
+                try {
+                    const snap = await get(ref(db, 'withdrawals/' + wid));
+                    if (!snap.exists()) { alert('❌ Saque não encontrado'); return; }
+                    const w = snap.val();
+                    await updateWithdrawal(wid, { status: 'approved', approvedAt: new Date().toISOString() });
+                    alert(`✅ Saque de ${(w.amount||0).toLocaleString()} MT aprovado!`);
+                    closeAdminPanel(); showAdminPanel();
+                } catch (e) { alert('❌ Erro: ' + e.message); }
+            };
+            
+            window.rejectWithdrawAdmin = async function(wid) {
+                try {
+                    const snap = await get(ref(db, 'withdrawals/' + wid));
+                    if (!snap.exists()) { alert('❌ Saque não encontrado'); return; }
+                    const w = snap.val();
+                    await updateWithdrawal(wid, { status: 'rejected', rejectedAt: new Date().toISOString() });
+                    const allUsers = await getAllUsers();
+                    const userData = allUsers.find(u => u.phone === w.phone);
+                    if (userData) {
+                        const novoSaldo = (Number(userData.balance) || 0) + Number(w.amount || 0);
+                        await updateUser(userData.id, { balance: novoSaldo });
+                    }
+                    alert('❌ Saque recusado! Saldo devolvido.');
+                    closeAdminPanel(); showAdminPanel();
+                } catch (e) { alert('❌ Erro: ' + e.message); }
+            };
+            
+            window.editBalanceAdmin = async function(uid) {
+                const u = await getUserById(uid);
+                if (!u) { alert('Usuário não encontrado'); return; }
+                let newBal = Number(prompt('Novo saldo para ' + u.name + ':', u.balance || 0));
+                if (!isNaN(newBal) && newBal >= 0) {
+                    await updateUser(uid, { balance: newBal });
+                    alert('✅ Saldo atualizado!');
+                    closeAdminPanel(); showAdminPanel();
+                }
+            };
+            
+            window.resetPassAdmin = async function(uid) {
+                const u = await getUserById(uid);
+                if (!u) { alert('Usuário não encontrado'); return; }
+                let nova = prompt('Nova senha para ' + u.name + ' (mín. 4 caracteres):');
+                if (nova && nova.length >= 4) {
+                    await updateUser(uid, { password: nova });
+                    alert('✅ Senha alterada!');
+                }
+            };
+            
+            window.toggleBlockAdmin = async function(uid) {
+                const u = await getUserById(uid);
+                if (!u) { alert('Usuário não encontrado'); return; }
+                await updateUser(uid, { blocked: !u.blocked });
+                alert(u.blocked ? '✅ Desbloqueado!' : '🚫 Bloqueado!');
+                closeAdminPanel(); showAdminPanel();
+            };
+            
+            window.deleteUserAdmin = async function(uid) {
+                const u = await getUserById(uid);
+                if (!u) { alert('Usuário não encontrado'); return; }
+                if (confirm(`🗑️ Tem certeza que deseja REMOVER permanentemente o usuário:\n\n${u.name} (${u.phone})?\n\nEsta ação é irreversível!`)) {
+                    await deleteUser(uid);
+                    alert('✅ Usuário removido!');
+                    closeAdminPanel(); showAdminPanel();
+                }
+            };
+            
+            window.searchUsersAdmin = async function() {
+                let term = (document.getElementById('searchUser')?.value || '').toLowerCase();
+                const allUsers = await getAllUsers();
+                let filtered = allUsers.filter(u => u.name.toLowerCase().includes(term) || u.phone.includes(term));
+                document.getElementById('userList').innerHTML = filtered.map(u=>`
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;margin:4px 0;background:var(--bg-input);border-radius:10px;">
+                        <div>
+                            <strong style="color:#fff;">${u.name}</strong><br>
+                            <small style="color:#c0c0c0;">📞 ${u.phone} | VIP: ${VIP_NAMES[u.vipLevel||0]||'Estagiário'} | 💰 ${(u.balance||0).toLocaleString()} MT</small>
+                            ${u.blocked?'<br><span style="color:red;">🚫 BLOQUEADO</span>':''}
+                        </div>
+                        <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                            <button class="admin-btn-sm btn-edit" onclick="window.editBalanceAdmin('${u.id}')">💰</button>
+                            <button class="admin-btn-sm btn-edit" onclick="window.resetPassAdmin('${u.id}')">🔑</button>
+                            <button class="admin-btn-sm ${u.blocked?'btn-approve':'btn-block'}" onclick="window.toggleBlockAdmin('${u.id}')">${u.blocked?'✅':'🚫'}</button>
+                            <button class="admin-btn-sm btn-delete" onclick="window.deleteUserAdmin('${u.id}')">🗑️</button>
+                        </div>
+                    </div>
+                `).join('') || '<p style="color:#888;">Nenhum encontrado</p>';
+            };
+            
+            window.listAllUsersAdmin = async function() {
+                const allUsers = await getAllUsers();
+                document.getElementById('userList').innerHTML = allUsers.map(u=>`
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;margin:4px 0;background:var(--bg-input);border-radius:10px;">
+                        <div>
+                            <strong style="color:#fff;">${u.name}</strong><br>
+                            <small style="color:#c0c0c0;">📞 ${u.phone} | VIP: ${VIP_NAMES[u.vipLevel||0]||'Estagiário'} | 💰 ${(u.balance||0).toLocaleString()} MT</small>
+                            ${u.blocked?'<br><span style="color:red;">🚫 BLOQUEADO</span>':''}
+                        </div>
+                        <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                            <button class="admin-btn-sm btn-edit" onclick="window.editBalanceAdmin('${u.id}')">💰</button>
+                            <button class="admin-btn-sm btn-edit" onclick="window.resetPassAdmin('${u.id}')">🔑</button>
+                            <button class="admin-btn-sm ${u.blocked?'btn-approve':'btn-block'}" onclick="window.toggleBlockAdmin('${u.id}')">${u.blocked?'✅':'🚫'}</button>
+                            <button class="admin-btn-sm btn-delete" onclick="window.deleteUserAdmin('${u.id}')">🗑️</button>
+                        </div>
+                    </div>
+                `).join('') || '<p style="color:#888;">Nenhum</p>';
+            };
+            
+            window.changeAdminPassAdmin = function() {
+                let np = prompt('Nova senha admin:');
+                if (np && np.length >= 4) { 
+                    adminPassword = np; 
+                    localStorage.setItem('netfilms_adminPass', adminPassword); 
+                    alert('✅ Senha alterada!'); 
+                }
+            };
+        }
+
+        function closeAdminPanel() { 
+            let panel = document.getElementById('adminPanel'); 
+            if (panel) panel.remove(); 
+            document.getElementById('appScreen').style.display = 'flex'; 
+            updateBalanceDisplay(); 
+            showTab('home'); 
+        }
+
+        // Expor funções globalmente
+        window.showRegisterForm = showRegisterForm;
+        window.showLoginForm = showLoginForm;
+        window.showForgotPassword = showForgotPassword;
+        window.goBackToInitial = goBackToInitial;
+        window.handleLogin = handleLogin;
+        window.handleRegister = handleRegister;
+        window.handleForgotPassword = handleForgotPassword;
+        window.handleBrandClick = handleBrandClick;
+        window.handleAppBrandClick = handleAppBrandClick;
+        window.collectDaily = collectDaily;
+        window.openYoutubeAndEarn = openYoutubeAndEarn;
+        window.buyMovie = buyMovie;
+        window.investFundo = investFundo;
+        window.requestWithdraw = requestWithdraw;
+        window.checkAndClaimReferralReward = checkAndClaimReferralReward;
+        window.copyInvite = copyInvite;
+        window.copyInviteLink = copyInviteLink;
+        window.showTab = showTab;
+        window.showDepositModal = showDepositModal;
+        window.installApp = installApp;
+        window.closeAdminPanel = closeAdminPanel;
+        
+        window.atualizarSaldoAgora = async function() {
+            if (!currentUserId) return;
+            const snap = await get(ref(db, 'users/' + currentUserId));
+            if (snap.exists()) {
+                const d = snap.val();
+                const novoSaldo = Number(d.balance) || 0;
+                const saldoEl = document.getElementById('saldoDisplay');
+                if (saldoEl) { 
+                    saldoEl.textContent = novoSaldo.toLocaleString() + ' MT'; 
+                    saldoEl.style.transform = 'scale(1.15)'; 
+                    saldoEl.style.color = '#32ff7e'; 
+                    setTimeout(() => { saldoEl.style.transform = 'scale(1)'; saldoEl.style.color = '#ff8c00'; }, 500); 
+                }
+            }
+        };
+
+        window.submitDeposit = async () => {
+            let name = document.getElementById('depName')?.value?.trim() || currentUser?.name || '';
+            let phone = document.getElementById('depPhone')?.value?.trim() || currentUser?.phone || '';
+            let amount = Number(document.getElementById('depAmount')?.value);
+            if (!amount || amount < 200) { alert('Mínimo 200 MT'); return; }
+            if (!name || !phone) { alert('Preencha nome e número'); return; }
+            await saveDeposit({ phone, name, amount, date: new Date().toISOString(), status: 'pending' });
+            document.querySelector('.modal-overlay')?.remove();
+            alert(`✅ Depósito de ${amount.toLocaleString()} MT registrado! Aguarde aprovação.`);
+        };
+
+        // PWA
+        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; document.getElementById('installButton')?.classList.remove('hidden'); });
+
+        // Partículas
+        for (let i = 0; i < 30; i++) { 
+            let p = document.createElement('div'); p.className = 'particle'; 
+            p.style.width = Math.random() * 6 + 2 + 'px'; p.style.height = p.style.width; 
+            p.style.left = Math.random() * 100 + '%'; 
+            p.style.animationDelay = Math.random() * 15 + 's'; 
+            p.style.animationDuration = Math.random() * 10 + 8 + 's'; 
+            document.getElementById('particles').appendChild(p); 
+        }
+
+        // Inicialização
+        async function init() {
+            await loadSettings();
+            await loadFundos();
+            await loadVipConfig();
+            await loadThemeIndex();
+            updateSocialButtons();
+            await checkInviteBanner();
+            startFloatingNotifications();
+            let savedPass = localStorage.getItem('netfilms_adminPass');
+            if (savedPass) adminPassword = savedPass;
+            console.log('✅ NET FILMS pronto!');
+        }
+        init();
+    </script>
+</body>
+</html>
