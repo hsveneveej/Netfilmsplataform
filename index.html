@@ -151,7 +151,6 @@
         .bg-preview { width: 100%; height: 80px; background-size: cover; background-position: center; border-radius: 10px; cursor: pointer; border: 2px solid transparent; transition: 0.3s; margin: 4px 0; }
         .bg-preview.selected { border-color: var(--accent2); box-shadow: 0 0 15px rgba(50,255,126,0.5); }
         
-        /* Decorações animadas da tela de login */
         .login-decoration {
             position: absolute; border-radius: 50%; filter: blur(50px); pointer-events: none; z-index: 0;
         }
@@ -379,7 +378,6 @@
         async function saveBackground(bgId, data) { try { await set(ref(db, 'backgrounds/' + bgId), data); return true; } catch(e) { return false; } }
         async function deleteBackground(bgId) { try { await remove(ref(db, 'backgrounds/' + bgId)); return true; } catch(e) { return false; } }
 
-        // NOVAS FUNÇÕES DE CORES PERSONALIZADAS
         async function loadCustomColors() {
             try { const snap = await get(ref(db, 'settings/customColors')); if (snap.exists()) return snap.val(); } catch(e) {}
             return null;
@@ -398,7 +396,6 @@
             if (colors.border) root.style.setProperty('--border', colors.border);
         }
 
-        // MODIFICAR applyTheme para também aplicar cores customizadas
         const originalApplyTheme = applyTheme;
         applyTheme = function(idx) {
             originalApplyTheme(idx);
@@ -456,7 +453,6 @@
             }, (error) => { console.error("Erro no listener:", error); });
         }
 
-        // applyTheme original
         function applyTheme(idx) { 
             const t = THEMES[idx] || THEMES[0]; 
             const root = document.documentElement; 
@@ -469,7 +465,6 @@
             document.body.style.background = t.bg; 
         }
 
-        // ========== FUNÇÕES DE INTERFACE (INALTERADAS) ==========
         function showRegisterForm() { 
             document.getElementById('initialButtons').classList.add('hidden'); 
             document.getElementById('formLogin').classList.add('hidden'); 
@@ -789,7 +784,6 @@
         async function checkInviteBanner() { let urlRef = new URLSearchParams(window.location.search).get('ref'); if (urlRef) { const allUsers = await getAllUsers(); const inviter = allUsers.find(u => u.inviteCode === urlRef); if (inviter) { let banner = document.getElementById('invitedBanner'); banner.innerHTML = `🎉 Convidado por <strong>${inviter.name}</strong>!`; banner.classList.remove('hidden'); } } }
         function updateSocialButtons() { const c = document.getElementById('socialButtonsAuth'); if (!c) return; let h = ''; if (globalSettings.facebookPage) h += `<a href="${globalSettings.facebookPage}" target="_blank" class="social-btn fb">📘 Facebook</a>`; if (globalSettings.socialWhatsapp) h += `<a href="https://wa.me/${globalSettings.socialWhatsapp}" target="_blank" class="social-btn wa">📱 WhatsApp</a>`; if (globalSettings.youtubeChannel) h += `<a href="${globalSettings.youtubeChannel}" target="_blank" class="social-btn yt">▶️ YouTube</a>`; c.innerHTML = h; }
 
-        // ========== RENDER HOME ==========
         function renderHome() { 
             if (!currentUser) return ''; 
             let vip = getVipInfo(); 
@@ -797,8 +791,8 @@
             let canCollect = (cd === 0 && new Date().getDay() !== 0 && vip.daily > 0); 
             let wdCooldown = getWithdrawCooldown(); 
             let s = globalSettings; 
-            let ganhosHoje = (currentUser.earningsHistory||[]).filter(e=>new Date(e.date).toDateString()===new Date().toDateString()).reduce((a,b)=>a+b.amount,0);
-            return `${createCountryBanners()}<div class="balance-card"><div class="balance-value" id="saldoDisplay">${ganhosHoje.toLocaleString()} MT</div><div style="color:#c0c0c0;">GANHEI HOJE</div><button onclick="window.atualizarSaldoAgora()" style="margin-top:8px;padding:6px 12px;background:transparent;border:1px solid #ff8c00;color:#ff8c00;border-radius:20px;cursor:pointer;font-size:12px;">🔄 Atualizar Saldo</button></div><div id="sponsorsSection"></div>${s.whatsappGroup || s.telegramChannel ? `<div style="display:flex;gap:8px;margin:12px 0;flex-wrap:wrap;">${s.whatsappGroup?`<a href="${s.whatsappGroup}" target="_blank" style="flex:1;padding:12px;background:#25D366;color:white;text-align:center;border-radius:12px;text-decoration:none;font-weight:700;">📱 WhatsApp</a>`:''}${s.telegramChannel?`<a href="${s.telegramChannel}" target="_blank" style="flex:1;padding:12px;background:#0088cc;color:white;text-align:center;border-radius:12px;text-decoration:none;font-weight:700;">✈️ Telegram</a>`:''}${s.supportWhatsapp?`<a href="https://wa.me/${s.supportWhatsapp}" target="_blank" style="flex:1;padding:12px;background:#25D366;color:white;text-align:center;border-radius:12px;text-decoration:none;font-weight:700;">🎧 Suporte</a>`:''}</div>`:''}<div class="gains-grid"><div class="gain-card">📅 ONTEM: <strong style="color:#ff8c00;">${(currentUser.earningsHistory||[]).filter(e=>new Date(e.date).toDateString()===new Date(Date.now()-86400000).toDateString()).reduce((a,b)=>a+b.amount,0).toLocaleString()} MT</strong></div><div class="gain-card">🟢 HOJE: <strong style="color:#32ff7e;">${ganhosHoje.toLocaleString()} MT</strong></div></div><div class="vip-card-colorida" style="border-color:#ff0000;" onclick="window.openYoutubeAndEarn()"><div style="font-size:20px;font-weight:900;color:#ff0000;">🎬 ASSISTA E SE INSCREVA</div><div style="font-size:16px;color:#c0c0c0;">GANHE <strong style="color:#32ff7e;">25MT/DIA</strong></div><button class="action-btn" style="background:#ff0000;color:#ffffff;margin-top:10px;" onclick="event.stopPropagation();window.openYoutubeAndEarn();">▶️ ASSISTIR VÍDEO AGORA</button></div><div class="vip-card-colorida" style="border-color:#ff8c00;"><div style="font-size:20px;font-weight:900;color:#ff8c00;">💎 ${vip.name}</div><div style="font-size:14px;color:#c0c0c0;">💰 Diário: <strong style="color:#32ff7e;">${vip.daily.toLocaleString()} MT</strong> | 📅 <strong style="color:#ff8c00;">${vip.days} dias</strong> | 💵 Total: <strong style="color:#ff0000;">${vip.total.toLocaleString()} MT</strong></div>${canCollect?`<button class="action-btn btn-coletar" onclick="event.stopPropagation();window.collectDaily();" style="margin-top:10px;">💰 COLETAR +${vip.daily.toLocaleString()} MT</button>`:(cd>0?`<div class="countdown-timer">⏳ ${Math.floor(cd/3600000)}h ${Math.floor((cd%3600000)/60000)}m</div>`:'<button class="action-btn" disabled style="opacity:0.5;margin-top:10px;background:#333;color:#666;">🔒 Indisponível</button>')}</div><div style="display:flex;gap:10px;"><button class="action-btn btn-comprar" onclick="window.showTab('vips')" style="flex:1;">🎬 COMPRAR FILME</button><button class="action-btn" style="flex:1;background:#ff0000;color:#ffffff;" onclick="window.showTab('saques')">💸 SACAR</button><button class="action-btn btn-green" onclick="window.showDepositModal()" style="flex:1;color:#000000;">💰 DEPOSITAR</button></div>${wdCooldown>0?`<div class="countdown-timer" style="color:#ff4444;">⏳ Próximo saque em ${Math.floor(wdCooldown/3600000)}h ${Math.floor((wdCooldown%3600000)/60000)}m</div>`:''}${createCountryBanners()}`; 
+            let saldoTotal = Number(currentUser.balance) || 0;
+            return `${createCountryBanners()}<div class="balance-card"><div class="balance-value" id="saldoDisplay">${saldoTotal.toLocaleString()} MT</div><div style="color:#c0c0c0;">SALDO TOTAL</div><button onclick="window.atualizarSaldoAgora()" style="margin-top:8px;padding:6px 12px;background:transparent;border:1px solid #ff8c00;color:#ff8c00;border-radius:20px;cursor:pointer;font-size:12px;">🔄 Atualizar Saldo</button></div><div id="sponsorsSection"></div>${s.whatsappGroup || s.telegramChannel ? `<div style="display:flex;gap:8px;margin:12px 0;flex-wrap:wrap;">${s.whatsappGroup?`<a href="${s.whatsappGroup}" target="_blank" style="flex:1;padding:12px;background:#25D366;color:white;text-align:center;border-radius:12px;text-decoration:none;font-weight:700;">📱 WhatsApp</a>`:''}${s.telegramChannel?`<a href="${s.telegramChannel}" target="_blank" style="flex:1;padding:12px;background:#0088cc;color:white;text-align:center;border-radius:12px;text-decoration:none;font-weight:700;">✈️ Telegram</a>`:''}${s.supportWhatsapp?`<a href="https://wa.me/${s.supportWhatsapp}" target="_blank" style="flex:1;padding:12px;background:#25D366;color:white;text-align:center;border-radius:12px;text-decoration:none;font-weight:700;">🎧 Suporte</a>`:''}</div>`:''}<div class="gains-grid"><div class="gain-card">📅 ONTEM: <strong style="color:#ff8c00;">${(currentUser.earningsHistory||[]).filter(e=>new Date(e.date).toDateString()===new Date(Date.now()-86400000).toDateString()).reduce((a,b)=>a+b.amount,0).toLocaleString()} MT</strong></div><div class="gain-card">🟢 HOJE: <strong style="color:#32ff7e;">${(currentUser.earningsHistory||[]).filter(e=>new Date(e.date).toDateString()===new Date().toDateString()).reduce((a,b)=>a+b.amount,0).toLocaleString()} MT</strong></div></div><div class="vip-card-colorida" style="border-color:#ff0000;" onclick="window.openYoutubeAndEarn()"><div style="font-size:20px;font-weight:900;color:#ff0000;">🎬 ASSISTA E SE INSCREVA</div><div style="font-size:16px;color:#c0c0c0;">GANHE <strong style="color:#32ff7e;">25MT/DIA</strong></div><button class="action-btn" style="background:#ff0000;color:#ffffff;margin-top:10px;" onclick="event.stopPropagation();window.openYoutubeAndEarn();">▶️ ASSISTIR VÍDEO AGORA</button></div><div class="vip-card-colorida" style="border-color:#ff8c00;"><div style="font-size:20px;font-weight:900;color:#ff8c00;">💎 ${vip.name}</div><div style="font-size:14px;color:#c0c0c0;">💰 Diário: <strong style="color:#32ff7e;">${vip.daily.toLocaleString()} MT</strong> | 📅 <strong style="color:#ff8c00;">${vip.days} dias</strong> | 💵 Total: <strong style="color:#ff0000;">${vip.total.toLocaleString()} MT</strong></div>${canCollect?`<button class="action-btn btn-coletar" onclick="event.stopPropagation();window.collectDaily();" style="margin-top:10px;">💰 COLETAR +${vip.daily.toLocaleString()} MT</button>`:(cd>0?`<div class="countdown-timer">⏳ ${Math.floor(cd/3600000)}h ${Math.floor((cd%3600000)/60000)}m</div>`:'<button class="action-btn" disabled style="opacity:0.5;margin-top:10px;background:#333;color:#666;">🔒 Indisponível</button>')}</div><div style="display:flex;gap:10px;"><button class="action-btn btn-comprar" onclick="window.showTab('vips')" style="flex:1;">🎬 COMPRAR FILME</button><button class="action-btn" style="flex:1;background:#ff0000;color:#ffffff;" onclick="window.showTab('saques')">💸 SACAR</button><button class="action-btn btn-green" onclick="window.showDepositModal()" style="flex:1;color:#000000;">💰 DEPOSITAR</button></div>${wdCooldown>0?`<div class="countdown-timer" style="color:#ff4444;">⏳ Próximo saque em ${Math.floor(wdCooldown/3600000)}h ${Math.floor((wdCooldown%3600000)/60000)}m</div>`:''}${createCountryBanners()}`; 
         }
 
         function loadSponsorsSection() {
@@ -929,7 +923,7 @@
         function handleAppBrandClick() { brandClickCount++; if (brandClickCount>=10) { brandClickCount=0; checkAdminAccess(); } }
         function checkAdminAccess() { let p = prompt('🔐 SENHA ADMIN:'); if (p===adminPassword) showAdminPanel(); else alert('Senha incorreta!'); }
 
-        // ========== PAINEL ADMIN COM SEÇÃO DE CORES ==========
+        // ========== PAINEL ADMIN CORRIGIDO ==========
         async function showAdminPanel() {
             await loadFundos();
             await loadVipConfig();
@@ -975,7 +969,6 @@
                 `).join('');
             }
             
-            // Seção de cores personalizadas
             const colorSection = `
                 <div class="admin-section">
                     <h4 style="color:#ff8c00;">🎨 PERSONALIZAR CORES</h4>
@@ -1147,7 +1140,10 @@
                     ${pendDep.length === 0 ? '<p style="color:#888;">Nenhum depósito pendente</p>' : pendDep.map(d => `
                         <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;margin:6px 0;background:var(--bg-input);border-radius:10px;">
                             <div><span style="color:#ffffff;"><strong>${d.name}</strong> - ${d.phone}</span><br><span style="color:#ff8c00;">Valor: <strong>${(d.amount || 0).toLocaleString()} MT</strong></span></div>
-                            <div><button class="admin-btn-sm btn-approve" onclick="window.approveDepositAdmin('${d.id}')">✅</button><button class="admin-btn-sm btn-reject" onclick="window.rejectDepositAdmin('${d.id}')">❌</button></div>
+                            <div>
+                                <button class="admin-btn-sm btn-approve" onclick="window.approveDepositAdmin('${d.id}')" style="cursor:pointer;z-index:1001;position:relative;">✅ APROVAR</button>
+                                <button class="admin-btn-sm btn-reject" onclick="window.rejectDepositAdmin('${d.id}')" style="cursor:pointer;z-index:1001;position:relative;">❌ REJEITAR</button>
+                            </div>
                         </div>
                     `).join('')}
                 </div>
@@ -1157,7 +1153,10 @@
                     ${pendW.length === 0 ? '<p style="color:#888;">Nenhum saque pendente</p>' : pendW.map(w => `
                         <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;margin:6px 0;background:var(--bg-input);border-radius:10px;">
                             <div><span style="color:#ffffff;"><strong>${w.name}</strong> - ${w.phone}</span><br><span style="color:#ff8c00;">Solicitado: ${(w.amount || 0).toLocaleString()} MT</span><br><span style="color:#32ff7e;">Enviar: <strong>${(w.netAmount || 0).toLocaleString()} MT</strong></span></div>
-                            <div><button class="admin-btn-sm btn-approve" onclick="window.approveWithdrawAdmin('${w.id}')">✅</button><button class="admin-btn-sm btn-reject" onclick="window.rejectWithdrawAdmin('${w.id}')">❌</button></div>
+                            <div>
+                                <button class="admin-btn-sm btn-approve" onclick="window.approveWithdrawAdmin('${w.id}')" style="cursor:pointer;z-index:1001;position:relative;">✅ APROVAR</button>
+                                <button class="admin-btn-sm btn-reject" onclick="window.rejectWithdrawAdmin('${w.id}')" style="cursor:pointer;z-index:1001;position:relative;">❌ REJEITAR</button>
+                            </div>
                         </div>
                     `).join('')}
                 </div>
@@ -1197,7 +1196,7 @@
             document.body.appendChild(panel);
             document.getElementById('appScreen').style.display = 'none';
 
-            // Handlers das cores
+            // ========== HANDLERS DEFINIDOS NO ESCOPO GLOBAL CORRETAMENTE ==========
             window.saveCustomColorsAdmin = async function() {
                 const colors = {
                     bgBody: document.getElementById('colorBgBody')?.value || null,
@@ -1211,13 +1210,16 @@
                 await saveCustomColors(colors);
                 applyCustomColors(colors);
                 alert('✅ Cores personalizadas salvas!');
-                closeAdminPanel(); showAdminPanel();
+                closeAdminPanel(); 
+                setTimeout(() => showAdminPanel(), 100);
             };
+            
             window.resetCustomColorsAdmin = async function() {
                 await saveCustomColors({});
                 applyTheme(currentThemeIndex);
                 alert('✅ Cores restauradas ao padrão do tema!');
-                closeAdminPanel(); showAdminPanel();
+                closeAdminPanel(); 
+                setTimeout(() => showAdminPanel(), 100);
             };
 
             window.saveDepositConfigAdmin = async function() {
@@ -1230,31 +1232,365 @@
                 }
                 await saveDepositConfig(config);
                 alert('✅ Campos de depósito salvos!');
-                closeAdminPanel(); showAdminPanel();
+                closeAdminPanel(); 
+                setTimeout(() => showAdminPanel(), 100);
             };
             
-            window.addBgAdmin = async function() { /* ... */ };
-            window.toggleBgAdmin = async function(bgId) { /* ... */ };
-            window.deleteBgAdmin = async function(bgId) { /* ... */ };
-            window.recarregarFundosAdmin = async function() { /* ... */ };
-            window.setThemeAdmin = async function(idx) { applyTheme(idx); await saveThemeIndex(idx); closeAdminPanel(); showAdminPanel(); };
-            window.toggleFundsEdit = function() { document.getElementById('fundsEditArea').classList.toggle('hidden'); };
-            window.saveFundEdit = async function(idx) { /* ... */ };
-            window.editVipAdmin = function(i) { /* ... */ };
-            window.saveVipConfigFirebase = async function() { await saveVipConfig(); alert('✅ VIPs salvos!'); };
-            window.saveLinksAdmin = async function() { /* ... */ };
-            window.toggleWithdrawSettingsAdmin = async function() { /* ... */ };
-            window.approveDepositAdmin = async function(did) { /* ... */ };
-            window.rejectDepositAdmin = async function(did) { /* ... */ };
-            window.approveWithdrawAdmin = async function(wid) { /* ... */ };
-            window.rejectWithdrawAdmin = async function(wid) { /* ... */ };
-            window.editBalanceAdmin = async function(uid) { /* ... */ };
-            window.resetPassAdmin = async function(uid) { /* ... */ };
-            window.toggleBlockAdmin = async function(uid) { /* ... */ };
-            window.deleteUserAdmin = async function(uid) { /* ... */ };
-            window.searchUsersAdmin = async function() { /* ... */ };
-            window.listAllUsersAdmin = async function() { /* ... */ };
-            window.changeAdminPassAdmin = function() { /* ... */ };
+            window.addBgAdmin = async function() {
+                const nome = document.getElementById('newBgName')?.value?.trim();
+                const url = document.getElementById('newBgUrl')?.value?.trim();
+                if (!nome || !url) { alert('Preencha nome e URL'); return; }
+                const bgId = 'bg_' + Date.now();
+                await saveBackground(bgId, { nome, url, ativo: true, createdAt: new Date().toISOString() });
+                alert('✅ Fundo adicionado!');
+                closeAdminPanel(); 
+                setTimeout(() => showAdminPanel(), 100);
+            };
+            
+            window.toggleBgAdmin = async function(bgId) {
+                const bgs = await loadBackgrounds();
+                if (bgs[bgId]) {
+                    bgs[bgId].ativo = !bgs[bgId].ativo;
+                    await saveBackground(bgId, bgs[bgId]);
+                    closeAdminPanel(); 
+                    setTimeout(() => showAdminPanel(), 100);
+                }
+            };
+            
+            window.deleteBgAdmin = async function(bgId) {
+                if (confirm('Apagar este fundo?')) {
+                    await deleteBackground(bgId);
+                    closeAdminPanel(); 
+                    setTimeout(() => showAdminPanel(), 100);
+                }
+            };
+            
+            window.recarregarFundosAdmin = async function() {
+                await applyGlobalBackground();
+                alert('✅ Fundos recarregados!');
+            };
+            
+            window.setThemeAdmin = async function(idx) { 
+                applyTheme(idx); 
+                await saveThemeIndex(idx); 
+                closeAdminPanel(); 
+                setTimeout(() => showAdminPanel(), 100); 
+            };
+            
+            window.toggleFundsEdit = function() { 
+                document.getElementById('fundsEditArea').classList.toggle('hidden'); 
+            };
+            
+            window.saveFundEdit = async function(idx) {
+                FUNDOS[idx].min = Number(document.getElementById(`fMin${idx}`)?.value) || FUNDOS[idx].min;
+                FUNDOS[idx].base = Number(document.getElementById(`fBase${idx}`)?.value) || FUNDOS[idx].base;
+                FUNDOS[idx].retorno = Number(document.getElementById(`fRet${idx}`)?.value) || FUNDOS[idx].retorno;
+                FUNDOS[idx].dias = Number(document.getElementById(`fDias${idx}`)?.value) || FUNDOS[idx].dias;
+                FUNDOS[idx].percent = Number(document.getElementById(`fPerc${idx}`)?.value) || FUNDOS[idx].percent;
+                FUNDOS[idx].blocked = document.getElementById(`fBlock${idx}`)?.checked || false;
+                await saveFundos(FUNDOS);
+                alert(`✅ Fundo ${FUNDOS[idx].name} salvo!`);
+                closeAdminPanel(); 
+                setTimeout(() => showAdminPanel(), 100);
+            };
+            
+            window.editVipAdmin = function(i) {
+                let v = vipConfig[i];
+                let newName = prompt('Nome:', v.name);
+                if (newName === null) return;
+                let newInvest = Number(prompt('Investimento:', v.invest));
+                if (isNaN(newInvest)) return;
+                let newDaily = Number(prompt('Ganho diário:', v.daily));
+                if (isNaN(newDaily)) return;
+                let newDays = Number(prompt('Dias:', v.days));
+                if (isNaN(newDays)) return;
+                let emBreve = confirm('Marcar como "EM BREVE"? (OK=Sim, Cancelar=Não)');
+                vipConfig[i] = { ...v, name: newName, invest: newInvest, daily: newDaily, days: newDays, emBreve };
+                updateVipArrays();
+                closeAdminPanel(); 
+                setTimeout(() => showAdminPanel(), 100);
+            };
+            
+            window.saveVipConfigFirebase = async function() { 
+                await saveVipConfig(); 
+                alert('✅ VIPs salvos!'); 
+            };
+            
+            window.saveLinksAdmin = async function() {
+                globalSettings.whatsappGroup = document.getElementById('waGroup')?.value || '';
+                globalSettings.telegramChannel = document.getElementById('tgChannel')?.value || '';
+                globalSettings.supportWhatsapp = document.getElementById('supWa')?.value || '';
+                globalSettings.facebookPage = document.getElementById('fbPage')?.value || '';
+                globalSettings.youtubeChannel = document.getElementById('ytChannel')?.value || '';
+                globalSettings.socialWhatsapp = document.getElementById('socialWa')?.value || '';
+                await saveSettings(globalSettings);
+                updateSocialButtons();
+                alert('✅ Links salvos!');
+            };
+            
+            window.toggleWithdrawSettingsAdmin = async function() {
+                globalSettings.withdrawsEnabled = document.getElementById('toggleWithdraws')?.checked || false;
+                await saveSettings(globalSettings);
+                let statusEl = document.getElementById('withdrawStatusText');
+                if (statusEl) {
+                    statusEl.textContent = globalSettings.withdrawsEnabled ? '✅ SAQUES DIÁRIOS (TODOS DIAS)' : '📅 SAQUES SEMANAIS (SEG-SEX)';
+                    statusEl.style.color = globalSettings.withdrawsEnabled ? '#32ff7e' : '#ff4444';
+                }
+            };
+            
+            // ========== CORREÇÃO PRINCIPAL: APROVAR DEPÓSITO ==========
+            window.approveDepositAdmin = async function(did) {
+                if (!did) { alert('❌ ID do depósito inválido'); return; }
+                try {
+                    // Buscar o depósito
+                    const depositSnap = await get(ref(db, 'deposits/' + did));
+                    if (!depositSnap.exists()) {
+                        alert('❌ Depósito não encontrado no banco de dados!');
+                        return;
+                    }
+                    const deposit = depositSnap.val();
+                    
+                    // Verificar se já foi processado
+                    if (deposit.status !== 'pending') {
+                        alert('⚠️ Este depósito já foi processado! Status: ' + deposit.status);
+                        closeAdminPanel();
+                        setTimeout(() => showAdminPanel(), 100);
+                        return;
+                    }
+                    
+                    // Encontrar usuário pelo telefone
+                    const allUsers = await getAllUsers();
+                    const user = allUsers.find(u => u.phone === deposit.phone);
+                    
+                    if (!user) {
+                        alert('⚠️ Usuário não encontrado para o telefone: ' + deposit.phone);
+                        // Marcar como aprovado mesmo sem usuário
+                        await updateDeposit(did, { status: 'approved', approvedAt: new Date().toISOString() });
+                        closeAdminPanel();
+                        setTimeout(() => showAdminPanel(), 100);
+                        return;
+                    }
+                    
+                    // Adicionar saldo ao usuário
+                    const amount = Number(deposit.amount) || 0;
+                    const currentBalance = Number(user.balance) || 0;
+                    const newBalance = currentBalance + amount;
+                    
+                    // Atualizar saldo do usuário
+                    await updateUser(user.id, { 
+                        balance: newBalance,
+                        depositHistory: [...(user.depositHistory || []), {
+                            amount: amount,
+                            date: new Date().toISOString(),
+                            status: 'approved',
+                            depositId: did
+                        }]
+                    });
+                    
+                    // Atualizar status do depósito
+                    await updateDeposit(did, { 
+                        status: 'approved', 
+                        approvedAt: new Date().toISOString(),
+                        processedBy: 'admin',
+                        userId: user.id
+                    });
+                    
+                    // Comissão para quem indicou (7%)
+                    if (user.referredBy) {
+                        const referrer = await getUserById(user.referredBy);
+                        if (referrer) {
+                            const commission = Math.round(amount * 0.07);
+                            const refBalance = Number(referrer.balance) || 0;
+                            const refCommissions = Number(referrer.commissionsPaid) || 0;
+                            
+                            await updateUser(user.referredBy, {
+                                balance: refBalance + commission,
+                                commissionsPaid: refCommissions + commission,
+                                commission: (Number(referrer.commission) || 0) + commission
+                            });
+                        }
+                    }
+                    
+                    alert(`✅ Depósito de ${amount.toLocaleString()} MT APROVADO!\n👤 Usuário: ${user.name}\n💰 Novo saldo: ${newBalance.toLocaleString()} MT`);
+                    
+                    // Se o usuário atual for o admin, atualizar o saldo exibido
+                    if (currentUserId === user.id) {
+                        currentUser.balance = newBalance;
+                        updateBalanceDisplay();
+                    }
+                    
+                    closeAdminPanel();
+                    setTimeout(() => showAdminPanel(), 300);
+                } catch (error) {
+                    console.error('Erro ao aprovar depósito:', error);
+                    alert('❌ Erro ao aprovar depósito: ' + error.message);
+                }
+            };
+            
+            window.rejectDepositAdmin = async function(did) {
+                if (!did) return;
+                if (confirm('Tem certeza que deseja REJEITAR este depósito?')) {
+                    try {
+                        await updateDeposit(did, { 
+                            status: 'rejected', 
+                            rejectedAt: new Date().toISOString(),
+                            processedBy: 'admin'
+                        });
+                        alert('❌ Depósito rejeitado!');
+                        closeAdminPanel();
+                        setTimeout(() => showAdminPanel(), 300);
+                    } catch (error) {
+                        alert('❌ Erro ao rejeitar: ' + error.message);
+                    }
+                }
+            };
+            
+            window.approveWithdrawAdmin = async function(wid) {
+                if (!wid) return;
+                try {
+                    await updateWithdrawal(wid, { 
+                        status: 'approved', 
+                        approvedAt: new Date().toISOString(),
+                        processedBy: 'admin'
+                    });
+                    alert('✅ Saque aprovado! (O saldo já foi debitado na solicitação)');
+                    closeAdminPanel();
+                    setTimeout(() => showAdminPanel(), 300);
+                } catch (error) {
+                    alert('❌ Erro ao aprovar: ' + error.message);
+                }
+            };
+            
+            window.rejectWithdrawAdmin = async function(wid) {
+                if (!wid) return;
+                if (confirm('Deseja REJEITAR e DEVOLVER o valor ao usuário?')) {
+                    try {
+                        const wSnap = await get(ref(db, 'withdrawals/' + wid));
+                        if (wSnap.exists()) {
+                            const w = wSnap.val();
+                            const allUsers = await getAllUsers();
+                            const user = allUsers.find(u => u.phone === w.phone);
+                            if (user) {
+                                const refundAmount = Number(w.amount) || 0;
+                                const currentBalance = Number(user.balance) || 0;
+                                await updateUser(user.id, { balance: currentBalance + refundAmount });
+                            }
+                        }
+                        await updateWithdrawal(wid, { 
+                            status: 'rejected', 
+                            rejectedAt: new Date().toISOString(),
+                            processedBy: 'admin'
+                        });
+                        alert('❌ Saque rejeitado e valor devolvido!');
+                        closeAdminPanel();
+                        setTimeout(() => showAdminPanel(), 300);
+                    } catch (error) {
+                        alert('❌ Erro ao rejeitar: ' + error.message);
+                    }
+                }
+            };
+            
+            window.editBalanceAdmin = async function(uid) {
+                const user = await getUserById(uid);
+                if (!user) return;
+                const newBalance = Number(prompt(`Saldo atual: ${(user.balance||0).toLocaleString()} MT\nNovo saldo:`, user.balance));
+                if (!isNaN(newBalance) && newBalance >= 0) {
+                    await updateUser(uid, { balance: newBalance });
+                    alert(`✅ Saldo atualizado para ${newBalance.toLocaleString()} MT`);
+                    closeAdminPanel();
+                    setTimeout(() => showAdminPanel(), 300);
+                }
+            };
+            
+            window.resetPassAdmin = async function(uid) {
+                const user = await getUserById(uid);
+                if (!user) return;
+                if (confirm(`Resetar senha de ${user.name}?`)) {
+                    const newPass = Math.random().toString(36).slice(-6);
+                    await updateUser(uid, { password: newPass });
+                    alert(`✅ Nova senha: ${newPass}`);
+                }
+            };
+            
+            window.toggleBlockAdmin = async function(uid) {
+                const user = await getUserById(uid);
+                if (!user) return;
+                const newBlocked = !user.blocked;
+                await updateUser(uid, { blocked: newBlocked });
+                alert(`${newBlocked ? '🚫 Bloqueado' : '✅ Desbloqueado'} com sucesso!`);
+                closeAdminPanel();
+                setTimeout(() => showAdminPanel(), 300);
+            };
+            
+            window.deleteUserAdmin = async function(uid) {
+                const user = await getUserById(uid);
+                if (!user) return;
+                if (confirm(`⚠️ DELETAR PERMANENTEMENTE ${user.name}?\nEsta ação é irreversível!`)) {
+                    if (confirm('CONFIRMAÇÃO FINAL: Deletar usuário?')) {
+                        await deleteUser(uid);
+                        alert('🗑️ Usuário deletado!');
+                        closeAdminPanel();
+                        setTimeout(() => showAdminPanel(), 300);
+                    }
+                }
+            };
+            
+            window.searchUsersAdmin = async function() {
+                const term = document.getElementById('searchUser')?.value?.toLowerCase() || '';
+                const allUsers = await getAllUsers();
+                const filtered = allUsers.filter(u => 
+                    u.name?.toLowerCase().includes(term) || 
+                    u.phone?.includes(term)
+                );
+                const userListEl = document.getElementById('userList');
+                if (userListEl) {
+                    userListEl.innerHTML = filtered.map(u=>`
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;margin:4px 0;background:var(--bg-input);border-radius:10px;">
+                            <div>
+                                <strong style="color:#fff;">${u.name}</strong><br>
+                                <small style="color:#c0c0c0;">📞 ${u.phone} | VIP: ${VIP_NAMES[u.vipLevel||0]||'Estagiário'} | 💰 ${(u.balance||0).toLocaleString()} MT</small>
+                                ${u.blocked?'<br><span style="color:red;">🚫 BLOQUEADO</span>':''}
+                            </div>
+                            <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                                <button class="admin-btn-sm btn-edit" onclick="window.editBalanceAdmin('${u.id}')">💰</button>
+                                <button class="admin-btn-sm btn-edit" onclick="window.resetPassAdmin('${u.id}')">🔑</button>
+                                <button class="admin-btn-sm ${u.blocked?'btn-approve':'btn-block'}" onclick="window.toggleBlockAdmin('${u.id}')">${u.blocked?'✅':'🚫'}</button>
+                                <button class="admin-btn-sm btn-delete" onclick="window.deleteUserAdmin('${u.id}')">🗑️</button>
+                            </div>
+                        </div>
+                    `).join('') || '<p style="color:#888;">Nenhum usuário encontrado</p>';
+                }
+            };
+            
+            window.listAllUsersAdmin = async function() {
+                const allUsers = await getAllUsers();
+                const userListEl = document.getElementById('userList');
+                if (userListEl) {
+                    userListEl.innerHTML = allUsers.map(u=>`
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;margin:4px 0;background:var(--bg-input);border-radius:10px;">
+                            <div>
+                                <strong style="color:#fff;">${u.name}</strong><br>
+                                <small style="color:#c0c0c0;">📞 ${u.phone} | VIP: ${VIP_NAMES[u.vipLevel||0]||'Estagiário'} | 💰 ${(u.balance||0).toLocaleString()} MT</small>
+                                ${u.blocked?'<br><span style="color:red;">🚫 BLOQUEADO</span>':''}
+                            </div>
+                            <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                                <button class="admin-btn-sm btn-edit" onclick="window.editBalanceAdmin('${u.id}')">💰</button>
+                                <button class="admin-btn-sm btn-edit" onclick="window.resetPassAdmin('${u.id}')">🔑</button>
+                                <button class="admin-btn-sm ${u.blocked?'btn-approve':'btn-block'}" onclick="window.toggleBlockAdmin('${u.id}')">${u.blocked?'✅':'🚫'}</button>
+                                <button class="admin-btn-sm btn-delete" onclick="window.deleteUserAdmin('${u.id}')">🗑️</button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            };
+            
+            window.changeAdminPassAdmin = function() {
+                let newPass = prompt('Nova senha admin:');
+                if (newPass && newPass.length >= 4) {
+                    adminPassword = newPass;
+                    alert('✅ Senha admin alterada!');
+                }
+            };
         }
 
         function closeAdminPanel() { 
@@ -1301,6 +1637,8 @@
                     saldoEl.style.color = '#32ff7e'; 
                     setTimeout(() => { saldoEl.style.transform = 'scale(1)'; saldoEl.style.color = '#ff8c00'; }, 500); 
                 }
+                currentUser.balance = novoSaldo;
+                updateBalanceDisplay();
             }
         };
 
@@ -1337,7 +1675,7 @@
             updateSocialButtons();
             await checkInviteBanner();
             startFloatingNotifications();
-            console.log('✅ NET FILMS PRONTO - CORES PERSONALIZÁVEIS');
+            console.log('✅ NET FILMS PRONTO - BOTÃO APROVAR CORRIGIDO');
         }
         init();
     </script>
