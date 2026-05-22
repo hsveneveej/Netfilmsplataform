@@ -430,12 +430,15 @@
                         balance: newBalance, vipLevel: Number(d.vipLevel) || 0, vipType: d.vipType || 'estagiario', 
                         vipStartDate: d.vipStartDate || new Date().toISOString(), vipLastCollect: d.vipLastCollect || null, 
                         invitedUsers: d.invitedUsers || [], invitedNames: d.invitedNames || [], 
+                        invitedDepositors: d.invitedDepositors || [], 
                         commission: Number(d.commission) || 0, totalInvited: Number(d.totalInvited) || 0, 
                         lastWithdrawDate: d.lastWithdrawDate || null, earningsHistory: d.earningsHistory || [], 
                         videoBonusHistory: d.videoBonusHistory || [], fundInvestments: d.fundInvestments || [], 
                         claimedRewards: d.claimedRewards || [], depositHistory: d.depositHistory || [], 
+                        withdrawalHistory: d.withdrawalHistory || [], 
                         lastVideoBonusDate: d.lastVideoBonusDate || null, purchasedVips: d.purchasedVips || [0], 
                         inviteCode: d.inviteCode || '', commissionsPaid: Number(d.commissionsPaid) || 0, 
+                        commissionHistory: d.commissionHistory || [], 
                         blocked: d.blocked || false, createdAt: d.createdAt || new Date().toISOString(), 
                         referredBy: d.referredBy || null
                     };
@@ -520,11 +523,11 @@
                 let newUser = {
                     name, phone, password: pass, balance: 0, vipLevel: 0, vipType: 'estagiario',
                     vipStartDate: new Date().toISOString(), vipLastCollect: null,
-                    invitedUsers: [], invitedNames: [], commission: 0, totalInvited: 0,
+                    invitedUsers: [], invitedNames: [], invitedDepositors: [], commission: 0, totalInvited: 0,
                     lastWithdrawDate: null, earningsHistory: [], videoBonusHistory: [],
                     fundInvestments: [], claimedRewards: [], depositHistory: [],
-                    lastVideoBonusDate: null, purchasedVips: [0], inviteCode,
-                    commissionsPaid: 0, blocked: false, createdAt: new Date().toISOString()
+                    withdrawalHistory: [], lastVideoBonusDate: null, purchasedVips: [0], inviteCode,
+                    commissionsPaid: 0, commissionHistory: [], blocked: false, createdAt: new Date().toISOString()
                 };
                 
                 const urlRef = new URLSearchParams(window.location.search).get('ref');
@@ -577,6 +580,7 @@
                     vipStartDate: userData.vipStartDate || new Date().toISOString(), 
                     vipLastCollect: userData.vipLastCollect || null, 
                     invitedUsers: userData.invitedUsers || [], invitedNames: userData.invitedNames || [], 
+                    invitedDepositors: userData.invitedDepositors || [], 
                     commission: Number(userData.commission) || 0, totalInvited: Number(userData.totalInvited) || 0, 
                     lastWithdrawDate: userData.lastWithdrawDate || null, 
                     earningsHistory: userData.earningsHistory || [], 
@@ -584,10 +588,12 @@
                     fundInvestments: userData.fundInvestments || [], 
                     claimedRewards: userData.claimedRewards || [], 
                     depositHistory: userData.depositHistory || [], 
+                    withdrawalHistory: userData.withdrawalHistory || [], 
                     lastVideoBonusDate: userData.lastVideoBonusDate || null, 
                     purchasedVips: userData.purchasedVips || [0], 
                     inviteCode: userData.inviteCode || '', 
                     commissionsPaid: Number(userData.commissionsPaid) || 0, 
+                    commissionHistory: userData.commissionHistory || [], 
                     blocked: userData.blocked || false, 
                     createdAt: userData.createdAt || new Date().toISOString(), 
                     referredBy: userData.referredBy || null
@@ -715,7 +721,15 @@
             if ((Number(currentUser.balance) || 0) < amount) { alert('Saldo insuficiente'); return; } 
             if (confirm(`💸 CONFIRMAR SAQUE\n\n📤 Solicitado: ${amount.toLocaleString()} MT\n📊 Taxa 10%: ${fee.toLocaleString()} MT\n💰 Recebe: ${net.toLocaleString()} MT`)) { 
                 currentUser.balance = (Number(currentUser.balance) || 0) - amount; 
-                currentUser.lastWithdrawDate = new Date().toISOString(); 
+                currentUser.lastWithdrawDate = new Date().toISOString();
+                const withdrawalRecord = {
+                    amount: amount,
+                    fee: fee,
+                    netAmount: net,
+                    date: new Date().toISOString(),
+                    status: 'pending'
+                };
+                currentUser.withdrawalHistory = [...(currentUser.withdrawalHistory || []), withdrawalRecord];
                 await saveWithdrawal({ phone: currentUser.phone, name: currentUser.name, amount, fee, netAmount: net, date: new Date().toISOString(), status: 'pending' }); 
                 const saved = await saveCurrentUser(); 
                 if (!saved) { return; } 
@@ -729,7 +743,7 @@
             let claimed = currentUser.claimedRewards || []; 
             let nextReward = REFERRAL_REWARDS.find(r => !claimed.includes(r.level)); 
             if (!nextReward) { alert('🏆 Todos completos!'); return; } 
-            let invitedCount = (currentUser.invitedUsers || []).length; 
+            let invitedCount = (currentUser.invitedDepositors || []).length; 
             if (invitedCount >= nextReward.required) { 
                 currentUser.balance = (Number(currentUser.balance) || 0) + nextReward.reward; 
                 if (!currentUser.claimedRewards) currentUser.claimedRewards = []; 
@@ -739,7 +753,7 @@
                 updateBalanceDisplay(); 
                 alert(`🎉 +${nextReward.reward} MT!`); 
                 showTab('convidar'); 
-            } else { alert(`📊 ${invitedCount}/${nextReward.required} convidados`); } 
+            } else { alert(`📊 ${invitedCount}/${nextReward.required} depositantes`); } 
         }
 
         function generateInviteLink() { let code = currentUser?.inviteCode || ''; let link = window.location.origin + window.location.pathname + '?ref=' + code; return { code, link }; }
@@ -848,10 +862,11 @@
 
         function renderConvidar() { 
             let invitedCount = (currentUser?.invitedUsers || []).length; 
+            let depositorCount = (currentUser?.invitedDepositors || []).length;
             let claimed = currentUser?.claimedRewards || []; 
             let nextReward = REFERRAL_REWARDS.find(r => !claimed.includes(r.level)); 
             let { code, link } = generateInviteLink(); 
-            return `<div style="background:var(--bg-card);padding:20px;border-radius:20px;border:2px solid #ff8c00;"><div style="text-align:center;color:#ff8c00;font-size:18px;font-weight:900;">🔗 SEU LINK DE CONVITE</div><div style="background:var(--bg-input);padding:12px;font-size:13px;text-align:center;border-radius:12px;margin:12px 0;color:#32ff7e;word-break:break-all;">${link}</div><div style="display:flex;gap:8px;margin-top:8px;"><button class="action-btn btn-gold" onclick="window.copyInviteLink()" style="flex:1;color:#000;">📋 COPIAR LINK</button><button class="action-btn btn-outline" onclick="window.copyInvite()" style="flex:1;color:#ff8c00;">📱 COPIAR CÓDIGO</button></div><div style="background:var(--bg-input);padding:10px;border-radius:10px;margin-top:12px;text-align:center;"><span style="color:#888;">🎫 Código: </span><strong style="color:#ff8c00;font-size:18px;">${code}</strong></div><div class="referral-grid" style="margin-top:16px;color:#ffffff;"><div style="color:#c0c0c0;">👥 Convidados: <strong style="color:#32ff7e;">${invitedCount}</strong></div><div style="color:#c0c0c0;">💰 Comissão: <strong style="color:#ff8c00;">7%</strong></div><div style="color:#c0c0c0;">📊 Comissões: <strong style="color:#ff0000;">${currentUser?.commissionsPaid||0}</strong></div></div>${nextReward?`<button class="action-btn btn-coletar" onclick="window.checkAndClaimReferralReward()" style="margin-top:12px;">🎁 COLETAR PRÊMIO Nível ${nextReward.level}</button>`:'<button class="action-btn" disabled style="opacity:0.5;margin-top:12px;background:#333;color:#666;">🏆 COMPLETO</button>'}</div><div style="margin-top:20px;"><h4 style="color:#ff8c00;text-align:center;font-size:18px;">🎯 NÍVEIS DE RECOMPENSA</h4><div class="referral-grid">${REFERRAL_REWARDS.map(r=>{let ic=claimed.includes(r.level);let inn=nextReward?.level===r.level;return`<div class="reward-card ${ic?'claimed':''}" style="${inn?'border-color:#32ff7e;box-shadow:0 0 15px rgba(50,255,126,0.3);':''}"><div style="font-size:28px;">${r.icon}</div><div style="font-weight:900;color:#ffffff;font-size:14px;">${r.name}</div><div style="color:#c0c0c0;">👥 ${r.required}</div><div style="color:#ff8c00;font-weight:900;">💰 +${r.reward} MT</div><div style="font-size:11px;color:${ic?'#32ff7e':(inn?'#ff8c00':'#888')};">${ic?'✅ RECEBIDO':(inn?'🟡 PRÓXIMO':'🔒 BLOQUEADO')}</div></div>`;}).join('')}</div></div><div style="margin-top:20px;background:var(--bg-card);padding:16px;border-radius:16px;"><strong style="color:#ff8c00;">📋 Convidados (${invitedCount})</strong>${(currentUser?.invitedNames||[]).length===0?'<p style="color:#888;">Nenhum</p>':(currentUser?.invitedNames||[]).map(n=>`<div class="invited-item">👤 <span style="color:#ffffff;">${n}</span></div>`).join('')}</div>`; 
+            return `<div style="background:var(--bg-card);padding:20px;border-radius:20px;border:2px solid #ff8c00;"><div style="text-align:center;color:#ff8c00;font-size:18px;font-weight:900;">🔗 SEU LINK DE CONVITE</div><div style="background:var(--bg-input);padding:12px;font-size:13px;text-align:center;border-radius:12px;margin:12px 0;color:#32ff7e;word-break:break-all;">${link}</div><div style="display:flex;gap:8px;margin-top:8px;"><button class="action-btn btn-gold" onclick="window.copyInviteLink()" style="flex:1;color:#000;">📋 COPIAR LINK</button><button class="action-btn btn-outline" onclick="window.copyInvite()" style="flex:1;color:#ff8c00;">📱 COPIAR CÓDIGO</button></div><div style="background:var(--bg-input);padding:10px;border-radius:10px;margin-top:12px;text-align:center;"><span style="color:#888;">🎫 Código: </span><strong style="color:#ff8c00;font-size:18px;">${code}</strong></div><div class="referral-grid" style="margin-top:16px;color:#ffffff;"><div style="color:#c0c0c0;">👥 Convidados: <strong style="color:#32ff7e;">${invitedCount}</strong></div><div style="color:#c0c0c0;">💰 Depositantes: <strong style="color:#ff8c00;">${depositorCount}</strong></div><div style="color:#c0c0c0;">💸 Comissão: <strong style="color:#ff8c00;">7%</strong></div><div style="color:#c0c0c0;">📊 Comissões: <strong style="color:#ff0000;">${(currentUser?.commissionsPaid||0).toLocaleString()} MT</strong></div></div>${nextReward?`<button class="action-btn btn-coletar" onclick="window.checkAndClaimReferralReward()" style="margin-top:12px;">🎁 COLETAR PRÊMIO Nível ${nextReward.level}</button>`:'<button class="action-btn" disabled style="opacity:0.5;margin-top:12px;background:#333;color:#666;">🏆 COMPLETO</button>'}</div><div style="margin-top:20px;"><h4 style="color:#ff8c00;text-align:center;font-size:18px;">🎯 NÍVEIS DE RECOMPENSA</h4><div class="referral-grid">${REFERRAL_REWARDS.map(r=>{let ic=claimed.includes(r.level);let inn=nextReward?.level===r.level;return`<div class="reward-card ${ic?'claimed':''}" style="${inn?'border-color:#32ff7e;box-shadow:0 0 15px rgba(50,255,126,0.3);':''}"><div style="font-size:28px;">${r.icon}</div><div style="font-weight:900;color:#ffffff;font-size:14px;">${r.name}</div><div style="color:#c0c0c0;">👥 ${r.required} depósitos</div><div style="color:#ff8c00;font-weight:900;">💰 +${r.reward} MT</div><div style="font-size:11px;color:${ic?'#32ff7e':(inn?'#ff8c00':'#888')};">${ic?'✅ RECEBIDO':(inn?'🟡 PRÓXIMO':'🔒 BLOQUEADO')}</div></div>`;}).join('')}</div></div><div style="margin-top:20px;background:var(--bg-card);padding:16px;border-radius:16px;"><strong style="color:#ff8c00;">📋 Convidados (${invitedCount})</strong>${(currentUser?.invitedNames||[]).length===0?'<p style="color:#888;">Nenhum</p>':(currentUser?.invitedNames||[]).map(n=>`<div class="invited-item">👤 <span style="color:#ffffff;">${n}</span></div>`).join('')}</div>`; 
         }
 
         async function renderSaques() { 
@@ -1338,11 +1353,10 @@
                 }
             };
             
-            // ========== CORREÇÃO PRINCIPAL: APROVAR DEPÓSITO ==========
+            // ========== CORREÇÃO PRINCIPAL: APROVAR DEPÓSITO COM COMISSÃO 7% E REGISTRO DE DEPOSITANTES ==========
             window.approveDepositAdmin = async function(did) {
                 if (!did) { alert('❌ ID do depósito inválido'); return; }
                 try {
-                    // Buscar o depósito
                     const depositSnap = await get(ref(db, 'deposits/' + did));
                     if (!depositSnap.exists()) {
                         alert('❌ Depósito não encontrado no banco de dados!');
@@ -1350,7 +1364,6 @@
                     }
                     const deposit = depositSnap.val();
                     
-                    // Verificar se já foi processado
                     if (deposit.status !== 'pending') {
                         alert('⚠️ Este depósito já foi processado! Status: ' + deposit.status);
                         closeAdminPanel();
@@ -1358,36 +1371,33 @@
                         return;
                     }
                     
-                    // Encontrar usuário pelo telefone
                     const allUsers = await getAllUsers();
                     const user = allUsers.find(u => u.phone === deposit.phone);
                     
                     if (!user) {
                         alert('⚠️ Usuário não encontrado para o telefone: ' + deposit.phone);
-                        // Marcar como aprovado mesmo sem usuário
                         await updateDeposit(did, { status: 'approved', approvedAt: new Date().toISOString() });
                         closeAdminPanel();
                         setTimeout(() => showAdminPanel(), 100);
                         return;
                     }
                     
-                    // Adicionar saldo ao usuário
                     const amount = Number(deposit.amount) || 0;
                     const currentBalance = Number(user.balance) || 0;
                     const newBalance = currentBalance + amount;
                     
-                    // Atualizar saldo do usuário
+                    const depositRecord = {
+                        amount: amount,
+                        date: new Date().toISOString(),
+                        status: 'approved',
+                        depositId: did
+                    };
+                    
                     await updateUser(user.id, { 
                         balance: newBalance,
-                        depositHistory: [...(user.depositHistory || []), {
-                            amount: amount,
-                            date: new Date().toISOString(),
-                            status: 'approved',
-                            depositId: did
-                        }]
+                        depositHistory: [...(user.depositHistory || []), depositRecord]
                     });
                     
-                    // Atualizar status do depósito
                     await updateDeposit(did, { 
                         status: 'approved', 
                         approvedAt: new Date().toISOString(),
@@ -1395,25 +1405,43 @@
                         userId: user.id
                     });
                     
-                    // Comissão para quem indicou (7%)
+                    // Comissão de 7% automática + registro de depositante
                     if (user.referredBy) {
                         const referrer = await getUserById(user.referredBy);
                         if (referrer) {
-                            const commission = Math.round(amount * 0.07);
-                            const refBalance = Number(referrer.balance) || 0;
-                            const refCommissions = Number(referrer.commissionsPaid) || 0;
+                            const commission = Math.floor(amount * 0.07);
                             
-                            await updateUser(user.referredBy, {
-                                balance: refBalance + commission,
-                                commissionsPaid: refCommissions + commission,
-                                commission: (Number(referrer.commission) || 0) + commission
-                            });
+                            if (commission > 0) {
+                                const refBalance = Number(referrer.balance) || 0;
+                                const refCommissions = Number(referrer.commissionsPaid) || 0;
+                                
+                                const commissionRecord = {
+                                    amount: commission,
+                                    date: new Date().toISOString(),
+                                    fromUser: user.name,
+                                    fromPhone: user.phone,
+                                    depositAmount: amount,
+                                    type: 'Comissão 7%'
+                                };
+                                
+                                const depositorsList = referrer.invitedDepositors || [];
+                                if (!depositorsList.includes(deposit.phone)) {
+                                    depositorsList.push(deposit.phone);
+                                }
+                                
+                                await updateUser(user.referredBy, {
+                                    balance: refBalance + commission,
+                                    commissionsPaid: refCommissions + commission,
+                                    commission: (Number(referrer.commission) || 0) + commission,
+                                    commissionHistory: [...(referrer.commissionHistory || []), commissionRecord],
+                                    invitedDepositors: depositorsList
+                                });
+                            }
                         }
                     }
                     
                     alert(`✅ Depósito de ${amount.toLocaleString()} MT APROVADO!\n👤 Usuário: ${user.name}\n💰 Novo saldo: ${newBalance.toLocaleString()} MT`);
                     
-                    // Se o usuário atual for o admin, atualizar o saldo exibido
                     if (currentUserId === user.id) {
                         currentUser.balance = newBalance;
                         updateBalanceDisplay();
@@ -1675,7 +1703,7 @@
             updateSocialButtons();
             await checkInviteBanner();
             startFloatingNotifications();
-            console.log('✅ NET FILMS PRONTO - BOTÃO APROVAR CORRIGIDO');
+            console.log('✅ NET FILMS PRONTO - SISTEMA DE RECOMPENSAS CORRIGIDO');
         }
         init();
     </script>
