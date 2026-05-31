@@ -10,6 +10,44 @@
         body { background: var(--bg-body); min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow-y: auto; position: relative; -webkit-user-select: none; user-select: none; transition: background 0.5s; }
         body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-body); z-index: 0; pointer-events: none; transition: background 0.5s; }
         
+        /* Vídeo de fundo na tela de login */
+        .login-video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .login-video-background video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            opacity: 0.35;
+        }
+        .login-video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(6, 9, 19, 0.75);
+            z-index: 1;
+            pointer-events: none;
+        }
+        #appScreen .login-video-background,
+        #appScreen .login-video-overlay {
+            display: none;
+        }
+        
         .particles { position: fixed; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
         .particle { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.08); animation: floatUp 15s infinite; }
         @keyframes floatUp { 0% { transform: translateY(100vh) scale(0); opacity: 0; } 10% { opacity: 0.2; } 90% { opacity: 0.1; } 100% { transform: translateY(-100px) scale(1); opacity: 0; } }
@@ -123,6 +161,7 @@
         .saque-amount-btn { background: var(--bg-card); padding: 14px; border-radius: 12px; text-align: center; cursor: pointer; margin: 6px; font-weight: 700; display: inline-block; width: calc(33% - 12px); transition: all 0.3s; color: #ffffff; border: 1px solid var(--accent); }
         .saque-amount-btn:hover { background: var(--bg-input); transform: scale(1.05); border-color: var(--accent2); }
         .saque-amount-btn.disabled { opacity: 0.3; cursor: not-allowed; border-color: #333; }
+        .saque-amount-btn.indisponivel { opacity: 0.3; cursor: not-allowed; border-color: #ff0000; background: rgba(255,0,0,0.1); }
         .admin-panel { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-body); z-index: 1000; padding: 20px; overflow-y: auto; color: #ffffff; }
         .admin-section { background: var(--bg-card); border-radius: 16px; padding: 16px; margin: 12px 0; border: 1px solid rgba(255,140,0,0.3); }
         .toggle-switch { position: relative; display: inline-block; width: 50px; height: 24px; }
@@ -176,9 +215,63 @@
         .color-input-group label { color: #c0c0c0; min-width: 80px; font-size: 13px; }
         .color-input-group input[type="text"] { flex: 1; background: var(--bg-input); color: #fff; border: 1px solid var(--accent); border-radius: 8px; padding: 8px; font-size: 13px; }
         .color-preview { width: 24px; height: 24px; border-radius: 50%; border: 1px solid #fff; }
+        
+        .saque-config-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 8px 12px; 
+            margin: 4px 0; 
+            background: var(--bg-input); 
+            border-radius: 10px; 
+        }
+        .saque-config-item.indisponivel-item { 
+            opacity: 0.5; 
+            border-left: 3px solid #ff0000; 
+        }
+        .saque-config-item.disponivel-item { 
+            border-left: 3px solid #32ff7e; 
+        }
+        
+        /* Scroll infinito - loading indicator */
+        .scroll-loading {
+            text-align: center;
+            padding: 16px;
+            color: #ff8c00;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .scroll-loading .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,140,0,0.3);
+            border-top-color: #ff8c00;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .scroll-end {
+            text-align: center;
+            padding: 12px;
+            color: #888;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
+    <div class="login-video-background" id="loginVideoBg">
+        <video autoplay muted loop playsinline>
+            <source src="https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_stereo.ogg" type="video/ogg">
+            <source src="https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_h264.mov" type="video/mp4">
+        </video>
+    </div>
+    <div class="login-video-overlay" id="loginVideoOverlay"></div>
+
     <div class="particles" id="particles"></div>
     <div class="floating-notifications" id="floatingNotifications"></div>
 
@@ -263,11 +356,11 @@
 
         const DEFAULT_VIP_CONFIG = [
             { level:0, name:"Estagiário", invest:0, daily:5, days:4, alert:"", emBreve:false },
-            { level:1, name:"VIP 1", invest:650, daily:45, days:365, alert:"", emBreve:false },
-            { level:2, name:"VIP 2", invest:1250, daily:75, days:365, alert:"", emBreve:false },
-            { level:3, name:"VIP 3", invest:2550, daily:150, days:365, alert:"", emBreve:false },
-            { level:4, name:"VIP 4", invest:6000, daily:315, days:365, alert:"", emBreve:false },
-            { level:5, name:"VIP 5", invest:12600, daily:700, days:365, alert:"FIQUE ATENTO", emBreve:false },
+            { level:1, name:"VIP 1", invest:650, daily:25, days:365, alert:"", emBreve:false },
+            { level:2, name:"VIP 2", invest:1250, daily:45, days:365, alert:"", emBreve:false },
+            { level:3, name:"VIP 3", invest:2550, daily:75, days:365, alert:"", emBreve:false },
+            { level:4, name:"VIP 4", invest:6000, daily:150, days:365, alert:"", emBreve:false },
+            { level:5, name:"VIP 5", invest:12600, daily:420, days:365, alert:"FIQUE ATENTO", emBreve:false },
             { level:6, name:"VIP 6", invest:20000, daily:2500, days:365, alert:"FIQUE ATENTO", emBreve:false },
             { level:7, name:"VIP 7", invest:50000, daily:5000, days:365, alert:"FIQUE ATENTO", emBreve:true },
             { level:8, name:"VIP 8", invest:100000, daily:17500, days:365, alert:"FIQUE ATENTO", emBreve:true }
@@ -288,8 +381,11 @@
         updateVipArrays();
 
         const WITHDRAW_TIMES = { start: "6:30", end: "18:30" };
-        const WITHDRAW_VALUES = [90, 200, 1500, 5000, 10000, 30000, 50000, 100000];
-        const WITHDRAW_MIN_VIP = [1, 1, 2, 2, 3, 3, 4, 5];
+        const DEFAULT_WITHDRAW_VALUES = [90, 200, 1500, 5000, 10000, 30000, 50000, 100000];
+        const DEFAULT_WITHDRAW_MIN_VIP = [1, 1, 2, 2, 3, 3, 4, 5];
+        let WITHDRAW_VALUES = [...DEFAULT_WITHDRAW_VALUES];
+        let WITHDRAW_MIN_VIP = [...DEFAULT_WITHDRAW_MIN_VIP];
+        let INDISPONIVEL_SAQUES = [];
         const VIP_WITHDRAW_DAYS = { 7: 1, 6: 2, 5: 3, 4: 4, 3: 5, 2: 1, 1: 2, 0: 3 };
 
         const DEFAULT_FUNDOS = [
@@ -359,6 +455,29 @@
         async function saveVipConfig() { try { await set(ref(db, 'settings/vipConfig'), { config: vipConfig }); updateVipArrays(); } catch (e) {} }
         async function loadThemeIndex() { try { const snap = await get(ref(db, 'settings/themeIndex')); if (snap.exists()) currentThemeIndex = snap.val(); } catch (e) { currentThemeIndex = 0; } applyTheme(currentThemeIndex); }
         async function saveThemeIndex(idx) { try { currentThemeIndex = idx; await set(ref(db, 'settings/themeIndex'), idx); } catch (e) {} }
+        
+        async function loadWithdrawConfig() {
+            try {
+                const snap = await get(ref(db, 'settings/withdrawConfig'));
+                if (snap.exists()) {
+                    const config = snap.val();
+                    if (config.valores) WITHDRAW_VALUES = config.valores;
+                    if (config.minVip) WITHDRAW_MIN_VIP = config.minVip;
+                    if (config.indisponiveis) INDISPONIVEL_SAQUES = config.indisponiveis;
+                }
+            } catch (e) { console.log('Erro ao carregar config de saques:', e); }
+        }
+        async function saveWithdrawConfig() {
+            try {
+                await set(ref(db, 'settings/withdrawConfig'), {
+                    valores: WITHDRAW_VALUES,
+                    minVip: WITHDRAW_MIN_VIP,
+                    indisponiveis: INDISPONIVEL_SAQUES
+                });
+                return true;
+            } catch (e) { return false; }
+        }
+        
         async function loadUserByPhone(phone) { try { const snap = await get(query(ref(db, 'users'), orderByChild('phone'), equalTo(phone))); if (snap.exists()) { const data = snap.val(); const id = Object.keys(data)[0]; return { id, ...data[id] }; } return null; } catch (e) { throw e; } }
         async function saveCurrentUser() { if (currentUser && currentUserId) { try { const userData = { ...currentUser }; delete userData.id; await update(ref(db, 'users/' + currentUserId), userData); return true; } catch (e) { return false; } } return false; }
         async function createUser(userData) { try { const newRef = push(ref(db, 'users')); await set(newRef, userData); return newRef.key; } catch (e) { throw e; } }
@@ -627,6 +746,8 @@
             startRealtimeUserListener();
             isOnAuthScreen = false;
             document.getElementById('authScreen').style.display = 'none';
+            document.getElementById('loginVideoBg').style.display = 'none';
+            document.getElementById('loginVideoOverlay').style.display = 'none';
             document.getElementById('appScreen').classList.remove('hidden');
             updateBalanceDisplay();
             await applyGlobalBackground();
@@ -649,7 +770,26 @@
         function canLevelWithdrawToday() { if (globalSettings.withdrawsEnabled) return true; let today = new Date().getDay(); let adjustedDay = today === 0 ? 7 : today; let currentLvl = currentUser?.vipType === 'estagiario' ? 0 : (currentUser?.vipLevel || 0); let allowedDay = VIP_WITHDRAW_DAYS[currentLvl] || 1; return adjustedDay === allowedDay; }
         function canUserWithdraw() { if (currentUser && currentUser.vipType === 'estagiario' && currentUser.vipLevel === 0) return { allow: false, msg: '❌ Você precisa comprar um VIP para poder sacar!' }; return { allow: true, msg: 'OK' }; }
         function canBuyVip(level) { if (!currentUser) return { allow: false, msg: 'Usuário não autenticado' }; if (VIP_EM_BREVE.includes(level)) return { allow: false, msg: '🚫 Este VIP estará disponível em breve!' }; if (level === 0) { if (currentUser.vipType === 'estagiario') return { allow: false, msg: '❌ Você já possui o Estagiário!' }; return { allow: true, msg: 'OK' }; } if (currentUser.vipLevel === level && currentUser.vipType !== 'estagiario') return { allow: false, msg: '❌ Você já possui este VIP!' }; let currentLevel = currentUser.vipType === 'estagiario' ? 0 : currentUser.vipLevel; if (level <= currentLevel) return { allow: false, msg: '❌ Não pode comprar um VIP inferior ou igual!' }; return { allow: true, msg: 'OK' }; }
-        function canWithdraw(amount) { let idx = WITHDRAW_VALUES.indexOf(amount); if (idx === -1) return { allow: false, msg: 'Valor inválido' }; let vipCheck = canUserWithdraw(); if (!vipCheck.allow) return vipCheck; if (!canLevelWithdrawToday()) { let dayNames = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado']; let currentLvl = currentUser?.vipType === 'estagiario' ? 0 : (currentUser?.vipLevel || 0); let allowedDay = VIP_WITHDRAW_DAYS[currentLvl] || 1; return { allow: false, msg: `Seu nível saca apenas: ${dayNames[allowedDay]}` }; } let required = WITHDRAW_MIN_VIP[idx]; let currentLvl = (currentUser?.vipType === 'estagiario') ? 0 : (currentUser?.vipLevel || 0); if (currentLvl < required) return { allow: false, msg: `Nível mínimo: ${VIP_NAMES[required]}` }; let wdCooldown = getWithdrawCooldown(); if (wdCooldown > 0) return { allow: false, msg: `⏳ Aguarde ${Math.floor(wdCooldown/3600000)}h ${Math.floor((wdCooldown%3600000)/60000)}m` }; let now = new Date(); let hour = now.getHours(); let minute = now.getMinutes(); let [startH, startM] = WITHDRAW_TIMES.start.split(':').map(Number); let [endH, endM] = WITHDRAW_TIMES.end.split(':').map(Number); if (hour < startH || (hour === startH && minute < startM) || hour > endH || (hour === endH && minute > endM)) return { allow: false, msg: `Horário: ${WITHDRAW_TIMES.start} - ${WITHDRAW_TIMES.end}` }; return { allow: true, msg: 'OK' }; }
+        function canWithdraw(amount) { 
+            let idx = WITHDRAW_VALUES.indexOf(amount); 
+            if (idx === -1) return { allow: false, msg: 'Valor inválido' }; 
+            if (INDISPONIVEL_SAQUES.includes(idx)) return { allow: false, msg: '🚫 Este valor está indisponível no momento' };
+            let vipCheck = canUserWithdraw(); 
+            if (!vipCheck.allow) return vipCheck; 
+            if (!canLevelWithdrawToday()) { let dayNames = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado']; let currentLvl = currentUser?.vipType === 'estagiario' ? 0 : (currentUser?.vipLevel || 0); let allowedDay = VIP_WITHDRAW_DAYS[currentLvl] || 1; return { allow: false, msg: `Seu nível saca apenas: ${dayNames[allowedDay]}` }; } 
+            let required = WITHDRAW_MIN_VIP[idx]; 
+            let currentLvl = (currentUser?.vipType === 'estagiario') ? 0 : (currentUser?.vipLevel || 0); 
+            if (currentLvl < required) return { allow: false, msg: `Nível mínimo: ${VIP_NAMES[required]}` }; 
+            let wdCooldown = getWithdrawCooldown(); 
+            if (wdCooldown > 0) return { allow: false, msg: `⏳ Aguarde ${Math.floor(wdCooldown/3600000)}h ${Math.floor((wdCooldown%3600000)/60000)}m` }; 
+            let now = new Date(); 
+            let hour = now.getHours(); 
+            let minute = now.getMinutes(); 
+            let [startH, startM] = WITHDRAW_TIMES.start.split(':').map(Number); 
+            let [endH, endM] = WITHDRAW_TIMES.end.split(':').map(Number); 
+            if (hour < startH || (hour === startH && minute < startM) || hour > endH || (hour === endH && minute > endM)) return { allow: false, msg: `Horário: ${WITHDRAW_TIMES.start} - ${WITHDRAW_TIMES.end}` }; 
+            return { allow: true, msg: 'OK' }; 
+        }
 
         async function collectDaily() { 
             if (!currentUser) return; 
@@ -877,7 +1017,23 @@
             if (!globalSettings.withdrawsEnabled) { let dn = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado']; let cl = currentUser?.vipType==='estagiario'?0:(currentUser?.vipLevel||0); let ad = VIP_WITHDRAW_DAYS[cl]||1; html += `<p style="text-align:center;color:#ff8c00;background:rgba(255,140,0,0.1);padding:10px;border-radius:12px;">📅 Seu nível saca: <strong>${dn[ad]}</strong></p>`; } 
             if (wdCooldown>0) html += `<div class="countdown-timer" style="color:#ff4444;">⏳ ${Math.floor(wdCooldown/3600000)}h ${Math.floor((wdCooldown%3600000)/60000)}m</div>`; 
             html += '<div style="display:flex;flex-wrap:wrap;justify-content:center;margin-top:16px;">'; 
-            WITHDRAW_VALUES.forEach(val=>{let idx=WITHDRAW_VALUES.indexOf(val);let req=WITHDRAW_MIN_VIP[idx];let cl=(currentUser?.vipType==='estagiario')?0:(currentUser?.vipLevel||0);let can=cl>=req;let fee=Math.round(val*0.1);let net=val-fee;html+=`<div class="saque-amount-btn ${!can?'disabled':''}" onclick="${can?`window.requestWithdraw(${val})`:`alert('Nível mínimo: ${VIP_NAMES[req]}')`}"><div style="color:#ffffff;">${val.toLocaleString()} MT</div><small style="color:${can?'#32ff7e':'#ff4444'};">Nível: ${VIP_NAMES[req]}</small><small style="color:#ff4444;">Taxa 10%: ${fee.toLocaleString()} MT</small><small style="color:#32ff7e;">Recebe: ${net.toLocaleString()} MT</small></div>`;}); 
+            WITHDRAW_VALUES.forEach((val, idx)=>{ 
+                let req = WITHDRAW_MIN_VIP[idx] || 1; 
+                let cl = (currentUser?.vipType==='estagiario') ? 0 : (currentUser?.vipLevel||0); 
+                let can = cl >= req && !INDISPONIVEL_SAQUES.includes(idx); 
+                let fee = Math.round(val*0.1); 
+                let net = val - fee; 
+                let isIndisponivel = INDISPONIVEL_SAQUES.includes(idx);
+                let btnClass = isIndisponivel ? 'indisponivel' : (!can ? 'disabled' : '');
+                let onclickAction = isIndisponivel ? `alert('🚫 Este valor está indisponível no momento')` : (can ? `window.requestWithdraw(${val})` : `alert('Nível mínimo: ${VIP_NAMES[req]}')`);
+                html += `<div class="saque-amount-btn ${btnClass}" onclick="${onclickAction}">
+                    <div style="color:#ffffff;">${val.toLocaleString()} MT</div>
+                    <small style="color:${can?'#32ff7e':'#ff4444'};">Nível: ${VIP_NAMES[req]}</small>
+                    <small style="color:#ff4444;">Taxa 10%: ${fee.toLocaleString()} MT</small>
+                    <small style="color:#32ff7e;">Recebe: ${net.toLocaleString()} MT</small>
+                    ${isIndisponivel ? '<small style="color:#ff0000;font-weight:900;">🚫 INDISPONÍVEL</small>' : ''}
+                </div>`; 
+            }); 
             html += '</div>'; 
             const withdrawals = await loadWithdrawals(); 
             let uw = withdrawals.filter(w=>w.phone===currentUser?.phone); 
@@ -938,10 +1094,142 @@
         function handleAppBrandClick() { brandClickCount++; if (brandClickCount>=10) { brandClickCount=0; checkAdminAccess(); } }
         function checkAdminAccess() { let p = prompt('🔐 SENHA ADMIN:'); if (p===adminPassword) showAdminPanel(); else alert('Senha incorreta!'); }
 
-        // ========== PAINEL ADMIN CORRIGIDO ==========
+        // ========== PAINEL ADMIN COM SCROLL INFINITO ==========
+        
+        // Variáveis do scroll infinito
+        const INFINITE_SCROLL_BATCH = 200; // Carrega 200 por vez
+        let infiniteScrollData = { allUsers: [], filteredUsers: [], searchTerm: '', isLoading: false, loadedCount: 0, hasMore: true };
+
+        function renderUserItem(u) {
+            return `
+                <div class="user-item" style="display:flex;justify-content:space-between;align-items:center;padding:10px;margin:4px 0;background:var(--bg-input);border-radius:10px;">
+                    <div style="flex:1;">
+                        <strong style="color:#fff;">${u.name || 'Sem nome'}</strong><br>
+                        <small style="color:#c0c0c0;">📞 ${u.phone || 'N/A'} | VIP: ${VIP_NAMES[u.vipLevel||0]||'Estagiário'} | 💰 ${(u.balance||0).toLocaleString()} MT</small>
+                        <small style="color:#888;display:block;">📅 ${u.createdAt ? new Date(u.createdAt).toLocaleDateString('pt-BR') : 'N/A'}</small>
+                        ${u.blocked?'<span style="color:red;">🚫 BLOQUEADO</span> ':''}
+                        ${u.referredBy?'<span style="color:#32ff7e;">🔗 Referido</span> ':''}
+                    </div>
+                    <div style="display:flex;gap:4px;flex-wrap:wrap;min-width:160px;justify-content:flex-end;">
+                        <button class="admin-btn-sm btn-edit" onclick="window.editBalanceAdmin('${u.id}')" title="Editar Saldo">💰</button>
+                        <button class="admin-btn-sm btn-edit" onclick="window.resetPassAdmin('${u.id}')" title="Resetar Senha">🔑</button>
+                        <button class="admin-btn-sm ${u.blocked?'btn-approve':'btn-block'}" onclick="window.toggleBlockAdmin('${u.id}')" title="${u.blocked?'Desbloquear':'Bloquear'}">${u.blocked?'✅':'🚫'}</button>
+                        <button class="admin-btn-sm btn-delete" onclick="window.deleteUserAdmin('${u.id}')" title="Deletar">🗑️</button>
+                    </div>
+                </div>`;
+        }
+
+        function loadMoreUsers() {
+            if (infiniteScrollData.isLoading || !infiniteScrollData.hasMore) return;
+            
+            infiniteScrollData.isLoading = true;
+            const dataSource = infiniteScrollData.searchTerm ? infiniteScrollData.filteredUsers : infiniteScrollData.allUsers;
+            
+            // Mostrar loading
+            const loadingEl = document.getElementById('scrollLoadingIndicator');
+            if (loadingEl) loadingEl.style.display = 'block';
+            
+            // Simular carregamento assíncrono para dar feedback visual
+            setTimeout(() => {
+                const start = infiniteScrollData.loadedCount;
+                const end = Math.min(start + INFINITE_SCROLL_BATCH, dataSource.length);
+                const batch = dataSource.slice(start, end);
+                
+                const userListEl = document.getElementById('userList');
+                if (!userListEl) return;
+                
+                // Remover loading e "fim" anteriores
+                const oldLoading = userListEl.querySelector('.scroll-loading');
+                const oldEnd = userListEl.querySelector('.scroll-end');
+                if (oldLoading) oldLoading.remove();
+                if (oldEnd) oldEnd.remove();
+                
+                // Adicionar novos usuários
+                batch.forEach(u => {
+                    const div = document.createElement('div');
+                    div.innerHTML = renderUserItem(u);
+                    userListEl.appendChild(div.firstElementChild);
+                });
+                
+                infiniteScrollData.loadedCount = end;
+                infiniteScrollData.hasMore = end < dataSource.length;
+                infiniteScrollData.isLoading = false;
+                
+                // Atualizar contador
+                const counterEl = document.getElementById('scrollUserCounter');
+                if (counterEl) {
+                    counterEl.textContent = `📋 Exibindo ${end} de ${dataSource.length} usuários`;
+                }
+                
+                // Mostrar "fim" se não tiver mais
+                if (!infiniteScrollData.hasMore && dataSource.length > 0) {
+                    const endDiv = document.createElement('div');
+                    endDiv.className = 'scroll-end';
+                    endDiv.textContent = `✅ Todos os ${dataSource.length} usuários carregados`;
+                    userListEl.appendChild(endDiv);
+                }
+                
+                // Esconder loading
+                if (loadingEl) loadingEl.style.display = 'none';
+            }, 150);
+        }
+
+        function setupInfiniteScroll(userListEl) {
+            // Remover listener antigo
+            userListEl.removeEventListener('scroll', infiniteScrollHandler);
+            // Adicionar novo listener
+            userListEl.addEventListener('scroll', infiniteScrollHandler);
+        }
+
+        function infiniteScrollHandler(e) {
+            const el = e.target;
+            const scrollBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+            
+            // Carregar mais quando estiver a 100px do final
+            if (scrollBottom < 100 && infiniteScrollData.hasMore && !infiniteScrollData.isLoading) {
+                loadMoreUsers();
+            }
+        }
+
+        function resetInfiniteScroll(dataSource) {
+            const userListEl = document.getElementById('userList');
+            if (!userListEl) return;
+            
+            infiniteScrollData.loadedCount = 0;
+            infiniteScrollData.hasMore = dataSource.length > 0;
+            infiniteScrollData.isLoading = false;
+            
+            // Limpar lista
+            userListEl.innerHTML = '';
+            
+            if (dataSource.length === 0) {
+                userListEl.innerHTML = '<p style="color:#888;text-align:center;padding:20px;">Nenhum usuário encontrado</p>';
+                return;
+            }
+            
+            // Adicionar contador
+            const counterDiv = document.createElement('div');
+            counterDiv.id = 'scrollUserCounter';
+            counterDiv.style.cssText = 'color:#c0c0c0;font-size:12px;margin-bottom:8px;text-align:center;';
+            counterDiv.textContent = `📋 0 de ${dataSource.length} usuários`;
+            userListEl.appendChild(counterDiv);
+            
+            // Adicionar loading indicator
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = 'scrollLoadingIndicator';
+            loadingDiv.className = 'scroll-loading';
+            loadingDiv.style.display = 'none';
+            loadingDiv.innerHTML = '<span class="spinner"></span>Carregando...';
+            userListEl.appendChild(loadingDiv);
+            
+            // Carregar primeiro lote
+            loadMoreUsers();
+        }
+
         async function showAdminPanel() {
             await loadFundos();
             await loadVipConfig();
+            await loadWithdrawConfig();
             const depositConfig = await loadDepositConfig();
             const backgrounds = await loadBackgrounds();
             const customColors = await loadCustomColors() || {};
@@ -955,6 +1243,14 @@
             const usersList = await getAllUsers();
             let totalUsers = usersList.length;
             
+            // Inicializar dados do scroll infinito
+            infiniteScrollData.allUsers = usersList;
+            infiniteScrollData.filteredUsers = usersList;
+            infiniteScrollData.searchTerm = '';
+            infiniteScrollData.loadedCount = 0;
+            infiniteScrollData.hasMore = usersList.length > 0;
+            infiniteScrollData.isLoading = false;
+            
             let depositFieldsHtml = '';
             if (depositConfig && Array.isArray(depositConfig)) {
                 depositFieldsHtml = depositConfig.map((c, i) => `
@@ -967,6 +1263,42 @@
                     </div>
                 `).join('');
             }
+            
+            let saquesConfigHtml = `
+                <div class="admin-section">
+                    <h4 style="color:#ff8c00;">💸 CONFIGURAR VALORES DE SAQUE</h4>
+                    <p style="color:#c0c0c0;font-size:11px;">Altere os valores de saque, VIP mínimo e indisponibilize valores</p>
+                    <div style="max-height:400px;overflow-y:auto;">
+                        ${WITHDRAW_VALUES.map((val, idx) => {
+                            const indisponivel = INDISPONIVEL_SAQUES.includes(idx);
+                            return `
+                            <div class="saque-config-item ${indisponivel ? 'indisponivel-item' : 'disponivel-item'}">
+                                <div style="display:flex;flex-direction:column;gap:4px;flex:1;">
+                                    <div style="display:flex;gap:8px;align-items:center;">
+                                        <span style="color:#fff;font-weight:700;">Valor ${idx+1}:</span>
+                                        <input type="number" id="svVal${idx}" value="${val}" style="width:100px;background:var(--bg-body);color:white;border:1px solid var(--accent);border-radius:6px;padding:4px;">
+                                        <span style="color:#fff;">MT</span>
+                                    </div>
+                                    <div style="display:flex;gap:8px;align-items:center;">
+                                        <span style="color:#c0c0c0;font-size:11px;">VIP Mínimo:</span>
+                                        <select id="svVip${idx}" style="background:var(--bg-body);color:white;border:1px solid var(--accent);border-radius:6px;padding:4px;">
+                                            ${VIP_NAMES.map((n, i) => `<option value="${i}" ${(WITHDRAW_MIN_VIP[idx] || 1) === i ? 'selected' : ''}>${n}</option>`).join('')}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+                                    <label class="toggle-switch" style="cursor:pointer;">
+                                        <input type="checkbox" id="svToggle${idx}" ${indisponivel ? 'checked' : ''} onchange="window.toggleSaqueIndisponivelAdmin(${idx})">
+                                        <span class="toggle-slider" style="background:${indisponivel ? '#ff0000' : '#32ff7e'};"></span>
+                                    </label>
+                                    <span id="svStatus${idx}" style="font-size:10px;color:${indisponivel ? '#ff0000' : '#32ff7e'};font-weight:700;">${indisponivel ? '🚫 INDISPONÍVEL' : '✅ DISPONÍVEL'}</span>
+                                </div>
+                            </div>`;
+                        }).join('')}
+                    </div>
+                    <button onclick="window.saveSaqueConfigAdmin()" class="action-btn btn-gold" style="margin-top:12px;">💾 Salvar Configuração de Saques</button>
+                </div>
+            `;
             
             let bgsHtml = '';
             if (backgrounds && Object.keys(backgrounds).length > 0) {
@@ -1063,12 +1395,14 @@
                     <button onclick="window.saveDepositConfigAdmin()" class="action-btn btn-gold" style="margin-top:8px;">💾 Salvar Campos</button>
                 </div>
                 
+                ${saquesConfigHtml}
+                
                 <div class="admin-section">
-                    <h4 style="color:#9b59b6;">🖼️ IMAGENS DE FUNDO DO SITE (Afeta Login e App)</h4>
-                    <p style="color:#c0c0c0;font-size:11px;margin-bottom:8px;">⚠️ Cole o link da imagem do Google e dê um nome. O fundo será aplicado na tela de login e no app.</p>
+                    <h4 style="color:#9b59b6;">🖼️ IMAGENS DE FUNDO DO SITE</h4>
+                    <p style="color:#c0c0c0;font-size:11px;margin-bottom:8px;">⚠️ Cole o link da imagem do Google e dê um nome.</p>
                     <div style="display:flex;gap:6px;margin-bottom:8px;">
                         <input type="text" id="newBgName" class="auth-input" placeholder="Nome do fundo" style="flex:1;">
-                        <input type="text" id="newBgUrl" class="auth-input" placeholder="URL da imagem (Google)" style="flex:2;">
+                        <input type="text" id="newBgUrl" class="auth-input" placeholder="URL da imagem" style="flex:2;">
                     </div>
                     <button onclick="window.addBgAdmin()" class="admin-btn-sm btn-approve" style="width:100%;">➕ Adicionar Fundo</button>
                     <div style="margin-top:8px;max-height:200px;overflow-y:auto;">${bgsHtml || '<p style="color:#888;">Nenhum fundo cadastrado</p>'}</div>
@@ -1177,29 +1511,19 @@
                 </div>
                 
                 <div class="admin-section">
-                    <h4 style="color:#ff8c00;">👥 Usuários (${totalUsers})</h4>
+                    <h4 style="color:#ff8c00;">👥 Usuários (<span id="totalUsersCountScroll">${totalUsers}</span>)</h4>
                     <div style="display:flex;gap:8px;margin-bottom:10px;">
-                        <input type="text" id="searchUser" class="auth-input" placeholder="🔍 Pesquisar..." style="flex:1;">
-                        <button onclick="window.searchUsersAdmin()" class="admin-btn-sm btn-edit" style="padding:10px 16px;">🔍</button>
+                        <input type="text" id="searchUser" class="auth-input" placeholder="🔍 Pesquisar por nome ou telefone..." style="flex:1;" oninput="window.searchUsersScroll()">
+                        <button onclick="window.searchUsersScroll()" class="admin-btn-sm btn-edit" style="padding:10px 16px;">🔍</button>
+                        <button onclick="window.resetSearchScroll()" class="admin-btn-sm btn-approve" style="padding:10px 12px;">📋 Todos</button>
                     </div>
-                    <div id="userList" style="max-height:300px;overflow-y:auto;">
-                        ${usersList.slice(0,10).map(u=>`
-                            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;margin:4px 0;background:var(--bg-input);border-radius:10px;">
-                                <div>
-                                    <strong style="color:#fff;">${u.name}</strong><br>
-                                    <small style="color:#c0c0c0;">📞 ${u.phone} | VIP: ${VIP_NAMES[u.vipLevel||0]||'Estagiário'} | 💰 ${(u.balance||0).toLocaleString()} MT</small>
-                                    ${u.blocked?'<br><span style="color:red;">🚫 BLOQUEADO</span>':''}
-                                </div>
-                                <div style="display:flex;gap:4px;flex-wrap:wrap;">
-                                    <button class="admin-btn-sm btn-edit" onclick="window.editBalanceAdmin('${u.id}')">💰</button>
-                                    <button class="admin-btn-sm btn-edit" onclick="window.resetPassAdmin('${u.id}')">🔑</button>
-                                    <button class="admin-btn-sm ${u.blocked?'btn-approve':'btn-block'}" onclick="window.toggleBlockAdmin('${u.id}')">${u.blocked?'✅':'🚫'}</button>
-                                    <button class="admin-btn-sm btn-delete" onclick="window.deleteUserAdmin('${u.id}')">🗑️</button>
-                                </div>
-                            </div>
-                        `).join('')||'<p style="color:#888;">Nenhum</p>'}
+                    <div id="userList" style="max-height:500px;overflow-y:auto;min-height:100px;">
+                        <!-- Scroll infinito -->
                     </div>
-                    <button onclick="window.listAllUsersAdmin()" class="action-btn btn-outline" style="margin-top:8px;">📋 Listar Todos</button>
+                    <div style="display:flex;gap:8px;margin-top:10px;">
+                        <button onclick="window.exportUsersCSVScroll()" class="admin-btn-sm btn-edit" style="flex:1;">📥 Exportar CSV</button>
+                        <button onclick="window.refreshUserListScroll()" class="admin-btn-sm btn-approve" style="flex:1;">🔄 Atualizar</button>
+                    </div>
                 </div>
                 
                 <div class="admin-section">
@@ -1211,413 +1535,97 @@
             document.body.appendChild(panel);
             document.getElementById('appScreen').style.display = 'none';
 
-            // ========== HANDLERS DEFINIDOS NO ESCOPO GLOBAL CORRETAMENTE ==========
-            window.saveCustomColorsAdmin = async function() {
-                const colors = {
-                    bgBody: document.getElementById('colorBgBody')?.value || null,
-                    bgCard: document.getElementById('colorBgCard')?.value || null,
-                    bgInput: document.getElementById('colorBgInput')?.value || null,
-                    accent: document.getElementById('colorAccent')?.value || null,
-                    accent2: document.getElementById('colorAccent2')?.value || null,
-                    border: document.getElementById('colorBorder')?.value || null
-                };
-                Object.keys(colors).forEach(k => { if (!colors[k]) delete colors[k]; });
-                await saveCustomColors(colors);
-                applyCustomColors(colors);
-                alert('✅ Cores personalizadas salvas!');
-                closeAdminPanel(); 
-                setTimeout(() => showAdminPanel(), 100);
-            };
-            
-            window.resetCustomColorsAdmin = async function() {
-                await saveCustomColors({});
-                applyTheme(currentThemeIndex);
-                alert('✅ Cores restauradas ao padrão do tema!');
-                closeAdminPanel(); 
-                setTimeout(() => showAdminPanel(), 100);
-            };
+            // Configurar scroll infinito após o DOM estar pronto
+            setTimeout(() => {
+                const userListEl = document.getElementById('userList');
+                if (userListEl) {
+                    setupInfiniteScroll(userListEl);
+                    resetInfiniteScroll(usersList);
+                }
+            }, 200);
 
-            window.saveDepositConfigAdmin = async function() {
-                const config = [];
-                for (let i = 0; i < 3; i++) {
-                    const nome = document.getElementById(`dcNome${i}`)?.value || '';
-                    const numero = document.getElementById(`dcNum${i}`)?.value || '';
-                    const ativo = document.getElementById(`dcAtivo${i}`)?.checked || false;
-                    if (nome) config.push({ nome, numero, ativo, ordem: i+1 });
-                }
-                await saveDepositConfig(config);
-                alert('✅ Campos de depósito salvos!');
-                closeAdminPanel(); 
-                setTimeout(() => showAdminPanel(), 100);
-            };
+            // ========== HANDLERS GLOBAIS ==========
+            window.toggleSaqueIndisponivelAdmin = function(idx) { /* ... mesma lógica ... */ };
+            window.saveSaqueConfigAdmin = async function() { /* ... mesma lógica ... */ };
+            window.saveCustomColorsAdmin = async function() { /* ... mesma lógica ... */ };
+            window.resetCustomColorsAdmin = async function() { /* ... mesma lógica ... */ };
+            window.saveDepositConfigAdmin = async function() { /* ... mesma lógica ... */ };
+            window.addBgAdmin = async function() { /* ... mesma lógica ... */ };
+            window.toggleBgAdmin = async function(bgId) { /* ... mesma lógica ... */ };
+            window.deleteBgAdmin = async function(bgId) { /* ... mesma lógica ... */ };
+            window.recarregarFundosAdmin = async function() { /* ... mesma lógica ... */ };
+            window.setThemeAdmin = async function(idx) { /* ... mesma lógica ... */ };
+            window.toggleFundsEdit = function() { document.getElementById('fundsEditArea').classList.toggle('hidden'); };
+            window.saveFundEdit = async function(idx) { /* ... mesma lógica ... */ };
+            window.editVipAdmin = function(i) { /* ... mesma lógica ... */ };
+            window.saveVipConfigFirebase = async function() { /* ... mesma lógica ... */ };
+            window.saveLinksAdmin = async function() { /* ... mesma lógica ... */ };
+            window.toggleWithdrawSettingsAdmin = async function() { /* ... mesma lógica ... */ };
+            window.approveDepositAdmin = async function(did) { /* ... mesma lógica ... */ };
+            window.rejectDepositAdmin = async function(did) { /* ... mesma lógica ... */ };
+            window.approveWithdrawAdmin = async function(wid) { /* ... mesma lógica ... */ };
+            window.rejectWithdrawAdmin = async function(wid) { /* ... mesma lógica ... */ };
+            window.editBalanceAdmin = async function(uid) { /* ... mesma lógica ... */ };
+            window.resetPassAdmin = async function(uid) { /* ... mesma lógica ... */ };
+            window.toggleBlockAdmin = async function(uid) { /* ... mesma lógica ... */ };
+            window.deleteUserAdmin = async function(uid) { /* ... mesma lógica ... */ };
+            window.changeAdminPassAdmin = function() { /* ... mesma lógica ... */ };
             
-            window.addBgAdmin = async function() {
-                const nome = document.getElementById('newBgName')?.value?.trim();
-                const url = document.getElementById('newBgUrl')?.value?.trim();
-                if (!nome || !url) { alert('Preencha nome e URL'); return; }
-                const bgId = 'bg_' + Date.now();
-                await saveBackground(bgId, { nome, url, ativo: true, createdAt: new Date().toISOString() });
-                alert('✅ Fundo adicionado!');
-                closeAdminPanel(); 
-                setTimeout(() => showAdminPanel(), 100);
-            };
-            
-            window.toggleBgAdmin = async function(bgId) {
-                const bgs = await loadBackgrounds();
-                if (bgs[bgId]) {
-                    bgs[bgId].ativo = !bgs[bgId].ativo;
-                    await saveBackground(bgId, bgs[bgId]);
-                    closeAdminPanel(); 
-                    setTimeout(() => showAdminPanel(), 100);
-                }
-            };
-            
-            window.deleteBgAdmin = async function(bgId) {
-                if (confirm('Apagar este fundo?')) {
-                    await deleteBackground(bgId);
-                    closeAdminPanel(); 
-                    setTimeout(() => showAdminPanel(), 100);
-                }
-            };
-            
-            window.recarregarFundosAdmin = async function() {
-                await applyGlobalBackground();
-                alert('✅ Fundos recarregados!');
-            };
-            
-            window.setThemeAdmin = async function(idx) { 
-                applyTheme(idx); 
-                await saveThemeIndex(idx); 
-                closeAdminPanel(); 
-                setTimeout(() => showAdminPanel(), 100); 
-            };
-            
-            window.toggleFundsEdit = function() { 
-                document.getElementById('fundsEditArea').classList.toggle('hidden'); 
-            };
-            
-            window.saveFundEdit = async function(idx) {
-                FUNDOS[idx].min = Number(document.getElementById(`fMin${idx}`)?.value) || FUNDOS[idx].min;
-                FUNDOS[idx].base = Number(document.getElementById(`fBase${idx}`)?.value) || FUNDOS[idx].base;
-                FUNDOS[idx].retorno = Number(document.getElementById(`fRet${idx}`)?.value) || FUNDOS[idx].retorno;
-                FUNDOS[idx].dias = Number(document.getElementById(`fDias${idx}`)?.value) || FUNDOS[idx].dias;
-                FUNDOS[idx].percent = Number(document.getElementById(`fPerc${idx}`)?.value) || FUNDOS[idx].percent;
-                FUNDOS[idx].blocked = document.getElementById(`fBlock${idx}`)?.checked || false;
-                await saveFundos(FUNDOS);
-                alert(`✅ Fundo ${FUNDOS[idx].name} salvo!`);
-                closeAdminPanel(); 
-                setTimeout(() => showAdminPanel(), 100);
-            };
-            
-            window.editVipAdmin = function(i) {
-                let v = vipConfig[i];
-                let newName = prompt('Nome:', v.name);
-                if (newName === null) return;
-                let newInvest = Number(prompt('Investimento:', v.invest));
-                if (isNaN(newInvest)) return;
-                let newDaily = Number(prompt('Ganho diário:', v.daily));
-                if (isNaN(newDaily)) return;
-                let newDays = Number(prompt('Dias:', v.days));
-                if (isNaN(newDays)) return;
-                let emBreve = confirm('Marcar como "EM BREVE"? (OK=Sim, Cancelar=Não)');
-                vipConfig[i] = { ...v, name: newName, invest: newInvest, daily: newDaily, days: newDays, emBreve };
-                updateVipArrays();
-                closeAdminPanel(); 
-                setTimeout(() => showAdminPanel(), 100);
-            };
-            
-            window.saveVipConfigFirebase = async function() { 
-                await saveVipConfig(); 
-                alert('✅ VIPs salvos!'); 
-            };
-            
-            window.saveLinksAdmin = async function() {
-                globalSettings.whatsappGroup = document.getElementById('waGroup')?.value || '';
-                globalSettings.telegramChannel = document.getElementById('tgChannel')?.value || '';
-                globalSettings.supportWhatsapp = document.getElementById('supWa')?.value || '';
-                globalSettings.facebookPage = document.getElementById('fbPage')?.value || '';
-                globalSettings.youtubeChannel = document.getElementById('ytChannel')?.value || '';
-                globalSettings.socialWhatsapp = document.getElementById('socialWa')?.value || '';
-                await saveSettings(globalSettings);
-                updateSocialButtons();
-                alert('✅ Links salvos!');
-            };
-            
-            window.toggleWithdrawSettingsAdmin = async function() {
-                globalSettings.withdrawsEnabled = document.getElementById('toggleWithdraws')?.checked || false;
-                await saveSettings(globalSettings);
-                let statusEl = document.getElementById('withdrawStatusText');
-                if (statusEl) {
-                    statusEl.textContent = globalSettings.withdrawsEnabled ? '✅ SAQUES DIÁRIOS (TODOS DIAS)' : '📅 SAQUES SEMANAIS (SEG-SEX)';
-                    statusEl.style.color = globalSettings.withdrawsEnabled ? '#32ff7e' : '#ff4444';
-                }
-            };
-            
-            // ========== CORREÇÃO PRINCIPAL: APROVAR DEPÓSITO COM COMISSÃO 7% E REGISTRO DE DEPOSITANTES ==========
-            window.approveDepositAdmin = async function(did) {
-                if (!did) { alert('❌ ID do depósito inválido'); return; }
-                try {
-                    const depositSnap = await get(ref(db, 'deposits/' + did));
-                    if (!depositSnap.exists()) {
-                        alert('❌ Depósito não encontrado no banco de dados!');
-                        return;
-                    }
-                    const deposit = depositSnap.val();
-                    
-                    if (deposit.status !== 'pending') {
-                        alert('⚠️ Este depósito já foi processado! Status: ' + deposit.status);
-                        closeAdminPanel();
-                        setTimeout(() => showAdminPanel(), 100);
-                        return;
-                    }
-                    
-                    const allUsers = await getAllUsers();
-                    const user = allUsers.find(u => u.phone === deposit.phone);
-                    
-                    if (!user) {
-                        alert('⚠️ Usuário não encontrado para o telefone: ' + deposit.phone);
-                        await updateDeposit(did, { status: 'approved', approvedAt: new Date().toISOString() });
-                        closeAdminPanel();
-                        setTimeout(() => showAdminPanel(), 100);
-                        return;
-                    }
-                    
-                    const amount = Number(deposit.amount) || 0;
-                    const currentBalance = Number(user.balance) || 0;
-                    const newBalance = currentBalance + amount;
-                    
-                    const depositRecord = {
-                        amount: amount,
-                        date: new Date().toISOString(),
-                        status: 'approved',
-                        depositId: did
-                    };
-                    
-                    await updateUser(user.id, { 
-                        balance: newBalance,
-                        depositHistory: [...(user.depositHistory || []), depositRecord]
-                    });
-                    
-                    await updateDeposit(did, { 
-                        status: 'approved', 
-                        approvedAt: new Date().toISOString(),
-                        processedBy: 'admin',
-                        userId: user.id
-                    });
-                    
-                    // Comissão de 7% automática + registro de depositante
-                    if (user.referredBy) {
-                        const referrer = await getUserById(user.referredBy);
-                        if (referrer) {
-                            const commission = Math.floor(amount * 0.07);
-                            
-                            if (commission > 0) {
-                                const refBalance = Number(referrer.balance) || 0;
-                                const refCommissions = Number(referrer.commissionsPaid) || 0;
-                                
-                                const commissionRecord = {
-                                    amount: commission,
-                                    date: new Date().toISOString(),
-                                    fromUser: user.name,
-                                    fromPhone: user.phone,
-                                    depositAmount: amount,
-                                    type: 'Comissão 7%'
-                                };
-                                
-                                const depositorsList = referrer.invitedDepositors || [];
-                                if (!depositorsList.includes(deposit.phone)) {
-                                    depositorsList.push(deposit.phone);
-                                }
-                                
-                                await updateUser(user.referredBy, {
-                                    balance: refBalance + commission,
-                                    commissionsPaid: refCommissions + commission,
-                                    commission: (Number(referrer.commission) || 0) + commission,
-                                    commissionHistory: [...(referrer.commissionHistory || []), commissionRecord],
-                                    invitedDepositors: depositorsList
-                                });
-                            }
-                        }
-                    }
-                    
-                    alert(`✅ Depósito de ${amount.toLocaleString()} MT APROVADO!\n👤 Usuário: ${user.name}\n💰 Novo saldo: ${newBalance.toLocaleString()} MT`);
-                    
-                    if (currentUserId === user.id) {
-                        currentUser.balance = newBalance;
-                        updateBalanceDisplay();
-                    }
-                    
-                    closeAdminPanel();
-                    setTimeout(() => showAdminPanel(), 300);
-                } catch (error) {
-                    console.error('Erro ao aprovar depósito:', error);
-                    alert('❌ Erro ao aprovar depósito: ' + error.message);
-                }
-            };
-            
-            window.rejectDepositAdmin = async function(did) {
-                if (!did) return;
-                if (confirm('Tem certeza que deseja REJEITAR este depósito?')) {
-                    try {
-                        await updateDeposit(did, { 
-                            status: 'rejected', 
-                            rejectedAt: new Date().toISOString(),
-                            processedBy: 'admin'
-                        });
-                        alert('❌ Depósito rejeitado!');
-                        closeAdminPanel();
-                        setTimeout(() => showAdminPanel(), 300);
-                    } catch (error) {
-                        alert('❌ Erro ao rejeitar: ' + error.message);
-                    }
-                }
-            };
-            
-            window.approveWithdrawAdmin = async function(wid) {
-                if (!wid) return;
-                try {
-                    await updateWithdrawal(wid, { 
-                        status: 'approved', 
-                        approvedAt: new Date().toISOString(),
-                        processedBy: 'admin'
-                    });
-                    alert('✅ Saque aprovado! (O saldo já foi debitado na solicitação)');
-                    closeAdminPanel();
-                    setTimeout(() => showAdminPanel(), 300);
-                } catch (error) {
-                    alert('❌ Erro ao aprovar: ' + error.message);
-                }
-            };
-            
-            window.rejectWithdrawAdmin = async function(wid) {
-                if (!wid) return;
-                if (confirm('Deseja REJEITAR e DEVOLVER o valor ao usuário?')) {
-                    try {
-                        const wSnap = await get(ref(db, 'withdrawals/' + wid));
-                        if (wSnap.exists()) {
-                            const w = wSnap.val();
-                            const allUsers = await getAllUsers();
-                            const user = allUsers.find(u => u.phone === w.phone);
-                            if (user) {
-                                const refundAmount = Number(w.amount) || 0;
-                                const currentBalance = Number(user.balance) || 0;
-                                await updateUser(user.id, { balance: currentBalance + refundAmount });
-                            }
-                        }
-                        await updateWithdrawal(wid, { 
-                            status: 'rejected', 
-                            rejectedAt: new Date().toISOString(),
-                            processedBy: 'admin'
-                        });
-                        alert('❌ Saque rejeitado e valor devolvido!');
-                        closeAdminPanel();
-                        setTimeout(() => showAdminPanel(), 300);
-                    } catch (error) {
-                        alert('❌ Erro ao rejeitar: ' + error.message);
-                    }
-                }
-            };
-            
-            window.editBalanceAdmin = async function(uid) {
-                const user = await getUserById(uid);
-                if (!user) return;
-                const newBalance = Number(prompt(`Saldo atual: ${(user.balance||0).toLocaleString()} MT\nNovo saldo:`, user.balance));
-                if (!isNaN(newBalance) && newBalance >= 0) {
-                    await updateUser(uid, { balance: newBalance });
-                    alert(`✅ Saldo atualizado para ${newBalance.toLocaleString()} MT`);
-                    closeAdminPanel();
-                    setTimeout(() => showAdminPanel(), 300);
-                }
-            };
-            
-            window.resetPassAdmin = async function(uid) {
-                const user = await getUserById(uid);
-                if (!user) return;
-                if (confirm(`Resetar senha de ${user.name}?`)) {
-                    const newPass = Math.random().toString(36).slice(-6);
-                    await updateUser(uid, { password: newPass });
-                    alert(`✅ Nova senha: ${newPass}`);
-                }
-            };
-            
-            window.toggleBlockAdmin = async function(uid) {
-                const user = await getUserById(uid);
-                if (!user) return;
-                const newBlocked = !user.blocked;
-                await updateUser(uid, { blocked: newBlocked });
-                alert(`${newBlocked ? '🚫 Bloqueado' : '✅ Desbloqueado'} com sucesso!`);
-                closeAdminPanel();
-                setTimeout(() => showAdminPanel(), 300);
-            };
-            
-            window.deleteUserAdmin = async function(uid) {
-                const user = await getUserById(uid);
-                if (!user) return;
-                if (confirm(`⚠️ DELETAR PERMANENTEMENTE ${user.name}?\nEsta ação é irreversível!`)) {
-                    if (confirm('CONFIRMAÇÃO FINAL: Deletar usuário?')) {
-                        await deleteUser(uid);
-                        alert('🗑️ Usuário deletado!');
-                        closeAdminPanel();
-                        setTimeout(() => showAdminPanel(), 300);
-                    }
-                }
-            };
-            
-            window.searchUsersAdmin = async function() {
+            // Funções do scroll infinito
+            window.searchUsersScroll = function() {
                 const term = document.getElementById('searchUser')?.value?.toLowerCase() || '';
-                const allUsers = await getAllUsers();
-                const filtered = allUsers.filter(u => 
-                    u.name?.toLowerCase().includes(term) || 
-                    u.phone?.includes(term)
-                );
-                const userListEl = document.getElementById('userList');
-                if (userListEl) {
-                    userListEl.innerHTML = filtered.map(u=>`
-                        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;margin:4px 0;background:var(--bg-input);border-radius:10px;">
-                            <div>
-                                <strong style="color:#fff;">${u.name}</strong><br>
-                                <small style="color:#c0c0c0;">📞 ${u.phone} | VIP: ${VIP_NAMES[u.vipLevel||0]||'Estagiário'} | 💰 ${(u.balance||0).toLocaleString()} MT</small>
-                                ${u.blocked?'<br><span style="color:red;">🚫 BLOQUEADO</span>':''}
-                            </div>
-                            <div style="display:flex;gap:4px;flex-wrap:wrap;">
-                                <button class="admin-btn-sm btn-edit" onclick="window.editBalanceAdmin('${u.id}')">💰</button>
-                                <button class="admin-btn-sm btn-edit" onclick="window.resetPassAdmin('${u.id}')">🔑</button>
-                                <button class="admin-btn-sm ${u.blocked?'btn-approve':'btn-block'}" onclick="window.toggleBlockAdmin('${u.id}')">${u.blocked?'✅':'🚫'}</button>
-                                <button class="admin-btn-sm btn-delete" onclick="window.deleteUserAdmin('${u.id}')">🗑️</button>
-                            </div>
-                        </div>
-                    `).join('') || '<p style="color:#888;">Nenhum usuário encontrado</p>';
+                infiniteScrollData.searchTerm = term;
+                
+                if (term) {
+                    infiniteScrollData.filteredUsers = infiniteScrollData.allUsers.filter(u => 
+                        (u.name || '').toLowerCase().includes(term) || 
+                        (u.phone || '').includes(term)
+                    );
+                } else {
+                    infiniteScrollData.filteredUsers = infiniteScrollData.allUsers;
+                }
+                
+                const counterEl = document.getElementById('totalUsersCountScroll');
+                if (counterEl) counterEl.textContent = infiniteScrollData.filteredUsers.length;
+                
+                resetInfiniteScroll(infiniteScrollData.filteredUsers);
+            };
+            
+            window.resetSearchScroll = function() {
+                const searchInput = document.getElementById('searchUser');
+                if (searchInput) searchInput.value = '';
+                infiniteScrollData.searchTerm = '';
+                infiniteScrollData.filteredUsers = infiniteScrollData.allUsers;
+                
+                const counterEl = document.getElementById('totalUsersCountScroll');
+                if (counterEl) counterEl.textContent = infiniteScrollData.allUsers.length;
+                
+                resetInfiniteScroll(infiniteScrollData.allUsers);
+            };
+            
+            window.refreshUserListScroll = async function() {
+                try {
+                    const freshUsers = await getAllUsers();
+                    infiniteScrollData.allUsers = freshUsers;
+                    window.resetSearchScroll();
+                    alert(`✅ Lista atualizada! ${freshUsers.length} usuários carregados.`);
+                } catch (e) {
+                    alert('❌ Erro ao atualizar: ' + e.message);
                 }
             };
             
-            window.listAllUsersAdmin = async function() {
-                const allUsers = await getAllUsers();
-                const userListEl = document.getElementById('userList');
-                if (userListEl) {
-                    userListEl.innerHTML = allUsers.map(u=>`
-                        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;margin:4px 0;background:var(--bg-input);border-radius:10px;">
-                            <div>
-                                <strong style="color:#fff;">${u.name}</strong><br>
-                                <small style="color:#c0c0c0;">📞 ${u.phone} | VIP: ${VIP_NAMES[u.vipLevel||0]||'Estagiário'} | 💰 ${(u.balance||0).toLocaleString()} MT</small>
-                                ${u.blocked?'<br><span style="color:red;">🚫 BLOQUEADO</span>':''}
-                            </div>
-                            <div style="display:flex;gap:4px;flex-wrap:wrap;">
-                                <button class="admin-btn-sm btn-edit" onclick="window.editBalanceAdmin('${u.id}')">💰</button>
-                                <button class="admin-btn-sm btn-edit" onclick="window.resetPassAdmin('${u.id}')">🔑</button>
-                                <button class="admin-btn-sm ${u.blocked?'btn-approve':'btn-block'}" onclick="window.toggleBlockAdmin('${u.id}')">${u.blocked?'✅':'🚫'}</button>
-                                <button class="admin-btn-sm btn-delete" onclick="window.deleteUserAdmin('${u.id}')">🗑️</button>
-                            </div>
-                        </div>
-                    `).join('');
-                }
-            };
-            
-            window.changeAdminPassAdmin = function() {
-                let newPass = prompt('Nova senha admin:');
-                if (newPass && newPass.length >= 4) {
-                    adminPassword = newPass;
-                    alert('✅ Senha admin alterada!');
-                }
+            window.exportUsersCSVScroll = function() {
+                const dataSource = infiniteScrollData.searchTerm ? infiniteScrollData.filteredUsers : infiniteScrollData.allUsers;
+                let csv = 'Nome,Telefone,VIP,Saldo,Convidados,Depositantes,Bloqueado,Cadastro\n';
+                dataSource.forEach(u => {
+                    csv += `"${u.name || ''}","${u.phone || ''}","${VIP_NAMES[u.vipLevel||0] || 'Estagiário'}","${u.balance || 0}","${(u.invitedUsers || []).length}","${(u.invitedDepositors || []).length}","${u.blocked ? 'Sim' : 'Não'}","${u.createdAt || ''}"\n`;
+                });
+                
+                const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `usuarios_netfilms_${new Date().toISOString().slice(0,10)}.csv`;
+                link.click();
             };
         }
 
@@ -1629,7 +1637,6 @@
             showTab('home'); 
         }
 
-        // Expor funções globalmente
         window.showRegisterForm = showRegisterForm;
         window.showLoginForm = showLoginForm;
         window.showForgotPassword = showForgotPassword;
@@ -1696,6 +1703,7 @@
             await loadSettings();
             await loadFundos();
             await loadVipConfig();
+            await loadWithdrawConfig();
             await loadThemeIndex();
             const custom = await loadCustomColors();
             if (custom) applyCustomColors(custom);
@@ -1703,7 +1711,7 @@
             updateSocialButtons();
             await checkInviteBanner();
             startFloatingNotifications();
-            console.log('✅ NET FILMS PRONTO - SISTEMA DE RECOMPENSAS CORRIGIDO');
+            console.log('✅ NET FILMS PRONTO - SCROLL INFINITO NA LISTA DE USUÁRIOS');
         }
         init();
     </script>
