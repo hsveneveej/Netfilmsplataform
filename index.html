@@ -10,48 +10,55 @@
         body { background: var(--bg-body); min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow-y: auto; position: relative; -webkit-user-select: none; user-select: none; transition: background 0.5s; }
         body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-body); z-index: 0; pointer-events: none; transition: background 0.5s; }
         
-        /* Vídeo de fundo na tela de login */
-        .login-video-background {
-            position: fixed;
-            top: 0;
-            left: 0;
+        /* 🐰 VÍDEO DO COELHO - TELA DE VITRINE ACIMA DO LOGIN */
+        .video-showcase-container {
+            position: relative;
+            z-index: 3;
             width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
+            margin-bottom: 20px;
+            border-radius: 20px;
             overflow: hidden;
+            box-shadow: 0 10px 40px rgba(255, 140, 0, 0.5), 0 0 60px rgba(50, 255, 126, 0.3);
+            border: 3px solid var(--accent);
+            animation: videoGlow 3s ease-in-out infinite alternate;
+            background: #000;
         }
-        .login-video-background video {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            transform: translate(-50%, -50%);
-            object-fit: cover;
-            opacity: 0.35;
+        @keyframes videoGlow {
+            0% { box-shadow: 0 10px 40px rgba(255,140,0,0.5), 0 0 30px rgba(255,140,0,0.3); border-color: var(--accent); }
+            50% { box-shadow: 0 10px 40px rgba(50,255,126,0.5), 0 0 40px rgba(50,255,126,0.4); border-color: var(--accent2); }
+            100% { box-shadow: 0 10px 40px rgba(255,140,0,0.5), 0 0 30px rgba(255,140,0,0.3); border-color: var(--accent); }
         }
-        .login-video-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .video-showcase-container video {
             width: 100%;
-            height: 100%;
-            background: rgba(6, 9, 19, 0.75);
-            z-index: 1;
-            pointer-events: none;
+            display: block;
+            cursor: pointer;
         }
-        #appScreen .login-video-background,
-        #appScreen .login-video-overlay {
-            display: none;
+        .video-showcase-label {
+            background: linear-gradient(135deg, #ff8c00, #ff6b00);
+            color: #000;
+            text-align: center;
+            padding: 12px;
+            font-weight: 900;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 4;
+        }
+        .video-showcase-label .bunny-icon {
+            display: inline-block;
+            animation: bunnyHop 0.5s ease-in-out infinite alternate;
+            font-size: 20px;
+        }
+        @keyframes bunnyHop {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-5px); }
         }
         
         .particles { position: fixed; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
         .particle { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.08); animation: floatUp 15s infinite; }
         @keyframes floatUp { 0% { transform: translateY(100vh) scale(0); opacity: 0; } 10% { opacity: 0.2; } 90% { opacity: 0.1; } 100% { transform: translateY(-100px) scale(1); opacity: 0; } }
-        .main-container { width: 420px; max-width: 95%; z-index: 2; position: relative; padding: 20px 0; }
+        .main-container { width: 480px; max-width: 95%; z-index: 2; position: relative; padding: 20px 0; }
         
         .auth-card { 
             background: var(--bg-card); 
@@ -232,46 +239,53 @@
         .saque-config-item.disponivel-item { 
             border-left: 3px solid #32ff7e; 
         }
-        
-        /* Scroll infinito - loading indicator */
-        .scroll-loading {
-            text-align: center;
-            padding: 16px;
-            color: #ff8c00;
-            font-weight: 700;
+
+        .vip-edit-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .vip-edit-box {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 24px;
+            width: 90%;
+            max-width: 400px;
+            border: 3px solid var(--accent);
+            color: #ffffff;
+        }
+        .vip-edit-box label {
+            display: block;
+            color: #c0c0c0;
+            margin: 8px 0 4px;
+            font-size: 13px;
+        }
+        .vip-edit-box input[type="text"],
+        .vip-edit-box input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--accent);
+            background: var(--bg-input);
+            color: #fff;
             font-size: 14px;
         }
-        .scroll-loading .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,140,0,0.3);
-            border-top-color: #ff8c00;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin-right: 8px;
-            vertical-align: middle;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        .scroll-end {
-            text-align: center;
-            padding: 12px;
-            color: #888;
-            font-size: 12px;
+        .vip-edit-box .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 10px 0;
         }
     </style>
 </head>
 <body>
-    <div class="login-video-background" id="loginVideoBg">
-        <video autoplay muted loop playsinline>
-            <source src="https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_stereo.ogg" type="video/ogg">
-            <source src="https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_h264.mov" type="video/mp4">
-        </video>
-    </div>
-    <div class="login-video-overlay" id="loginVideoOverlay"></div>
-
     <div class="particles" id="particles"></div>
     <div class="floating-notifications" id="floatingNotifications"></div>
 
@@ -279,6 +293,18 @@
         <div class="shooting-star"></div>
         <div class="shooting-star"></div>
         <div class="shooting-star"></div>
+
+        <!-- 🐰 VÍDEO DO COELHO - TELA DE VITRINE ACIMA DO LOGIN -->
+        <div class="video-showcase-container" id="videoShowcase">
+            <div class="video-showcase-label">
+                <span class="bunny-icon">🐰</span> Assista e se delicie! <span class="bunny-icon">🐰</span>
+            </div>
+            <video autoplay muted loop playsinline id="bunnyVideo">
+                <source src="https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_h264.mov" type="video/mp4">
+                <source src="https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_stereo.ogg" type="video/ogg">
+                Seu navegador não suporta vídeos HTML5.
+            </video>
+        </div>
 
         <div class="auth-card" id="authCard">
             <div class="login-decoration orange"></div>
@@ -515,11 +541,24 @@
             if (colors.border) root.style.setProperty('--border', colors.border);
         }
 
+        // Sobrescrever applyTheme para incluir cores customizadas
         const originalApplyTheme = applyTheme;
         applyTheme = function(idx) {
             originalApplyTheme(idx);
             loadCustomColors().then(custom => { if (custom) applyCustomColors(custom); });
         };
+
+        function applyTheme(idx) { 
+            const t = THEMES[idx] || THEMES[0]; 
+            const root = document.documentElement; 
+            root.style.setProperty('--bg-body', t.bg); 
+            root.style.setProperty('--bg-card', t.card); 
+            root.style.setProperty('--bg-input', t.input); 
+            root.style.setProperty('--accent', t.accent); 
+            root.style.setProperty('--accent2', t.accent2); 
+            root.style.setProperty('--border', t.accent + '55'); 
+            document.body.style.background = t.bg; 
+        }
 
         async function applyGlobalBackground() {
             const bgs = await loadBackgrounds();
@@ -573,18 +612,6 @@
                     }
                 }
             }, (error) => { console.error("Erro no listener:", error); });
-        }
-
-        function applyTheme(idx) { 
-            const t = THEMES[idx] || THEMES[0]; 
-            const root = document.documentElement; 
-            root.style.setProperty('--bg-body', t.bg); 
-            root.style.setProperty('--bg-card', t.card); 
-            root.style.setProperty('--bg-input', t.input); 
-            root.style.setProperty('--accent', t.accent); 
-            root.style.setProperty('--accent2', t.accent2); 
-            root.style.setProperty('--border', t.accent + '55'); 
-            document.body.style.background = t.bg; 
         }
 
         function showRegisterForm() { 
@@ -745,9 +772,11 @@
             if (!currentUser || !currentUserId) { alert('❌ Erro: dados não carregados.'); location.reload(); return; }
             startRealtimeUserListener();
             isOnAuthScreen = false;
+            
+            // Esconder a tela de login INCLUINDO o vídeo showcase
             document.getElementById('authScreen').style.display = 'none';
-            document.getElementById('loginVideoBg').style.display = 'none';
-            document.getElementById('loginVideoOverlay').style.display = 'none';
+            // O vídeo está DENTRO do authScreen, então some junto com tudo
+            
             document.getElementById('appScreen').classList.remove('hidden');
             updateBalanceDisplay();
             await applyGlobalBackground();
@@ -1094,138 +1123,149 @@
         function handleAppBrandClick() { brandClickCount++; if (brandClickCount>=10) { brandClickCount=0; checkAdminAccess(); } }
         function checkAdminAccess() { let p = prompt('🔐 SENHA ADMIN:'); if (p===adminPassword) showAdminPanel(); else alert('Senha incorreta!'); }
 
-        // ========== PAINEL ADMIN COM SCROLL INFINITO ==========
-        
-        // Variáveis do scroll infinito
-        const INFINITE_SCROLL_BATCH = 200; // Carrega 200 por vez
-        let infiniteScrollData = { allUsers: [], filteredUsers: [], searchTerm: '', isLoading: false, loadedCount: 0, hasMore: true };
-
-        function renderUserItem(u) {
-            return `
-                <div class="user-item" style="display:flex;justify-content:space-between;align-items:center;padding:10px;margin:4px 0;background:var(--bg-input);border-radius:10px;">
-                    <div style="flex:1;">
-                        <strong style="color:#fff;">${u.name || 'Sem nome'}</strong><br>
-                        <small style="color:#c0c0c0;">📞 ${u.phone || 'N/A'} | VIP: ${VIP_NAMES[u.vipLevel||0]||'Estagiário'} | 💰 ${(u.balance||0).toLocaleString()} MT</small>
-                        <small style="color:#888;display:block;">📅 ${u.createdAt ? new Date(u.createdAt).toLocaleDateString('pt-BR') : 'N/A'}</small>
-                        ${u.blocked?'<span style="color:red;">🚫 BLOQUEADO</span> ':''}
-                        ${u.referredBy?'<span style="color:#32ff7e;">🔗 Referido</span> ':''}
+        // ========== EDIÇÃO DE VIPs ==========
+        async function editVipAdmin(index) {
+            const vip = vipConfig[index];
+            
+            const oldModal = document.getElementById('vipEditModal');
+            if (oldModal) oldModal.remove();
+            
+            const modal = document.createElement('div');
+            modal.className = 'vip-edit-modal';
+            modal.id = 'vipEditModal';
+            modal.innerHTML = `
+                <div class="vip-edit-box">
+                    <h3 style="color:#ff8c00;text-align:center;margin-bottom:16px;">✏️ Editar ${vip.name}</h3>
+                    <label>Nome do VIP:</label>
+                    <input type="text" id="editVipName" value="${vip.name}">
+                    <label>Valor de Investimento (MT):</label>
+                    <input type="number" id="editVipInvest" value="${vip.invest}" min="0" step="any">
+                    <label>Ganho Diário (MT):</label>
+                    <input type="number" id="editVipDaily" value="${vip.daily}" min="0" step="any">
+                    <label>Duração (dias):</label>
+                    <input type="number" id="editVipDays" value="${vip.days}" min="1">
+                    <label>Alerta (ex: "FIQUE ATENTO"):</label>
+                    <input type="text" id="editVipAlert" value="${vip.alert || ''}" placeholder="Opcional">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="editVipEmBreve" ${vip.emBreve ? 'checked' : ''}>
+                        <label style="margin:0;">🔒 Em Breve (bloqueado)</label>
                     </div>
-                    <div style="display:flex;gap:4px;flex-wrap:wrap;min-width:160px;justify-content:flex-end;">
-                        <button class="admin-btn-sm btn-edit" onclick="window.editBalanceAdmin('${u.id}')" title="Editar Saldo">💰</button>
-                        <button class="admin-btn-sm btn-edit" onclick="window.resetPassAdmin('${u.id}')" title="Resetar Senha">🔑</button>
-                        <button class="admin-btn-sm ${u.blocked?'btn-approve':'btn-block'}" onclick="window.toggleBlockAdmin('${u.id}')" title="${u.blocked?'Desbloquear':'Bloquear'}">${u.blocked?'✅':'🚫'}</button>
-                        <button class="admin-btn-sm btn-delete" onclick="window.deleteUserAdmin('${u.id}')" title="Deletar">🗑️</button>
+                    <div style="display:flex;gap:8px;margin-top:16px;">
+                        <button onclick="window.saveVipEdit(${index})" class="action-btn btn-gold" style="flex:1;">💾 Salvar Alterações</button>
+                        <button onclick="document.getElementById('vipEditModal').remove()" class="btn-outline" style="flex:1;color:#ff8c00;">❌ Cancelar</button>
                     </div>
-                </div>`;
+                    <p style="color:#32ff7e;text-align:center;font-size:11px;margin-top:8px;">✅ As alterações serão salvas no Firebase e atualizadas para todos os usuários</p>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.remove();
+            });
         }
 
-        function loadMoreUsers() {
-            if (infiniteScrollData.isLoading || !infiniteScrollData.hasMore) return;
+        async function saveVipEdit(index) {
+            const name = document.getElementById('editVipName')?.value?.trim();
+            const invest = Number(document.getElementById('editVipInvest')?.value) || 0;
+            const daily = Number(document.getElementById('editVipDaily')?.value) || 0;
+            const days = Number(document.getElementById('editVipDays')?.value) || 1;
+            const alert = document.getElementById('editVipAlert')?.value?.trim() || '';
+            const emBreve = document.getElementById('editVipEmBreve')?.checked || false;
             
-            infiniteScrollData.isLoading = true;
-            const dataSource = infiniteScrollData.searchTerm ? infiniteScrollData.filteredUsers : infiniteScrollData.allUsers;
+            if (!name) { alert('❌ O nome do VIP é obrigatório'); return; }
             
-            // Mostrar loading
-            const loadingEl = document.getElementById('scrollLoadingIndicator');
-            if (loadingEl) loadingEl.style.display = 'block';
+            vipConfig[index] = {
+                ...vipConfig[index],
+                name,
+                invest,
+                daily,
+                days,
+                alert,
+                emBreve
+            };
             
-            // Simular carregamento assíncrono para dar feedback visual
-            setTimeout(() => {
-                const start = infiniteScrollData.loadedCount;
-                const end = Math.min(start + INFINITE_SCROLL_BATCH, dataSource.length);
-                const batch = dataSource.slice(start, end);
-                
-                const userListEl = document.getElementById('userList');
-                if (!userListEl) return;
-                
-                // Remover loading e "fim" anteriores
-                const oldLoading = userListEl.querySelector('.scroll-loading');
-                const oldEnd = userListEl.querySelector('.scroll-end');
-                if (oldLoading) oldLoading.remove();
-                if (oldEnd) oldEnd.remove();
-                
-                // Adicionar novos usuários
-                batch.forEach(u => {
-                    const div = document.createElement('div');
-                    div.innerHTML = renderUserItem(u);
-                    userListEl.appendChild(div.firstElementChild);
-                });
-                
-                infiniteScrollData.loadedCount = end;
-                infiniteScrollData.hasMore = end < dataSource.length;
-                infiniteScrollData.isLoading = false;
-                
-                // Atualizar contador
-                const counterEl = document.getElementById('scrollUserCounter');
-                if (counterEl) {
-                    counterEl.textContent = `📋 Exibindo ${end} de ${dataSource.length} usuários`;
+            updateVipArrays();
+            
+            const saved = await saveVipConfig();
+            if (saved) {
+                document.getElementById('vipEditModal')?.remove();
+                const adminPanel = document.getElementById('adminPanel');
+                if (adminPanel) {
+                    adminPanel.remove();
+                    showAdminPanel();
                 }
-                
-                // Mostrar "fim" se não tiver mais
-                if (!infiniteScrollData.hasMore && dataSource.length > 0) {
-                    const endDiv = document.createElement('div');
-                    endDiv.className = 'scroll-end';
-                    endDiv.textContent = `✅ Todos os ${dataSource.length} usuários carregados`;
-                    userListEl.appendChild(endDiv);
-                }
-                
-                // Esconder loading
-                if (loadingEl) loadingEl.style.display = 'none';
-            }, 150);
-        }
-
-        function setupInfiniteScroll(userListEl) {
-            // Remover listener antigo
-            userListEl.removeEventListener('scroll', infiniteScrollHandler);
-            // Adicionar novo listener
-            userListEl.addEventListener('scroll', infiniteScrollHandler);
-        }
-
-        function infiniteScrollHandler(e) {
-            const el = e.target;
-            const scrollBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
-            
-            // Carregar mais quando estiver a 100px do final
-            if (scrollBottom < 100 && infiniteScrollData.hasMore && !infiniteScrollData.isLoading) {
-                loadMoreUsers();
+                alert(`✅ VIP "${name}" atualizado com sucesso!\n💰 Invest: ${invest.toLocaleString()} MT\n💵 Diário: ${daily.toLocaleString()} MT\n📅 ${days} dias\n${emBreve ? '🔒 Bloqueado' : '✅ Disponível'}`);
+            } else {
+                alert('❌ Erro ao salvar no Firebase');
             }
         }
 
-        function resetInfiniteScroll(dataSource) {
-            const userListEl = document.getElementById('userList');
-            if (!userListEl) return;
+        // ========== CONFIGURAÇÃO DE SAQUES ==========
+        async function toggleSaqueIndisponivelAdmin(index) {
+            const checkbox = document.getElementById('svToggle' + index);
+            const statusEl = document.getElementById('svStatus' + index);
+            const itemEl = checkbox?.closest('.saque-config-item');
             
-            infiniteScrollData.loadedCount = 0;
-            infiniteScrollData.hasMore = dataSource.length > 0;
-            infiniteScrollData.isLoading = false;
+            if (!checkbox || !statusEl) return;
             
-            // Limpar lista
-            userListEl.innerHTML = '';
+            const isChecked = checkbox.checked;
             
-            if (dataSource.length === 0) {
-                userListEl.innerHTML = '<p style="color:#888;text-align:center;padding:20px;">Nenhum usuário encontrado</p>';
-                return;
+            if (isChecked) {
+                if (!INDISPONIVEL_SAQUES.includes(index)) {
+                    INDISPONIVEL_SAQUES.push(index);
+                }
+                statusEl.textContent = '🚫 INDISPONÍVEL';
+                statusEl.style.color = '#ff0000';
+                if (itemEl) {
+                    itemEl.classList.add('indisponivel-item');
+                    itemEl.classList.remove('disponivel-item');
+                }
+                checkbox.parentElement.querySelector('.toggle-slider').style.background = '#ff0000';
+            } else {
+                INDISPONIVEL_SAQUES = INDISPONIVEL_SAQUES.filter(i => i !== index);
+                statusEl.textContent = '✅ DISPONÍVEL';
+                statusEl.style.color = '#32ff7e';
+                if (itemEl) {
+                    itemEl.classList.remove('indisponivel-item');
+                    itemEl.classList.add('disponivel-item');
+                }
+                checkbox.parentElement.querySelector('.toggle-slider').style.background = '#32ff7e';
             }
             
-            // Adicionar contador
-            const counterDiv = document.createElement('div');
-            counterDiv.id = 'scrollUserCounter';
-            counterDiv.style.cssText = 'color:#c0c0c0;font-size:12px;margin-bottom:8px;text-align:center;';
-            counterDiv.textContent = `📋 0 de ${dataSource.length} usuários`;
-            userListEl.appendChild(counterDiv);
-            
-            // Adicionar loading indicator
-            const loadingDiv = document.createElement('div');
-            loadingDiv.id = 'scrollLoadingIndicator';
-            loadingDiv.className = 'scroll-loading';
-            loadingDiv.style.display = 'none';
-            loadingDiv.innerHTML = '<span class="spinner"></span>Carregando...';
-            userListEl.appendChild(loadingDiv);
-            
-            // Carregar primeiro lote
-            loadMoreUsers();
+            await saveWithdrawConfig();
         }
 
+        async function saveSaqueConfigAdmin() {
+            const novosValores = [];
+            const novosMinVip = [];
+            
+            for (let i = 0; i < WITHDRAW_VALUES.length; i++) {
+                const valInput = document.getElementById('svVal' + i);
+                const vipSelect = document.getElementById('svVip' + i);
+                
+                if (valInput && vipSelect) {
+                    novosValores.push(Number(valInput.value) || 0);
+                    novosMinVip.push(Number(vipSelect.value) || 0);
+                }
+            }
+            
+            WITHDRAW_VALUES = novosValores;
+            WITHDRAW_MIN_VIP = novosMinVip;
+            
+            const saved = await saveWithdrawConfig();
+            if (saved) {
+                const adminPanel = document.getElementById('adminPanel');
+                if (adminPanel) {
+                    adminPanel.remove();
+                    showAdminPanel();
+                }
+                alert('✅ Configuração de saques salva com sucesso!\n\n📊 Valores: ' + WITHDRAW_VALUES.map(v => v.toLocaleString()).join(', ') + '\n🔒 Indisponíveis: ' + (INDISPONIVEL_SAQUES.length > 0 ? INDISPONIVEL_SAQUES.map(i => WITHDRAW_VALUES[i]?.toLocaleString()).join(', ') : 'Nenhum'));
+            } else {
+                alert('❌ Erro ao salvar');
+            }
+        }
+
+        // ========== PAINEL ADMIN ==========
         async function showAdminPanel() {
             await loadFundos();
             await loadVipConfig();
@@ -1243,14 +1283,6 @@
             const usersList = await getAllUsers();
             let totalUsers = usersList.length;
             
-            // Inicializar dados do scroll infinito
-            infiniteScrollData.allUsers = usersList;
-            infiniteScrollData.filteredUsers = usersList;
-            infiniteScrollData.searchTerm = '';
-            infiniteScrollData.loadedCount = 0;
-            infiniteScrollData.hasMore = usersList.length > 0;
-            infiniteScrollData.isLoading = false;
-            
             let depositFieldsHtml = '';
             if (depositConfig && Array.isArray(depositConfig)) {
                 depositFieldsHtml = depositConfig.map((c, i) => `
@@ -1267,7 +1299,7 @@
             let saquesConfigHtml = `
                 <div class="admin-section">
                     <h4 style="color:#ff8c00;">💸 CONFIGURAR VALORES DE SAQUE</h4>
-                    <p style="color:#c0c0c0;font-size:11px;">Altere os valores de saque, VIP mínimo e indisponibilize valores</p>
+                    <p style="color:#c0c0c0;font-size:11px;">Altere os valores, VIP mínimo e indisponibilidade</p>
                     <div style="max-height:400px;overflow-y:auto;">
                         ${WITHDRAW_VALUES.map((val, idx) => {
                             const indisponivel = INDISPONIVEL_SAQUES.includes(idx);
@@ -1319,7 +1351,7 @@
             const colorSection = `
                 <div class="admin-section">
                     <h4 style="color:#ff8c00;">🎨 PERSONALIZAR CORES</h4>
-                    <p style="color:#c0c0c0;font-size:11px;">Insira códigos hexadecimais (ex: #ff8c00) para alterar as cores do site.</p>
+                    <p style="color:#c0c0c0;font-size:11px;">Insira códigos hexadecimais</p>
                     <div class="color-input-group">
                         <label>Fundo Geral:</label>
                         <input type="text" id="colorBgBody" value="${customColors.bgBody || ''}" placeholder="#060913">
@@ -1426,9 +1458,13 @@
                 
                 <div class="admin-section">
                     <h4 style="color:#ff8c00;">⚙️ CONFIGURAR VIPs</h4>
+                    <p style="color:#32ff7e;font-size:12px;text-align:center;">✅ Clique em "Editar" para modificar os valores dos VIPs. As alterações serão salvas no Firebase.</p>
                     ${vipConfig.map((v,i) => `
                         <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--bg-input);border-radius:8px;margin:4px 0;">
-                            <span style="color:#fff;">${v.name} (Nível ${v.level}) - Diário: ${v.daily} MT - Invest: ${v.invest} MT ${v.emBreve?'🔒':''}</span>
+                            <div>
+                                <span style="color:#fff;font-weight:700;">${v.name}</span>
+                                <span style="color:#c0c0c0;font-size:11px;display:block;">💰 ${v.invest.toLocaleString()} MT | 💵 ${v.daily.toLocaleString()} MT/dia | 📅 ${v.days} dias ${v.emBreve?'| 🔒 Em Breve':''}</span>
+                            </div>
                             <button class="admin-btn-sm btn-edit" onclick="window.editVipAdmin(${i})">✏️ Editar</button>
                         </div>
                     `).join('')}
@@ -1490,8 +1526,8 @@
                         <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;margin:6px 0;background:var(--bg-input);border-radius:10px;">
                             <div><span style="color:#ffffff;"><strong>${d.name}</strong> - ${d.phone}</span><br><span style="color:#ff8c00;">Valor: <strong>${(d.amount || 0).toLocaleString()} MT</strong></span></div>
                             <div>
-                                <button class="admin-btn-sm btn-approve" onclick="window.approveDepositAdmin('${d.id}')" style="cursor:pointer;z-index:1001;position:relative;">✅ APROVAR</button>
-                                <button class="admin-btn-sm btn-reject" onclick="window.rejectDepositAdmin('${d.id}')" style="cursor:pointer;z-index:1001;position:relative;">❌ REJEITAR</button>
+                                <button class="admin-btn-sm btn-approve" onclick="window.approveDepositAdmin('${d.id}')">✅ APROVAR</button>
+                                <button class="admin-btn-sm btn-reject" onclick="window.rejectDepositAdmin('${d.id}')">❌ REJEITAR</button>
                             </div>
                         </div>
                     `).join('')}
@@ -1503,26 +1539,31 @@
                         <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;margin:6px 0;background:var(--bg-input);border-radius:10px;">
                             <div><span style="color:#ffffff;"><strong>${w.name}</strong> - ${w.phone}</span><br><span style="color:#ff8c00;">Solicitado: ${(w.amount || 0).toLocaleString()} MT</span><br><span style="color:#32ff7e;">Enviar: <strong>${(w.netAmount || 0).toLocaleString()} MT</strong></span></div>
                             <div>
-                                <button class="admin-btn-sm btn-approve" onclick="window.approveWithdrawAdmin('${w.id}')" style="cursor:pointer;z-index:1001;position:relative;">✅ APROVAR</button>
-                                <button class="admin-btn-sm btn-reject" onclick="window.rejectWithdrawAdmin('${w.id}')" style="cursor:pointer;z-index:1001;position:relative;">❌ REJEITAR</button>
+                                <button class="admin-btn-sm btn-approve" onclick="window.approveWithdrawAdmin('${w.id}')">✅ APROVAR</button>
+                                <button class="admin-btn-sm btn-reject" onclick="window.rejectWithdrawAdmin('${w.id}')">❌ REJEITAR</button>
                             </div>
                         </div>
                     `).join('')}
                 </div>
                 
                 <div class="admin-section">
-                    <h4 style="color:#ff8c00;">👥 Usuários (<span id="totalUsersCountScroll">${totalUsers}</span>)</h4>
-                    <div style="display:flex;gap:8px;margin-bottom:10px;">
-                        <input type="text" id="searchUser" class="auth-input" placeholder="🔍 Pesquisar por nome ou telefone..." style="flex:1;" oninput="window.searchUsersScroll()">
-                        <button onclick="window.searchUsersScroll()" class="admin-btn-sm btn-edit" style="padding:10px 16px;">🔍</button>
-                        <button onclick="window.resetSearchScroll()" class="admin-btn-sm btn-approve" style="padding:10px 12px;">📋 Todos</button>
-                    </div>
-                    <div id="userList" style="max-height:500px;overflow-y:auto;min-height:100px;">
-                        <!-- Scroll infinito -->
-                    </div>
-                    <div style="display:flex;gap:8px;margin-top:10px;">
-                        <button onclick="window.exportUsersCSVScroll()" class="admin-btn-sm btn-edit" style="flex:1;">📥 Exportar CSV</button>
-                        <button onclick="window.refreshUserListScroll()" class="admin-btn-sm btn-approve" style="flex:1;">🔄 Atualizar</button>
+                    <h4 style="color:#ff8c00;">👥 Usuários (${totalUsers})</h4>
+                    <div id="userList" style="max-height:400px;overflow-y:auto;">
+                        ${usersList.map(u => `
+                            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;margin:4px 0;background:var(--bg-input);border-radius:10px;">
+                                <div>
+                                    <strong style="color:#fff;">${u.name || 'Sem nome'}</strong><br>
+                                    <small style="color:#c0c0c0;">📞 ${u.phone || 'N/A'} | VIP: ${VIP_NAMES[u.vipLevel||0]||'Estagiário'} | 💰 ${(u.balance||0).toLocaleString()} MT</small>
+                                    ${u.blocked?'<span style="color:red;">🚫 BLOQUEADO</span> ':''}
+                                </div>
+                                <div style="display:flex;gap:4px;">
+                                    <button class="admin-btn-sm btn-edit" onclick="window.editBalanceAdmin('${u.id}')">💰</button>
+                                    <button class="admin-btn-sm btn-edit" onclick="window.resetPassAdmin('${u.id}')">🔑</button>
+                                    <button class="admin-btn-sm ${u.blocked?'btn-approve':'btn-block'}" onclick="window.toggleBlockAdmin('${u.id}')">${u.blocked?'✅':'🚫'}</button>
+                                    <button class="admin-btn-sm btn-delete" onclick="window.deleteUserAdmin('${u.id}')">🗑️</button>
+                                </div>
+                            </div>
+                        `).join('')}
                     </div>
                 </div>
                 
@@ -1534,99 +1575,6 @@
             
             document.body.appendChild(panel);
             document.getElementById('appScreen').style.display = 'none';
-
-            // Configurar scroll infinito após o DOM estar pronto
-            setTimeout(() => {
-                const userListEl = document.getElementById('userList');
-                if (userListEl) {
-                    setupInfiniteScroll(userListEl);
-                    resetInfiniteScroll(usersList);
-                }
-            }, 200);
-
-            // ========== HANDLERS GLOBAIS ==========
-            window.toggleSaqueIndisponivelAdmin = function(idx) { /* ... mesma lógica ... */ };
-            window.saveSaqueConfigAdmin = async function() { /* ... mesma lógica ... */ };
-            window.saveCustomColorsAdmin = async function() { /* ... mesma lógica ... */ };
-            window.resetCustomColorsAdmin = async function() { /* ... mesma lógica ... */ };
-            window.saveDepositConfigAdmin = async function() { /* ... mesma lógica ... */ };
-            window.addBgAdmin = async function() { /* ... mesma lógica ... */ };
-            window.toggleBgAdmin = async function(bgId) { /* ... mesma lógica ... */ };
-            window.deleteBgAdmin = async function(bgId) { /* ... mesma lógica ... */ };
-            window.recarregarFundosAdmin = async function() { /* ... mesma lógica ... */ };
-            window.setThemeAdmin = async function(idx) { /* ... mesma lógica ... */ };
-            window.toggleFundsEdit = function() { document.getElementById('fundsEditArea').classList.toggle('hidden'); };
-            window.saveFundEdit = async function(idx) { /* ... mesma lógica ... */ };
-            window.editVipAdmin = function(i) { /* ... mesma lógica ... */ };
-            window.saveVipConfigFirebase = async function() { /* ... mesma lógica ... */ };
-            window.saveLinksAdmin = async function() { /* ... mesma lógica ... */ };
-            window.toggleWithdrawSettingsAdmin = async function() { /* ... mesma lógica ... */ };
-            window.approveDepositAdmin = async function(did) { /* ... mesma lógica ... */ };
-            window.rejectDepositAdmin = async function(did) { /* ... mesma lógica ... */ };
-            window.approveWithdrawAdmin = async function(wid) { /* ... mesma lógica ... */ };
-            window.rejectWithdrawAdmin = async function(wid) { /* ... mesma lógica ... */ };
-            window.editBalanceAdmin = async function(uid) { /* ... mesma lógica ... */ };
-            window.resetPassAdmin = async function(uid) { /* ... mesma lógica ... */ };
-            window.toggleBlockAdmin = async function(uid) { /* ... mesma lógica ... */ };
-            window.deleteUserAdmin = async function(uid) { /* ... mesma lógica ... */ };
-            window.changeAdminPassAdmin = function() { /* ... mesma lógica ... */ };
-            
-            // Funções do scroll infinito
-            window.searchUsersScroll = function() {
-                const term = document.getElementById('searchUser')?.value?.toLowerCase() || '';
-                infiniteScrollData.searchTerm = term;
-                
-                if (term) {
-                    infiniteScrollData.filteredUsers = infiniteScrollData.allUsers.filter(u => 
-                        (u.name || '').toLowerCase().includes(term) || 
-                        (u.phone || '').includes(term)
-                    );
-                } else {
-                    infiniteScrollData.filteredUsers = infiniteScrollData.allUsers;
-                }
-                
-                const counterEl = document.getElementById('totalUsersCountScroll');
-                if (counterEl) counterEl.textContent = infiniteScrollData.filteredUsers.length;
-                
-                resetInfiniteScroll(infiniteScrollData.filteredUsers);
-            };
-            
-            window.resetSearchScroll = function() {
-                const searchInput = document.getElementById('searchUser');
-                if (searchInput) searchInput.value = '';
-                infiniteScrollData.searchTerm = '';
-                infiniteScrollData.filteredUsers = infiniteScrollData.allUsers;
-                
-                const counterEl = document.getElementById('totalUsersCountScroll');
-                if (counterEl) counterEl.textContent = infiniteScrollData.allUsers.length;
-                
-                resetInfiniteScroll(infiniteScrollData.allUsers);
-            };
-            
-            window.refreshUserListScroll = async function() {
-                try {
-                    const freshUsers = await getAllUsers();
-                    infiniteScrollData.allUsers = freshUsers;
-                    window.resetSearchScroll();
-                    alert(`✅ Lista atualizada! ${freshUsers.length} usuários carregados.`);
-                } catch (e) {
-                    alert('❌ Erro ao atualizar: ' + e.message);
-                }
-            };
-            
-            window.exportUsersCSVScroll = function() {
-                const dataSource = infiniteScrollData.searchTerm ? infiniteScrollData.filteredUsers : infiniteScrollData.allUsers;
-                let csv = 'Nome,Telefone,VIP,Saldo,Convidados,Depositantes,Bloqueado,Cadastro\n';
-                dataSource.forEach(u => {
-                    csv += `"${u.name || ''}","${u.phone || ''}","${VIP_NAMES[u.vipLevel||0] || 'Estagiário'}","${u.balance || 0}","${(u.invitedUsers || []).length}","${(u.invitedDepositors || []).length}","${u.blocked ? 'Sim' : 'Não'}","${u.createdAt || ''}"\n`;
-                });
-                
-                const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = `usuarios_netfilms_${new Date().toISOString().slice(0,10)}.csv`;
-                link.click();
-            };
         }
 
         function closeAdminPanel() { 
@@ -1637,6 +1585,208 @@
             showTab('home'); 
         }
 
+        // Demais funções admin
+        async function saveDepositConfigAdmin() {
+            const config = [];
+            for (let i = 0; i < 3; i++) {
+                const nome = document.getElementById('dcNome' + i)?.value?.trim() || '';
+                const numero = document.getElementById('dcNum' + i)?.value?.trim() || '';
+                const ativo = document.getElementById('dcAtivo' + i)?.checked || false;
+                config.push({ nome, numero, ativo });
+            }
+            await saveDepositConfig(config);
+            alert('✅ Campos de depósito salvos!');
+        }
+        async function addBgAdmin() {
+            const nome = document.getElementById('newBgName')?.value?.trim();
+            const url = document.getElementById('newBgUrl')?.value?.trim();
+            if (!nome || !url) { alert('Preencha nome e URL'); return; }
+            const bgId = 'bg_' + Date.now();
+            await saveBackground(bgId, { nome, url, ativo: true });
+            await applyGlobalBackground();
+            alert('✅ Fundo adicionado!');
+            const panel = document.getElementById('adminPanel');
+            if (panel) { panel.remove(); showAdminPanel(); }
+        }
+        async function toggleBgAdmin(bgId) {
+            const bgs = await loadBackgrounds();
+            if (bgs[bgId]) {
+                bgs[bgId].ativo = !bgs[bgId].ativo;
+                await saveBackground(bgId, bgs[bgId]);
+                await applyGlobalBackground();
+                alert('✅ Status alterado!');
+                const panel = document.getElementById('adminPanel');
+                if (panel) { panel.remove(); showAdminPanel(); }
+            }
+        }
+        async function deleteBgAdmin(bgId) {
+            if (confirm('Deletar este fundo?')) {
+                await deleteBackground(bgId);
+                await applyGlobalBackground();
+                alert('🗑️ Fundo deletado!');
+                const panel = document.getElementById('adminPanel');
+                if (panel) { panel.remove(); showAdminPanel(); }
+            }
+        }
+        async function recarregarFundosAdmin() {
+            await applyGlobalBackground();
+            alert('✅ Fundos de tela recarregados!');
+        }
+        async function setThemeAdmin(idx) {
+            await saveThemeIndex(idx);
+            applyTheme(idx);
+            alert('✅ Tema: ' + THEMES[idx].name);
+            const panel = document.getElementById('adminPanel');
+            if (panel) { panel.remove(); showAdminPanel(); }
+        }
+        function toggleFundsEdit() {
+            document.getElementById('fundsEditArea')?.classList.toggle('hidden');
+        }
+        async function saveFundEdit(idx) {
+            FUNDOS[idx] = {
+                ...FUNDOS[idx],
+                min: Number(document.getElementById('fMin' + idx)?.value) || 0,
+                base: Number(document.getElementById('fBase' + idx)?.value) || 0,
+                retorno: Number(document.getElementById('fRet' + idx)?.value) || 0,
+                dias: Number(document.getElementById('fDias' + idx)?.value) || 0,
+                percent: Number(document.getElementById('fPerc' + idx)?.value) || 0,
+                blocked: document.getElementById('fBlock' + idx)?.checked || false
+            };
+            await saveFundos(FUNDOS);
+            alert('✅ Fundo salvo!');
+            const panel = document.getElementById('adminPanel');
+            if (panel) { panel.remove(); showAdminPanel(); }
+        }
+        async function saveVipConfigFirebase() {
+            await saveVipConfig();
+            alert('✅ VIPs salvos no Firebase!');
+        }
+        async function saveLinksAdmin() {
+            globalSettings.whatsappGroup = document.getElementById('waGroup')?.value?.trim() || '';
+            globalSettings.telegramChannel = document.getElementById('tgChannel')?.value?.trim() || '';
+            globalSettings.supportWhatsapp = document.getElementById('supWa')?.value?.trim() || '';
+            globalSettings.facebookPage = document.getElementById('fbPage')?.value?.trim() || '';
+            globalSettings.youtubeChannel = document.getElementById('ytChannel')?.value?.trim() || '';
+            globalSettings.socialWhatsapp = document.getElementById('socialWa')?.value?.trim() || '';
+            await saveSettings(globalSettings);
+            updateSocialButtons();
+            alert('✅ Links salvos!');
+        }
+        async function toggleWithdrawSettingsAdmin() {
+            globalSettings.withdrawsEnabled = !globalSettings.withdrawsEnabled;
+            await saveSettings(globalSettings);
+            const statusText = document.getElementById('withdrawStatusText');
+            if (statusText) {
+                statusText.textContent = globalSettings.withdrawsEnabled ? '✅ SAQUES DIÁRIOS (TODOS DIAS)' : '📅 SAQUES SEMANAIS (SEG-SEX)';
+                statusText.style.color = globalSettings.withdrawsEnabled ? '#32ff7e' : '#ff4444';
+            }
+            alert(globalSettings.withdrawsEnabled ? '✅ Saques diários ATIVADOS' : '📅 Saques semanais ATIVADOS');
+        }
+        async function approveDepositAdmin(did) {
+            const deposits = await loadDeposits();
+            const dep = deposits.find(d => d.id === did);
+            if (!dep) return;
+            await updateDeposit(did, { status: 'approved' });
+            const user = await loadUserByPhone(dep.phone);
+            if (user) {
+                const newBalance = (Number(user.balance) || 0) + (Number(dep.amount) || 0);
+                await updateUser(user.id, { balance: newBalance });
+            }
+            alert('✅ Depósito aprovado!');
+            const panel = document.getElementById('adminPanel');
+            if (panel) { panel.remove(); showAdminPanel(); }
+        }
+        async function rejectDepositAdmin(did) {
+            await updateDeposit(did, { status: 'rejected' });
+            alert('❌ Depósito rejeitado');
+            const panel = document.getElementById('adminPanel');
+            if (panel) { panel.remove(); showAdminPanel(); }
+        }
+        async function approveWithdrawAdmin(wid) {
+            await updateWithdrawal(wid, { status: 'approved' });
+            alert('✅ Saque aprovado!');
+            const panel = document.getElementById('adminPanel');
+            if (panel) { panel.remove(); showAdminPanel(); }
+        }
+        async function rejectWithdrawAdmin(wid) {
+            const withdrawals = await loadWithdrawals();
+            const w = withdrawals.find(w => w.id === wid);
+            if (w) {
+                const user = await loadUserByPhone(w.phone);
+                if (user) {
+                    const refund = (Number(user.balance) || 0) + (Number(w.amount) || 0);
+                    await updateUser(user.id, { balance: refund });
+                }
+            }
+            await updateWithdrawal(wid, { status: 'rejected' });
+            alert('❌ Saque rejeitado - valor devolvido');
+            const panel = document.getElementById('adminPanel');
+            if (panel) { panel.remove(); showAdminPanel(); }
+        }
+        async function editBalanceAdmin(uid) {
+            const user = await getUserById(uid);
+            if (!user) { alert('Usuário não encontrado'); return; }
+            const newBal = Number(prompt('Saldo atual: ' + ((user.balance||0).toLocaleString()) + ' MT\nNovo saldo:'));
+            if (isNaN(newBal)) return;
+            await updateUser(uid, { balance: newBal });
+            alert('✅ Saldo atualizado para ' + newBal.toLocaleString() + ' MT');
+            const panel = document.getElementById('adminPanel');
+            if (panel) { panel.remove(); showAdminPanel(); }
+        }
+        async function resetPassAdmin(uid) {
+            const np = prompt('Nova senha (mín 4):');
+            if (!np || np.length < 4) return;
+            await updateUser(uid, { password: np });
+            alert('✅ Senha resetada: ' + np);
+        }
+        async function toggleBlockAdmin(uid) {
+            const user = await getUserById(uid);
+            if (!user) return;
+            await updateUser(uid, { blocked: !user.blocked });
+            alert(user.blocked ? '✅ Desbloqueado' : '🚫 Bloqueado');
+            const panel = document.getElementById('adminPanel');
+            if (panel) { panel.remove(); showAdminPanel(); }
+        }
+        async function deleteUserAdmin(uid) {
+            if (confirm('⚠️ DELETAR PERMANENTEMENTE este usuário?')) {
+                await deleteUser(uid);
+                alert('🗑️ Usuário deletado');
+                const panel = document.getElementById('adminPanel');
+                if (panel) { panel.remove(); showAdminPanel(); }
+            }
+        }
+        function changeAdminPassAdmin() {
+            const np = prompt('NOVA SENHA ADMIN:');
+            if (!np || np.length < 4) return;
+            adminPassword = np;
+            alert('✅ Nova senha admin: ' + np);
+        }
+        async function saveCustomColorsAdmin() {
+            const colors = {
+                bgBody: document.getElementById('colorBgBody')?.value?.trim() || null,
+                bgCard: document.getElementById('colorBgCard')?.value?.trim() || null,
+                bgInput: document.getElementById('colorBgInput')?.value?.trim() || null,
+                accent: document.getElementById('colorAccent')?.value?.trim() || null,
+                accent2: document.getElementById('colorAccent2')?.value?.trim() || null,
+                border: document.getElementById('colorBorder')?.value?.trim() || null
+            };
+            await saveCustomColors(colors);
+            applyCustomColors(colors);
+            alert('✅ Cores personalizadas salvas!');
+        }
+        async function resetCustomColorsAdmin() {
+            await saveCustomColors(null);
+            document.getElementById('colorBgBody').value = '';
+            document.getElementById('colorBgCard').value = '';
+            document.getElementById('colorBgInput').value = '';
+            document.getElementById('colorAccent').value = '';
+            document.getElementById('colorAccent2').value = '';
+            document.getElementById('colorBorder').value = '';
+            applyTheme(currentThemeIndex);
+            alert('✅ Cores restauradas ao padrão do tema!');
+        }
+
+        // Expor funções globalmente
         window.showRegisterForm = showRegisterForm;
         window.showLoginForm = showLoginForm;
         window.showForgotPassword = showForgotPassword;
@@ -1658,7 +1808,33 @@
         window.showDepositModal = showDepositModal;
         window.installApp = installApp;
         window.closeAdminPanel = closeAdminPanel;
-        
+        window.toggleSaqueIndisponivelAdmin = toggleSaqueIndisponivelAdmin;
+        window.saveSaqueConfigAdmin = saveSaqueConfigAdmin;
+        window.editVipAdmin = editVipAdmin;
+        window.saveVipEdit = saveVipEdit;
+        window.saveDepositConfigAdmin = saveDepositConfigAdmin;
+        window.addBgAdmin = addBgAdmin;
+        window.toggleBgAdmin = toggleBgAdmin;
+        window.deleteBgAdmin = deleteBgAdmin;
+        window.recarregarFundosAdmin = recarregarFundosAdmin;
+        window.setThemeAdmin = setThemeAdmin;
+        window.toggleFundsEdit = toggleFundsEdit;
+        window.saveFundEdit = saveFundEdit;
+        window.saveVipConfigFirebase = saveVipConfigFirebase;
+        window.saveLinksAdmin = saveLinksAdmin;
+        window.toggleWithdrawSettingsAdmin = toggleWithdrawSettingsAdmin;
+        window.approveDepositAdmin = approveDepositAdmin;
+        window.rejectDepositAdmin = rejectDepositAdmin;
+        window.approveWithdrawAdmin = approveWithdrawAdmin;
+        window.rejectWithdrawAdmin = rejectWithdrawAdmin;
+        window.editBalanceAdmin = editBalanceAdmin;
+        window.resetPassAdmin = resetPassAdmin;
+        window.toggleBlockAdmin = toggleBlockAdmin;
+        window.deleteUserAdmin = deleteUserAdmin;
+        window.changeAdminPassAdmin = changeAdminPassAdmin;
+        window.saveCustomColorsAdmin = saveCustomColorsAdmin;
+        window.resetCustomColorsAdmin = resetCustomColorsAdmin;
+
         window.atualizarSaldoAgora = async function() {
             if (!currentUserId) return;
             const snap = await get(ref(db, 'users/' + currentUserId));
@@ -1690,6 +1866,7 @@
 
         window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; document.getElementById('installButton')?.classList.remove('hidden'); });
 
+        // Criar partículas
         for (let i = 0; i < 30; i++) { 
             let p = document.createElement('div'); p.className = 'particle'; 
             p.style.width = Math.random() * 6 + 2 + 'px'; p.style.height = p.style.width; 
@@ -1711,7 +1888,20 @@
             updateSocialButtons();
             await checkInviteBanner();
             startFloatingNotifications();
-            console.log('✅ NET FILMS PRONTO - SCROLL INFINITO NA LISTA DE USUÁRIOS');
+            
+            // Garantir que o vídeo do coelho está rodando
+            const video = document.getElementById('bunnyVideo');
+            if (video) {
+                video.play().catch(() => {
+                    // Se o autoplay falhar, tenta novamente com interação do usuário
+                    document.addEventListener('click', function playOnClick() {
+                        video.play();
+                        document.removeEventListener('click', playOnClick);
+                    }, { once: true });
+                });
+            }
+            
+            console.log('✅ NET FILMS PRONTO - 🐰 Coelho na vitrine!');
         }
         init();
     </script>
