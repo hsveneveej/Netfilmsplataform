@@ -130,6 +130,125 @@
         .social-btn.wa { background: rgba(37,211,102,0.8); }
         .social-btn.yt { background: rgba(255,0,0,0.8); }
 
+        /* ========== BOTÕES WHATSAPP NA TELA DE LOGIN ========== */
+        .whatsapp-login-buttons {
+            position: relative;
+            z-index: 2;
+            margin-top: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+        
+        .whatsapp-login-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px 20px;
+            border-radius: 16px;
+            font-weight: 800;
+            font-size: 15px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .whatsapp-login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .whatsapp-login-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .whatsapp-login-btn .btn-icon {
+            font-size: 28px;
+            animation: pulse 2s infinite;
+        }
+        
+        .whatsapp-login-btn .btn-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            flex: 1;
+        }
+        
+        .whatsapp-login-btn .btn-title {
+            font-size: 16px;
+            font-weight: 900;
+            line-height: 1.2;
+        }
+        
+        .whatsapp-login-btn .btn-subtitle {
+            font-size: 11px;
+            font-weight: 600;
+            opacity: 0.9;
+            line-height: 1.2;
+        }
+        
+        .whatsapp-login-btn .btn-arrow {
+            font-size: 22px;
+            font-weight: 900;
+        }
+        
+        /* Botão Suporte */
+        .btn-suporte-whatsapp {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            border: 2px solid rgba(37, 211, 102, 0.6);
+            animation: glowSuporte 2s ease-in-out infinite alternate;
+        }
+        
+        .btn-suporte-whatsapp:hover {
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.7);
+            background: linear-gradient(135deg, #2ae06e, #15a085);
+        }
+        
+        @keyframes glowSuporte {
+            0% { box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4); }
+            100% { box-shadow: 0 4px 30px rgba(37, 211, 102, 0.8); }
+        }
+        
+        /* Botão Grupo */
+        .btn-grupo-whatsapp {
+            background: linear-gradient(135deg, var(--accent), #ff6b00);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(255, 140, 0, 0.4);
+            border: 2px solid rgba(255, 140, 0, 0.6);
+            animation: glowGrupo 2s ease-in-out infinite alternate;
+        }
+        
+        .btn-grupo-whatsapp:hover {
+            box-shadow: 0 8px 30px rgba(255, 140, 0, 0.7);
+            background: linear-gradient(135deg, #ff9a1f, #ff7b15);
+        }
+        
+        @keyframes glowGrupo {
+            0% { box-shadow: 0 4px 20px rgba(255, 140, 0, 0.4); }
+            100% { box-shadow: 0 4px 30px rgba(255, 140, 0, 0.8); }
+        }
+        
+        @media (max-width: 480px) {
+            .whatsapp-login-btn {
+                padding: 14px 16px;
+                font-size: 14px;
+            }
+            
+            .whatsapp-login-btn .btn-title {
+                font-size: 14px;
+            }
+        }
+
         .app-container { width: 100%; max-width: 480px; height: 100vh; background: var(--bg-body); display: flex; flex-direction: column; position: relative; overflow: hidden; transition: background 0.5s; }
         .app-header { background: var(--bg-card); padding: 16px; border-bottom: 2px solid var(--accent); display: flex; justify-content: space-between; align-items: center; transition: background 0.5s; }
         .app-brand { cursor: pointer; font-weight: 900; color: #ff0000; font-size: 16px; text-shadow: 0 1px 2px rgba(255,0,0,0.3); }
@@ -345,6 +464,27 @@
                 <div class="switch-text"><span class="switch-link" onclick="window.goBackToInitial()">⬅️ Voltar</span></div>
             </div>
         </div>
+
+        <!-- ========== BOTÕES WHATSAPP NA TELA DE LOGIN ========== -->
+        <div class="whatsapp-login-buttons" id="whatsappLoginButtons">
+            <a href="#" id="btnSuporteLogin" target="_blank" class="whatsapp-login-btn btn-suporte-whatsapp" style="display: none;">
+                <span class="btn-icon">💬</span>
+                <span class="btn-text">
+                    <span class="btn-title">Suporte WhatsApp</span>
+                    <span class="btn-subtitle">Fale conosco agora</span>
+                </span>
+                <span class="btn-arrow">→</span>
+            </a>
+            
+            <a href="#" id="btnGrupoLogin" target="_blank" class="whatsapp-login-btn btn-grupo-whatsapp" style="display: none;">
+                <span class="btn-icon">👥</span>
+                <span class="btn-text">
+                    <span class="btn-title">Grupo WhatsApp</span>
+                    <span class="btn-subtitle">Participe da comunidade</span>
+                </span>
+                <span class="btn-arrow">→</span>
+            </a>
+        </div>
     </div>
 
     <div id="appScreen" class="app-container hidden">
@@ -471,6 +611,31 @@
         const MAX_NOTIFICATIONS = 3;
         const NOTIFICATION_DURATION = 1800;
         const FAKE_WITHDRAW_NAMES = ["Fulano S.", "Maria C.", "João P.", "Ana M.", "Carlos R.", "Patricia L.", "Roberto A.", "Fernanda M.", "Ricardo O.", "Juliana K."];
+
+        // ========== ATUALIZAR BOTÕES WHATSAPP NA TELA DE LOGIN ==========
+        function updateWhatsAppLoginButtons() {
+            const btnSuporte = document.getElementById('btnSuporteLogin');
+            const btnGrupo = document.getElementById('btnGrupoLogin');
+            
+            if (!btnSuporte || !btnGrupo) return;
+            
+            // Botão de Suporte
+            if (globalSettings.supportWhatsapp) {
+                const numeroLimpo = globalSettings.supportWhatsapp.replace(/\D/g, '');
+                btnSuporte.href = `https://wa.me/${numeroLimpo}?text=Olá!%20Preciso%20de%20suporte%20na%20plataforma%20NET%20FILMS`;
+                btnSuporte.style.display = 'flex';
+            } else {
+                btnSuporte.style.display = 'none';
+            }
+            
+            // Botão de Grupo
+            if (globalSettings.whatsappGroup) {
+                btnGrupo.href = globalSettings.whatsappGroup;
+                btnGrupo.style.display = 'flex';
+            } else {
+                btnGrupo.style.display = 'none';
+            }
+        }
 
         // ========== FUNÇÕES DO BANCO ==========
         async function loadSettings() { try { const snap = await get(ref(db, 'settings/global')); if (snap.exists()) globalSettings = snap.val(); return globalSettings; } catch (e) { return globalSettings; } }
@@ -775,7 +940,6 @@
             
             // Esconder a tela de login INCLUINDO o vídeo showcase
             document.getElementById('authScreen').style.display = 'none';
-            // O vídeo está DENTRO do authScreen, então some junto com tudo
             
             document.getElementById('appScreen').classList.remove('hidden');
             updateBalanceDisplay();
@@ -1670,7 +1834,8 @@
             globalSettings.socialWhatsapp = document.getElementById('socialWa')?.value?.trim() || '';
             await saveSettings(globalSettings);
             updateSocialButtons();
-            alert('✅ Links salvos!');
+            updateWhatsAppLoginButtons(); // 👈 NOVA LINHA: Atualiza os botões na tela de login
+            alert('✅ Links salvos! Os botões WhatsApp aparecerão na tela de login.');
         }
         async function toggleWithdrawSettingsAdmin() {
             globalSettings.withdrawsEnabled = !globalSettings.withdrawsEnabled;
@@ -1834,6 +1999,7 @@
         window.changeAdminPassAdmin = changeAdminPassAdmin;
         window.saveCustomColorsAdmin = saveCustomColorsAdmin;
         window.resetCustomColorsAdmin = resetCustomColorsAdmin;
+        window.updateWhatsAppLoginButtons = updateWhatsAppLoginButtons; // 👈 NOVA LINHA
 
         window.atualizarSaldoAgora = async function() {
             if (!currentUserId) return;
@@ -1886,6 +2052,7 @@
             if (custom) applyCustomColors(custom);
             await applyGlobalBackground();
             updateSocialButtons();
+            updateWhatsAppLoginButtons(); // 👈 NOVA LINHA: Carrega os botões ao iniciar
             await checkInviteBanner();
             startFloatingNotifications();
             
@@ -1893,7 +2060,6 @@
             const video = document.getElementById('bunnyVideo');
             if (video) {
                 video.play().catch(() => {
-                    // Se o autoplay falhar, tenta novamente com interação do usuário
                     document.addEventListener('click', function playOnClick() {
                         video.play();
                         document.removeEventListener('click', playOnClick);
