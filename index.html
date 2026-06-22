@@ -84,6 +84,7 @@
         .tamanho-pequeno .vip-card-colorida { padding: 12px; }
         .tamanho-pequeno .balance-card { padding: 12px; }
         .tamanho-pequeno .action-btn { padding: 10px; font-size: 0.9em; }
+        
         .tamanho-grande .vip-card-colorida { padding: 26px; }
         .tamanho-grande .balance-card { padding: 24px; }
         .tamanho-grande .action-btn { padding: 20px; font-size: 1.2em; }
@@ -1456,35 +1457,10 @@
             0%, 100% { transform: rotate(0deg) scale(1); }
             50% { transform: rotate(180deg) scale(1.2); }
         }
-        .modal-vip-whatsapp-content .icone-vip-modal {
-            font-size: 80px;
-            display: block;
-            animation: pulse 1.5s infinite;
-            position: relative;
-            z-index: 1;
-        }
-        .modal-vip-whatsapp-content .titulo-vip-modal {
-            font-size: 28px;
-            font-weight: 900;
-            color: #ffd700;
-            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
-            position: relative;
-            z-index: 1;
-        }
-        .modal-vip-whatsapp-content .desc-vip-modal {
-            color: #ffffff;
-            font-size: 16px;
-            margin: 10px 0;
-            position: relative;
-            z-index: 1;
-        }
-        .modal-vip-whatsapp-content .destaque-vip-modal {
-            color: #32ff7e;
-            font-size: 20px;
-            font-weight: 900;
-            position: relative;
-            z-index: 1;
-        }
+        .modal-vip-whatsapp-content .icone-vip-modal { font-size: 80px; display: block; animation: pulse 1.5s infinite; position: relative; z-index: 1; }
+        .modal-vip-whatsapp-content .titulo-vip-modal { font-size: 28px; font-weight: 900; color: #ffd700; text-shadow: 0 0 30px rgba(255, 215, 0, 0.5); position: relative; z-index: 1; }
+        .modal-vip-whatsapp-content .desc-vip-modal { color: #ffffff; font-size: 16px; margin: 10px 0; position: relative; z-index: 1; }
+        .modal-vip-whatsapp-content .destaque-vip-modal { color: #32ff7e; font-size: 20px; font-weight: 900; position: relative; z-index: 1; }
         .modal-vip-whatsapp-content .btn-entrar-vip {
             background: linear-gradient(135deg, #25D366, #128C7E);
             color: #fff;
@@ -1533,229 +1509,50 @@
             z-index: 1;
         }
         .modal-vip-whatsapp-content .btn-fechar-modal-vip:hover { background: rgba(255, 255, 255, 0.2); }
-        .modal-vip-whatsapp-content .vip-badge-modal {
-            display: inline-block;
-            background: #ffd700;
-            color: #000;
-            padding: 4px 16px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 900;
-            position: relative;
-            z-index: 1;
-        }
+        .modal-vip-whatsapp-content .vip-badge-modal { display: inline-block; background: #ffd700; color: #000; padding: 4px 16px; border-radius: 20px; font-size: 12px; font-weight: 900; position: relative; z-index: 1; }
 
-        .nf_saque_container {
-            max-width: 100%;
-            margin: 10px 0;
-        }
-        .nf_card_saque {
-            background: var(--bg-card);
-            border-radius: var(--borda-radius);
-            padding: 16px;
-            border: 2px solid var(--accent);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-        .nf_card_saque h3 {
-            color: var(--accent);
-            margin-bottom: 12px;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .nf_status_indicator {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        /* ESTILOS PARA STATUS DE SAQUE */
+        .saque-status-bloqueado {
+            background: rgba(255, 0, 0, 0.15);
+            border: 2px solid #ff0000;
+            border-radius: 12px;
             padding: 12px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        .saque-status-bloqueado .titulo { color: #ff4444; font-weight: 700; font-size: 16px; }
+        .saque-status-bloqueado .desc { color: #c0c0c0; font-size: 13px; display: block; margin-top: 4px; }
+        .saque-status-bloqueado .contador { color: #ff8c00; font-size: 12px; display: block; margin-top: 4px; }
+        
+        .saque-status-liberado {
+            background: rgba(50, 255, 126, 0.15);
+            border: 2px solid #32ff7e;
+            border-radius: 12px;
+            padding: 12px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        .saque-status-liberado .titulo { color: #32ff7e; font-weight: 700; font-size: 16px; }
+        .saque-status-liberado .desc { color: #c0c0c0; font-size: 13px; display: block; margin-top: 4px; }
+
+        /* ESTILOS PARA OPÇÕES DE DEPÓSITO */
+        .deposit-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
             background: var(--bg-input);
             border-radius: 10px;
-            margin-bottom: 12px;
-            color: var(--text);
-            flex-wrap: wrap;
-            gap: 8px;
+            margin: 6px 0;
+            border-left: 3px solid #32ff7e;
+            transition: all 0.3s;
         }
-        .nf_badge {
-            padding: 6px 16px;
-            border-radius: 25px;
-            font-weight: bold;
-            font-size: 13px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .nf_badge_livre {
-            background: #d4edda;
-            color: #155724;
-            border: 2px solid #c3e6cb;
-        }
-        .nf_badge_restrito {
-            background: #f8d7da;
-            color: #721c24;
-            border: 2px solid #f5c6cb;
-        }
-        .nf_dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-            animation: nf_pulse 2s infinite;
-        }
-        .nf_dot_green { background: #28a745; box-shadow: 0 0 10px #28a745; }
-        .nf_dot_red { background: #dc3545; box-shadow: 0 0 10px #dc3545; }
-        @keyframes nf_pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-        .nf_info_box {
-            background: var(--bg-input);
-            padding: 10px;
-            border-radius: 8px;
-            margin: 12px 0;
-            border-left: 4px solid var(--accent);
-            font-size: 12px;
-            color: var(--text);
-        }
-        .nf_info_box p { margin: 4px 0; color: var(--text2); }
-        .nf_mensagem_status {
-            text-align: center;
-            padding: 10px;
-            border-radius: 8px;
-            margin: 10px 0;
-            font-size: 13px;
-            font-weight: bold;
-        }
-        .nf_mensagem_status.livre {
-            background: rgba(50, 255, 126, 0.15);
-            color: #32ff7e;
-            border: 1px solid #32ff7e;
-        }
-        .nf_mensagem_status.restrito {
-            background: rgba(255, 68, 68, 0.15);
-            color: #ff4444;
-            border: 1px solid #ff4444;
-        }
-        .nf_mensagem_status.liberado {
-            background: rgba(50, 255, 126, 0.15);
-            color: #32ff7e;
-            border: 1px solid #32ff7e;
-        }
-        .nf_mensagem_status.bloqueado {
-            background: rgba(255, 215, 0, 0.15);
-            color: #ffd700;
-            border: 1px solid #ffd700;
-        }
-        .nf_aviso_editavel {
-            background: var(--bg-input);
-            padding: 10px 12px;
-            border-radius: 8px;
-            margin: 8px 0;
-            font-size: 12px;
-            color: var(--text2);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            text-align: center;
-            line-height: 1.6;
-        }
-        .nf_aviso_editavel strong { color: var(--accent); }
-        .nf_btn_editar_aviso {
-            background: rgba(255, 215, 0, 0.15);
-            color: #ffd700;
-            border: 1px solid #ffd700;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            margin-top: 6px;
-            width: 100%;
-        }
-        .nf_btn_editar_aviso:hover {
-            background: rgba(255, 215, 0, 0.25);
-            transform: scale(1.02);
-        }
-        .admin-toggle-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 16px;
-            background: var(--bg-input);
-            border-radius: 12px;
-            margin: 8px 0;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .admin-toggle-container .toggle-label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--text);
-            font-weight: 700;
-            font-size: 14px;
-        }
-        .admin-toggle-container .toggle-label .icon { font-size: 20px; }
-        .admin-toggle-container .toggle-status {
-            font-size: 12px;
-            font-weight: bold;
-            padding: 4px 12px;
-            border-radius: 12px;
-        }
-        .admin-toggle-container .toggle-status.ativo {
-            background: rgba(50, 255, 126, 0.2);
-            color: #32ff7e;
-        }
-        .admin-toggle-container .toggle-status.inativo {
-            background: rgba(255, 68, 68, 0.2);
-            color: #ff4444;
-        }
-        .toggle-switch-large {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 30px;
-            flex-shrink: 0;
-        }
-        .toggle-switch-large input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .toggle-switch-large .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: #444;
-            transition: 0.4s;
-            border-radius: 30px;
-        }
-        .toggle-switch-large .slider:before {
-            position: absolute;
-            content: "";
-            height: 22px;
-            width: 22px;
-            left: 4px;
-            bottom: 4px;
-            background: white;
-            transition: 0.4s;
-            border-radius: 50%;
-        }
-        .toggle-switch-large input:checked + .slider { background: #32ff7e; }
-        .toggle-switch-large input:checked + .slider:before { transform: translateX(30px); }
-        .toggle-switch-large input:disabled + .slider { opacity: 0.5; cursor: not-allowed; }
-
-        @keyframes nf_slideIn {
-            from { transform: translateX(100px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes nf_slideOut {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(100px); opacity: 0; }
-        }
+        .deposit-option:hover { background: var(--bg-card); transform: translateX(4px); }
+        .deposit-option .icon { font-size: 20px; }
+        .deposit-option .label { color: #ffffff; font-weight: 700; margin-left: 8px; }
+        .deposit-option .number { color: #ff8c00; font-weight: 900; font-size: 16px; background: rgba(255,140,0,0.1); padding: 4px 12px; border-radius: 8px; }
+        .deposit-option.inactive { opacity: 0.4; border-left-color: #666; }
+        .deposit-option.inactive .number { color: #666; background: transparent; }
     </style>
 </head>
 <body>
@@ -1865,6 +1662,7 @@
         </div>
         <button id="installButton" class="install-btn hidden" onclick="installApp()">📲 Instalar</button>
         
+        <!-- SIDEBAR -->
         <div class="sidebar">
             <button class="sidebar-toggle" onclick="toggleSidebar()">☰ MENU</button>
             <div class="sidebar-content" id="sidebarContent">
@@ -1872,7 +1670,11 @@
                 
                 <div class="btn-assista-ganhe" onclick="abrirYoutubeGanhar()">
                     <div class="chamas-bg"></div>
-                    <div class="estrelas-fundo"><span>⭐</span><span>⭐</span><span>⭐</span></div>
+                    <div class="estrelas-fundo">
+                        <span>⭐</span>
+                        <span>⭐</span>
+                        <span>⭐</span>
+                    </div>
                     <span class="badge-fogo">🔥 NOVO</span>
                     <span class="icone-grande">🎬</span>
                     <div class="titulo">ASSISTA 8 MIN</div>
@@ -1904,56 +1706,67 @@
                 
                 <div class="sidebar-titulo">🎨 FUNDOS</div>
                 <div id="fundosSidebar"></div>
-
-                <div class="sidebar-titulo">🔒 STATUS DO SAQUE</div>
-                <div id="moduloSaqueSidebar"></div>
             </div>
         </div>
         
         <div class="modal-arvore" id="modalArvoreSalario">
             <div class="modal-arvore-content">
                 <h3>🌳 ÁRVORE GANHE CONVIDANDO</h3>
-                <div class="resumo-convidados"><p>VIPs:</p><div class="contador-vips" id="contadorVips">0</div></div>
+                <div class="resumo-convidados">
+                    <p>VIPs:</p>
+                    <div class="contador-vips" id="contadorVips">0</div>
+                </div>
                 <div class="grade-niveis" id="gradeNiveis"></div>
                 <button class="btn-fechar-modal" onclick="fecharModalArvore()">❌ Fechar</button>
             </div>
         </div>
 
+        <!-- MODAL VIP WHATSAPP -->
         <div class="modal-vip-whatsapp" id="modalVipWhatsapp">
             <div class="modal-vip-whatsapp-content">
                 <div class="brilho-modal"></div>
                 <span class="icone-vip-modal">💎</span>
                 <div class="vip-badge-modal">👑 EXCLUSIVO VIP</div>
                 <div class="titulo-vip-modal">GRUPO VIP</div>
-                <div class="desc-vip-modal">Entre no <strong style="color:#ffd700;">grupo exclusivo</strong> de membros VIP</div>
-                <div class="destaque-vip-modal">🔥 Ofertas especiais • Sorteios • Suporte prioritário</div>
-                <div style="color:#888;font-size:13px;margin:10px 0;position:relative;z-index:1;">⚡ Apenas <strong style="color:#ffd700;">VIPs</strong> têm acesso</div>
-                <button class="btn-entrar-vip" id="btnEntrarGrupoVip" onclick="entrarGrupoVipWhatsapp()">💬 ENTRAR NO GRUPO VIP</button>
-                <button class="btn-comprar-vip-modal" id="btnComprarVipModal" onclick="fecharModalVip();showTab('vips')" style="display:none;">🎬 COMPRAR VIP AGORA</button>
+                <div class="desc-vip-modal">
+                    Entre no <strong style="color:#ffd700;">grupo exclusivo</strong> de membros VIP
+                </div>
+                <div class="destaque-vip-modal">
+                    🔥 Ofertas especiais • Sorteios • Suporte prioritário
+                </div>
+                <div style="color:#888;font-size:13px;margin:10px 0;position:relative;z-index:1;">
+                    ⚡ Apenas <strong style="color:#ffd700;">VIPs</strong> têm acesso
+                </div>
+                <button class="btn-entrar-vip" id="btnEntrarGrupoVip" onclick="entrarGrupoVipWhatsapp()">
+                    💬 ENTRAR NO GRUPO VIP
+                </button>
+                <button class="btn-comprar-vip-modal" id="btnComprarVipModal" onclick="fecharModalVip();showTab('vips')" style="display:none;">
+                    🎬 COMPRAR VIP AGORA
+                </button>
                 <button class="btn-fechar-modal-vip" onclick="fecharModalVip()">❌ Fechar</button>
             </div>
         </div>
 
+        <!-- MODAIS DE EDIÇÃO DO ADMIN -->
         <div class="modal-padrao" id="modalFundos">
-            <div class="modal-padrao-content"><h3>🖼️ EDITAR FUNDOS</h3><div id="formFundos"></div><button onclick="salvarFundos()">💾 Salvar</button><button class="btn-fechar-modal-padrao" onclick="fecharModalPadrao('modalFundos')">❌ Cancelar</button></div>
+            <div class="modal-padrao-content">
+                <h3>🖼️ EDITAR FUNDOS</h3>
+                <div id="formFundos"></div>
+                <button onclick="salvarFundos()">💾 Salvar</button>
+                <button class="btn-fechar-modal-padrao" onclick="fecharModalPadrao('modalFundos')">❌ Cancelar</button>
+            </div>
         </div>
         
         <div class="modal-padrao" id="modalSalarios">
-            <div class="modal-padrao-content"><h3>💰 EDITAR NÍVEIS DA ÁRVORE</h3><div id="formSalarios"></div><button onclick="salvarSalarios()">💾 Salvar</button><button class="btn-fechar-modal-padrao" onclick="fecharModalPadrao('modalSalarios')">❌ Cancelar</button></div>
-        </div>
-
-        <div class="modal-padrao" id="modalEditarAviso">
             <div class="modal-padrao-content">
-                <h3>✏️ EDITAR AVISO DE SAQUE</h3>
-                <p style="color:#c0c0c0;font-size:12px;text-align:center;margin-bottom:10px;">Mensagem exibida no card de saque e na sidebar</p>
-                <textarea id="inputAvisoSaque" rows="4" style="width:100%;padding:10px;border-radius:8px;background:var(--bg-input);color:#fff;border:1px solid var(--accent);font-size:14px;resize:vertical;"></textarea>
-                <div style="display:flex;gap:8px;margin-top:12px;">
-                    <button onclick="salvarAvisoSaque()" class="action-btn btn-gold" style="flex:1;padding:10px;">💾 Salvar</button>
-                    <button onclick="fecharModalPadrao('modalEditarAviso')" class="btn-fechar-modal-padrao" style="flex:1;">❌ Cancelar</button>
-                </div>
+                <h3>💰 EDITAR NÍVEIS DA ÁRVORE</h3>
+                <div id="formSalarios"></div>
+                <button onclick="salvarSalarios()">💾 Salvar</button>
+                <button class="btn-fechar-modal-padrao" onclick="fecharModalPadrao('modalSalarios')">❌ Cancelar</button>
             </div>
         </div>
 
+        <!-- POPUPS -->
         <div class="popup-mini popup1" id="popup1">
             <div class="popup-mini-header">🎰 PLACARD <button class="btn-fechar-mini" onclick="fecharMiniPopup(1)">✕</button></div>
             <div class="popup-mini-body">
@@ -2012,12 +1825,14 @@
         let isOnAuthScreen = true;
         let userListenerUnsubscribe = null;
 
+        // CONFIGURAÇÕES DE ESTILO
         let formatoAtual = 1;
         let tamanhoAtual = 'medio';
         let corFundoAtual = 'preto';
         let corCardsAtual = 'laranja';
         let vipConfigEditavel = [];
 
+        // LINKS CONFIGURÁVEIS
         let linksConfig = {
             grupoVipWhatsapp: 'https://chat.whatsapp.com/SEUGRUPOVIP',
             suporteWhatsapp: '',
@@ -2027,9 +1842,16 @@
             telegramChannel: ''
         };
 
-        // ============================================================
+        // CONFIGURAÇÕES DE DEPÓSITO - 5 OPÇÕES
+        let depositConfig = {
+            emola: { label: 'E-Mola', number: '850000000', icon: '📱', active: true },
+            mpesa: { label: 'M-Pesa', number: '840000000', icon: '📱', active: true },
+            mkesh: { label: 'M-Kesh', number: '830000000', icon: '📱', active: true },
+            bancoBCI: { label: 'Banco BCI', number: '860000000', icon: '🏦', active: true },
+            bancoBIM: { label: 'Banco BIM', number: '870000000', icon: '🏦', active: true }
+        };
+
         // DADOS ESTÁTICOS
-        // ============================================================
         const VIP_NAMES = ['Estagiário', 'VIP 1', 'VIP 2', 'VIP 3', 'VIP 4', 'VIP 5', 'VIP 6', 'VIP 7', 'VIP 8'];
         let VIP_INVEST = [0, 300, 750, 1600, 3500, 7000, 14000, 30000, 100000];
         let VIP_DAILY = [5, 15, 35, 70, 130, 245, 490, 1000, 17500];
@@ -2093,8 +1915,7 @@
             tamanho: 'medio',
             corFundo: 'preto',
             corCards: 'laranja',
-            grupoVipWhatsapp: 'https://chat.whatsapp.com/SEUGRUPOVIP',
-            avisoRestricao: '🔒 Convide 1 pessoa para se tornar VIP e libere seu saque! Após sacar, convide mais 1 VIP para liberar novamente.'
+            grupoVipWhatsapp: 'https://chat.whatsapp.com/SEUGRUPOVIP'
         };
 
         let WITHDRAW_TIMES = { start: "06:30", end: "18:30" };
@@ -2103,6 +1924,7 @@
         let INDISPONIVEL_SAQUES = [];
         const VIP_WITHDRAW_DAYS = { 7: 1, 6: 2, 5: 3, 4: 4, 3: 5, 2: 1, 1: 2, 0: 3 };
 
+        // SISTEMA DE RECOMPENSAS
         const C = {
             usuario: { isVip: false, isAdmin: true },
             fundosAtivos: true,
@@ -2198,11 +2020,6 @@
                         if (data.youtubeChannel) linksConfig.youtubeChannel = data.youtubeChannel;
                         if (data.facebookPage) linksConfig.facebookPage = data.facebookPage;
                         if (data.telegramChannel) linksConfig.telegramChannel = data.telegramChannel;
-                        if (!data.avisoRestricao) {
-                            globalSettings.avisoRestricao = '🔒 Convide 1 pessoa para se tornar VIP e libere seu saque! Após sacar, convide mais 1 VIP para liberar novamente.';
-                        }
-                    } else {
-                        globalSettings.avisoRestricao = '🔒 Convide 1 pessoa para se tornar VIP e libere seu saque! Após sacar, convide mais 1 VIP para liberar novamente.';
                     }
                     return globalSettings;
                 });
@@ -2211,9 +2028,6 @@
         function salvarConfiguracoes(data) {
             globalSettings = data;
             if (!globalSettings.withdrawTimes) globalSettings.withdrawTimes = WITHDRAW_TIMES;
-            if (!globalSettings.avisoRestricao) {
-                globalSettings.avisoRestricao = '🔒 Convide 1 pessoa para se tornar VIP e libere seu saque! Após sacar, convide mais 1 VIP para liberar novamente.';
-            }
             return salvarDados('settings/global', globalSettings);
         }
 
@@ -2226,6 +2040,12 @@
                     }
                     return FUNDOS;
                 });
+        }
+
+        function salvarFundosFirebase(fundos) {
+            FUNDOS.splice(0, FUNDOS.length);
+            fundos.forEach(f => FUNDOS.push(f));
+            return salvarDados('settings/fundos', { fundos });
         }
 
         function carregarVipConfigFirebase() {
@@ -2247,6 +2067,19 @@
                 });
         }
 
+        function salvarVipConfigFirebase() {
+            const config = VIP_NAMES.map((name, i) => ({
+                level: i,
+                name: name,
+                invest: VIP_INVEST[i],
+                daily: VIP_DAILY[i],
+                days: VIP_DAYS[i],
+                alert: '',
+                emBreve: VIP_EM_BREVE.includes(i)
+            }));
+            return salvarDados('settings/vipConfig', { config });
+        }
+
         function carregarWithdrawConfig() {
             return buscarDados('settings/withdrawConfig')
                 .then(data => {
@@ -2256,6 +2089,14 @@
                         if (data.indisponiveis) INDISPONIVEL_SAQUES = data.indisponiveis;
                     }
                 });
+        }
+
+        function salvarWithdrawConfig() {
+            return salvarDados('settings/withdrawConfig', {
+                valores: WITHDRAW_VALUES,
+                minVip: WITHDRAW_MIN_VIP,
+                indisponiveis: INDISPONIVEL_SAQUES
+            });
         }
 
         function buscarDepositos() {
@@ -2287,778 +2128,179 @@
         function atualizarSaque(id, dados) { return atualizarDados('withdrawals/' + id, dados); }
 
         // ============================================================
-        // FUNÇÃO closeAdminPanel - CORRIGIDA
+        // FUNÇÕES DE CONFIGURAÇÃO DE DEPÓSITO - 5 OPÇÕES
         // ============================================================
-        function closeAdminPanel() {
-            const panel = document.getElementById('adminPanel');
-            if (panel) {
-                panel.remove();
-                document.getElementById('appScreen').style.display = 'flex';
-                document.getElementById('appScreen').style.flexDirection = 'column';
-                
-                const activeTab = document.querySelector('.nav-item.active');
-                if (activeTab) {
-                    const tabName = activeTab.textContent.trim().toLowerCase();
-                    const tabMap = {
-                        'home': 'home',
-                        'vips': 'vips',
-                        'fundos': 'fundos',
-                        'convidar': 'convidar',
-                        'recomp.': 'recompensas'
-                    };
-                    showTab(tabMap[tabName] || 'home');
-                } else {
-                    showTab('home');
+        async function carregarDepositConfig() {
+            try {
+                const data = await buscarDados('settings/depositConfig');
+                if (data) {
+                    depositConfig = data;
                 }
-                setTimeout(() => NF_SAQUE.init(), 500);
+                return depositConfig;
+            } catch (e) {
+                console.error('Erro ao carregar config de depósito:', e);
+                return depositConfig;
+            }
+        }
+
+        async function salvarDepositConfig(config) {
+            try {
+                depositConfig = config;
+                await salvarDados('settings/depositConfig', config);
+                return true;
+            } catch (e) {
+                console.error('Erro ao salvar config de depósito:', e);
+                return false;
+            }
+        }
+
+        async function salvarDepositosAdmin() {
+            const emola = document.getElementById('depEmola')?.value?.trim() || '850000000';
+            const mpesa = document.getElementById('depMpesa')?.value?.trim() || '840000000';
+            const mkesh = document.getElementById('depMkesh')?.value?.trim() || '830000000';
+            const bancoBCI = document.getElementById('depBancoBCI')?.value?.trim() || '860000000';
+            const bancoBIM = document.getElementById('depBancoBIM')?.value?.trim() || '870000000';
+            
+            const emolaActive = document.getElementById('depEmolaActive')?.checked !== false;
+            const mpesaActive = document.getElementById('depMpesaActive')?.checked !== false;
+            const mkeshActive = document.getElementById('depMkeshActive')?.checked !== false;
+            const bancoBCIActive = document.getElementById('depBancoBCIActive')?.checked !== false;
+            const bancoBIMActive = document.getElementById('depBancoBIMActive')?.checked !== false;
+            
+            const config = {
+                emola: { label: 'E-Mola', number: emola, icon: '📱', active: emolaActive },
+                mpesa: { label: 'M-Pesa', number: mpesa, icon: '📱', active: mpesaActive },
+                mkesh: { label: 'M-Kesh', number: mkesh, icon: '📱', active: mkeshActive },
+                bancoBCI: { label: 'Banco BCI', number: bancoBCI, icon: '🏦', active: bancoBCIActive },
+                bancoBIM: { label: 'Banco BIM', number: bancoBIM, icon: '🏦', active: bancoBIMActive }
+            };
+            
+            const saved = await salvarDepositConfig(config);
+            
+            if (saved) {
+                alert('✅ Configurações de depósito salvas com sucesso!');
+                closeAdminPanel();
+            } else {
+                alert('❌ Erro ao salvar. Tente novamente.');
             }
         }
 
         // ============================================================
-        // MÓDULO DE CONTROLE DE SAQUE - VERSÃO COMPLETA
+        // SISTEMA DE LIBERAÇÃO DE SAQUE POR CONVITE VIP
         // ============================================================
-        const NF_SAQUE = {
-            dadosAtuais: null,
-            isLoading: false,
-            listeners: [],
+        
+        function canUserWithdraw() {
+            if (!currentUser) return { allow: false, msg: 'Usuário não autenticado' };
             
-            async init() {
-                try {
-                    await this.loadData();
-                    this.listenChanges();
-                    this.renderizarModulo();
-                    this.observarVips();
-                    console.log('✅ Módulo Controle de Saque carregado');
-                } catch (error) {
-                    console.error('Erro ao inicializar módulo:', error);
-                    this.renderizarErro();
-                }
-            },
+            if (currentUser.canWithdraw === true) {
+                return { allow: true, msg: '✅ Saque liberado por convite VIP!' };
+            }
             
-            async loadData() {
-                const snapshot = await db.ref('sistema/controleSaque').once('value');
-                
-                if (!snapshot.exists()) {
-                    await db.ref('sistema/controleSaque').set({
-                        modoRestrito: false,
-                        usuarios: {}
-                    });
-                    this.dadosAtuais = {
-                        modoRestrito: false,
-                        usuarios: {}
-                    };
-                } else {
-                    this.dadosAtuais = snapshot.val();
-                    if (!this.dadosAtuais.usuarios) this.dadosAtuais.usuarios = {};
-                }
-                
-                await this.sincronizarUsuarios();
-            },
+            if (currentUser.vipType !== 'estagiario' && currentUser.vipLevel > 0) {
+                return { allow: true, msg: 'OK' };
+            }
             
-            async sincronizarUsuarios() {
-                const users = await buscarTodosUsuarios();
-                const updates = {};
-                let precisaAtualizar = false;
+            return { allow: false, msg: '❌ Convide alguém que se torne VIP para liberar seus saques!' };
+        }
+
+        async function verificarLiberacaoSaque(usuarioId) {
+            try {
+                const user = await buscarUsuarioPorId(usuarioId);
+                if (!user) return false;
                 
-                for (const user of users) {
-                    if (!this.dadosAtuais.usuarios[user.id]) {
-                        this.dadosAtuais.usuarios[user.id] = {
-                            id: user.id,
-                            nome: user.name || 'Usuário',
-                            telefone: user.phone || '',
-                            saqueLiberado: false,
-                            convitesVIP: 0,
-                            saquesRealizados: 0,
-                            convidadosVIP: [],
-                            ultimoSaque: null
-                        };
-                        updates[`sistema/controleSaque/usuarios/${user.id}`] = this.dadosAtuais.usuarios[user.id];
-                        precisaAtualizar = true;
-                    }
-                }
+                if (user.canWithdraw === true) return true;
                 
-                if (precisaAtualizar) {
-                    await db.ref().update(updates);
-                }
-            },
-            
-            observarVips() {
-                db.ref('users').on('child_changed', (snapshot) => {
-                    const userData = snapshot.val();
-                    const userId = snapshot.key;
-                    if (userData && userId) {
-                        this.verificarConviteVIP(userId, userData);
-                    }
-                });
+                const invitedUsers = user.invitedUsers || [];
+                if (invitedUsers.length === 0) return false;
                 
-                db.ref('users').on('child_added', (snapshot) => {
-                    const userData = snapshot.val();
-                    const userId = snapshot.key;
-                    if (userData && userId) {
-                        this.verificarConviteVIP(userId, userData);
-                        this.adicionarUsuarioControle(userId, userData);
-                    }
-                });
-            },
-            
-            async verificarConviteVIP(userId, userData) {
-                if (!userData) return;
-                
-                const isVip = (userData.vipLevel > 0 && userData.vipType !== 'estagiario') || 
-                              (userData.vipLevel > 0 && userData.vipType === 'normal');
-                
-                if (!isVip) return;
-                
-                console.log(`👑 Usuário ${userData.name} se tornou VIP! Verificando convidadores...`);
-                
-                const allUsers = await buscarTodosUsuarios();
-                
-                for (const convidador of allUsers) {
-                    const invitedUsers = convidador.invitedUsers || [];
-                    
-                    if (invitedUsers.includes(userData.phone)) {
-                        console.log(`✅ ${convidador.name} convidou ${userData.name} que se tornou VIP!`);
-                        await this.registrarConviteVIP(convidador.id, userId, userData.name);
-                    }
-                }
-            },
-            
-            async registrarConviteVIP(convidadorId, convidadoId, convidadoNome) {
-                try {
-                    const controleRef = db.ref(`sistema/controleSaque/usuarios/${convidadorId}`);
-                    const snapshot = await controleRef.once('value');
-                    let controleData = snapshot.val();
-                    
-                    if (!controleData) {
-                        const user = await buscarUsuarioPorId(convidadorId);
-                        controleData = {
-                            id: convidadorId,
-                            nome: user?.name || 'Usuário',
-                            telefone: user?.phone || '',
-                            saqueLiberado: false,
-                            convitesVIP: 0,
-                            saquesRealizados: 0,
-                            convidadosVIP: [],
-                            ultimoSaque: null
-                        };
-                    }
-                    
-                    if (!controleData.convidadosVIP) controleData.convidadosVIP = [];
-                    if (!controleData.convidadosVIP.includes(convidadoId)) {
-                        controleData.convidadosVIP.push(convidadoId);
-                        controleData.convitesVIP = (controleData.convitesVIP || 0) + 1;
-                        
-                        if (this.dadosAtuais.modoRestrito) {
-                            controleData.saqueLiberado = true;
-                        }
-                        
-                        await db.ref(`sistema/controleSaque/usuarios/${convidadorId}`).update({
-                            convidadosVIP: controleData.convidadosVIP,
-                            convitesVIP: controleData.convitesVIP,
-                            saqueLiberado: controleData.saqueLiberado
+                for (const phone of invitedUsers) {
+                    const invitedUser = await buscarUsuarioPorTelefone(phone);
+                    if (invitedUser && invitedUser.vipLevel > 0 && invitedUser.vipType !== 'estagiario') {
+                        await atualizarDados('users/' + usuarioId, { 
+                            canWithdraw: true,
+                            withdrawLiberatedAt: new Date().toISOString(),
+                            withdrawLiberatedBy: phone,
+                            withdrawLiberatedByName: invitedUser.name
                         });
-                        
-                        this.mostrarNotificacao(
-                            `🎉 ${controleData.nome} ganhou um saque! ${convidadoNome} se tornou VIP!`,
-                            'success'
-                        );
-                        
-                        console.log(`✅ Saque liberado para ${controleData.nome} (${controleData.convitesVIP} VIPs convidados)`);
-                    }
-                } catch (error) {
-                    console.error('❌ Erro ao registrar convite VIP:', error);
-                }
-            },
-            
-            async adicionarUsuarioControle(userId, userData) {
-                if (!this.dadosAtuais.usuarios[userId]) {
-                    const novoUsuario = {
-                        id: userId,
-                        nome: userData.name || 'Usuário',
-                        telefone: userData.phone || '',
-                        saqueLiberado: false,
-                        convitesVIP: 0,
-                        saquesRealizados: 0,
-                        convidadosVIP: [],
-                        ultimoSaque: null
-                    };
-                    this.dadosAtuais.usuarios[userId] = novoUsuario;
-                    await db.ref(`sistema/controleSaque/usuarios/${userId}`).set(novoUsuario);
-                    this.renderizarModulo();
-                }
-            },
-            
-            listenChanges() {
-                const ref = db.ref('sistema/controleSaque');
-                ref.on('value', (snapshot) => {
-                    if (snapshot.exists()) {
-                        this.dadosAtuais = snapshot.val();
-                        if (!this.dadosAtuais.usuarios) this.dadosAtuais.usuarios = {};
-                        this.renderizarModulo();
-                        
-                        const adminPanel = document.getElementById('adminPanel');
-                        if (adminPanel) {
-                            this.atualizarAdminPanel();
+                        if (currentUserId === usuarioId) {
+                            currentUser.canWithdraw = true;
+                            currentUser.withdrawLiberatedAt = new Date().toISOString();
+                            currentUser.withdrawLiberatedBy = phone;
+                            currentUser.withdrawLiberatedByName = invitedUser.name;
                         }
+                        return true;
                     }
-                });
-                this.listeners.push({ ref, off: () => ref.off() });
-            },
-            
-            destroy() {
-                this.listeners.forEach(l => l.off());
-                this.listeners = [];
-                db.ref('users').off();
-            },
-            
-            renderizarModulo() {
-                const container = document.getElementById('moduloSaqueSidebar');
-                if (!container || !this.dadosAtuais) return;
-                
-                const dados = this.dadosAtuais;
-                const modoRestrito = dados.modoRestrito || false;
-                
-                let mensagemStatus = '';
-                let corStatus = '';
-                let convitesVIP = 0;
-                let saquesRealizados = 0;
-                let saqueLiberado = false;
-                
-                if (currentUser && dados.usuarios[currentUserId]) {
-                    const userData = dados.usuarios[currentUserId];
-                    convitesVIP = userData.convitesVIP || 0;
-                    saquesRealizados = userData.saquesRealizados || 0;
-                    saqueLiberado = userData.saqueLiberado || false;
-                    
-                    if (!modoRestrito) {
-                        mensagemStatus = '🟢 MODO LIVRE - Saques liberados para todos!';
-                        corStatus = 'livre';
-                    } else if (saqueLiberado) {
-                        mensagemStatus = '✅ Você tem 1 saque disponível! Convidou um VIP e ganhou!';
-                        corStatus = 'liberado';
-                    } else {
-                        mensagemStatus = globalSettings.avisoRestricao || '🔒 Convide 1 pessoa para se tornar VIP e libere seu saque!';
-                        corStatus = 'bloqueado';
-                    }
-                } else if (!currentUser) {
-                    mensagemStatus = '🔐 Faça login para ver seu status';
-                    corStatus = 'bloqueado';
                 }
+                return false;
+            } catch (e) {
+                console.error('Erro ao verificar liberação:', e);
+                return false;
+            }
+        }
+
+        async function notificarConvidadorVip(usuarioId) {
+            try {
+                const user = await buscarUsuarioPorId(usuarioId);
+                if (!user || !user.referredBy) return;
                 
-                const aviso = globalSettings.avisoRestricao || '🔒 Convide 1 pessoa para se tornar VIP e libere seu saque! Após sacar, convide mais 1 VIP para liberar novamente.';
+                const referrerId = user.referredBy;
+                const liberado = await verificarLiberacaoSaque(referrerId);
                 
-                container.innerHTML = `
-                    <div class="nf_saque_container">
-                        <div class="nf_card_saque">
-                            <h3>🔒 Status do Saque</h3>
-                            
-                            <div class="nf_status_indicator">
-                                <span style="font-size:13px;">Sistema:</span>
-                                <span id="nfStatusBadge" class="nf_badge ${modoRestrito ? 'nf_badge_restrito' : 'nf_badge_livre'}">
-                                    <span class="nf_dot ${modoRestrito ? 'nf_dot_red' : 'nf_dot_green'}"></span>
-                                    ${modoRestrito ? '🔒 Restrito' : '🔓 Livre'}
-                                </span>
-                            </div>
-                            
-                            ${currentUser ? `
-                                <div class="nf_mensagem_status ${corStatus}">
-                                    ${mensagemStatus}
-                                </div>
-                                
-                                <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg-input);border-radius:8px;margin:6px 0;font-size:13px;color:var(--text);">
-                                    <span>👥 VIPs convidados: <strong style="color:${saqueLiberado ? '#32ff7e' : '#ffd700'};">${convitesVIP}</strong></span>
-                                    <span>💰 Saques: <strong style="color:var(--accent);">${saquesRealizados}</strong></span>
-                                    <span>🔓 Status: <strong style="color:${saqueLiberado ? '#32ff7e' : '#ff4444'};">${saqueLiberado ? '✅ Liberado' : '🔒 Bloqueado'}</strong></span>
-                                </div>
-                                
-                                ${!saqueLiberado && modoRestrito ? `
-                                    <div style="background:rgba(255,215,0,0.15);padding:10px;border-radius:8px;text-align:center;color:#ffd700;border:1px solid #ffd700;margin:8px 0;">
-                                        🔑 Convide 1 pessoa para se tornar VIP para liberar seu saque!
-                                    </div>
-                                ` : ''}
-                                
-                                <div class="nf_aviso_editavel">
-                                    ${aviso}
-                                </div>
-                                
-                                ${currentUser && (currentUser.vipLevel >= 7 || currentUser.isAdmin) ? `
-                                    <button class="nf_btn_editar_aviso" onclick="abrirEditorAviso()">
-                                        ✏️ Editar Aviso
-                                    </button>
-                                ` : ''}
-                            ` : `
-                                <div class="nf_info_box" style="text-align:center;">
-                                    <p>🔐 Faça login para ver seu status de saque</p>
-                                </div>
-                            `}
-                        </div>
+                if (liberado) {
+                    const convidador = await buscarUsuarioPorId(referrerId);
+                    if (convidador) {
+                        mostrarNotificacaoSaqueLiberado(convidador.name, user.name);
+                    }
+                }
+            } catch (e) {
+                console.error('Erro ao notificar convidador:', e);
+            }
+        }
+
+        function mostrarNotificacaoSaqueLiberado(convidadorNome, convidadoNome) {
+            const container = document.getElementById('floatingNotifications');
+            if (!container) return;
+            
+            const notif = document.createElement('div');
+            notif.className = 'floating-notification deposit';
+            notif.style.animationDuration = '5s';
+            notif.style.position = 'relative';
+            notif.style.margin = '5px auto';
+            notif.style.maxWidth = '90%';
+            notif.style.fontSize = '14px';
+            notif.innerHTML = `
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <span style="font-size:30px;">🎉</span>
+                    <div>
+                        <strong style="color:#ffd700;">SAQUE LIBERADO!</strong><br>
+                        <span>${convidadorNome}, seu convidado <strong>${convidadoNome}</strong> se tornou VIP!</span>
+                        <br><span style="font-size:12px;color:#32ff7e;">✅ Agora você pode sacar!</span>
                     </div>
-                `;
-            },
+                </div>
+            `;
+            container.appendChild(notif);
             
-            async toggleModo() {
-                if (this.isLoading || !this.dadosAtuais) return;
-                
-                if (!currentUser || (currentUser.vipLevel < 7 && !currentUser.isAdmin)) {
-                    this.mostrarNotificacao('🔒 Apenas administradores podem alterar o modo!', 'error');
-                    return;
-                }
-                
-                this.isLoading = true;
-                
-                try {
-                    const novoModo = !this.dadosAtuais.modoRestrito;
-                    const usuarios = this.dadosAtuais.usuarios || {};
-                    
-                    const updates = {};
-                    updates['sistema/controleSaque/modoRestrito'] = novoModo;
-                    
-                    if (!novoModo) {
-                        for (const userId in usuarios) {
-                            updates[`sistema/controleSaque/usuarios/${userId}/saqueLiberado`] = true;
-                        }
-                    } else {
-                        for (const userId in usuarios) {
-                            const user = usuarios[userId];
-                            const convidadosVIP = user.convidadosVIP || [];
-                            if (convidadosVIP.length > 0) {
-                                updates[`sistema/controleSaque/usuarios/${userId}/saqueLiberado`] = true;
-                            } else {
-                                updates[`sistema/controleSaque/usuarios/${userId}/saqueLiberado`] = false;
-                            }
-                        }
-                    }
-                    
-                    await db.ref().update(updates);
-                    this.mostrarNotificacao(
-                        novoModo ? '🔒 Modo Restrito ativado! Usuários precisam convidar VIPs para sacar.' : '🔓 Modo Livre ativado! Todos podem sacar.',
-                        'success'
-                    );
-                    this.renderizarModulo();
-                    
-                    const adminPanel = document.getElementById('adminPanel');
-                    if (adminPanel) {
-                        closeAdminPanel();
-                        setTimeout(() => showAdminPanel(), 300);
-                    }
-                } catch (error) {
-                    console.error('Erro:', error);
-                    this.mostrarNotificacao('❌ Erro ao alterar modo', 'error');
-                } finally {
-                    this.isLoading = false;
-                }
-            },
-            
-            async registrarSaque(userId) {
-                if (!this.dadosAtuais || !this.dadosAtuais.usuarios[userId]) return;
-                
-                const userData = this.dadosAtuais.usuarios[userId];
-                const novosSaques = (userData.saquesRealizados || 0) + 1;
-                
-                const updates = {};
-                updates[`sistema/controleSaque/usuarios/${userId}/saquesRealizados`] = novosSaques;
-                updates[`sistema/controleSaque/usuarios/${userId}/ultimoSaque`] = new Date().toISOString();
-                
-                if (this.dadosAtuais.modoRestrito) {
-                    updates[`sistema/controleSaque/usuarios/${userId}/saqueLiberado`] = false;
-                }
-                
-                await db.ref().update(updates);
-                
-                const user = await buscarUsuarioPorId(userId);
-                if (user) {
-                    await this.verificarConvitesPendentes(userId, user);
-                }
-            },
-            
-            async verificarConvitesPendentes(userId, userData) {
-                if (!userData) return;
-                
-                const controleData = this.dadosAtuais.usuarios[userId];
-                if (!controleData) return;
-                
-                const invitedUsers = userData.invitedUsers || [];
-                const convidadosVIP = controleData.convidadosVIP || [];
-                let novosVIPs = 0;
-                
-                for (const invitedId of invitedUsers) {
-                    const invitedData = await buscarUsuarioPorId(invitedId);
-                    if (invitedData) {
-                        const isVip = (invitedData.vipLevel > 0 && invitedData.vipType !== 'estagiario') || 
-                                      (invitedData.vipLevel > 0 && invitedData.vipType === 'normal');
-                        
-                        if (isVip && !convidadosVIP.includes(invitedId)) {
-                            convidadosVIP.push(invitedId);
-                            novosVIPs++;
-                        }
-                    }
-                }
-                
-                if (novosVIPs > 0) {
-                    const updates = {};
-                    updates[`sistema/controleSaque/usuarios/${userId}/convidadosVIP`] = convidadosVIP;
-                    updates[`sistema/controleSaque/usuarios/${userId}/convitesVIP`] = (controleData.convitesVIP || 0) + novosVIPs;
-                    
-                    if (this.dadosAtuais.modoRestrito) {
-                        updates[`sistema/controleSaque/usuarios/${userId}/saqueLiberado`] = true;
-                    }
-                    
-                    await db.ref().update(updates);
-                    
-                    this.mostrarNotificacao(
-                        `🎉 ${userData.name} ganhou ${novosVIPs} novo(s) saque(s)! ${novosVIPs} convidado(s) se tornaram VIP!`,
-                        'success'
-                    );
-                }
-            },
-            
-            atualizarAdminPanel() {
-                const adminPanel = document.getElementById('adminPanel');
-                if (!adminPanel) return;
-                
-                const toggleModoSaque = document.getElementById('toggleModoSaque');
-                if (toggleModoSaque) {
-                    const modoRestrito = this.dadosAtuais?.modoRestrito || false;
-                    toggleModoSaque.checked = modoRestrito;
-                    
-                    const statusSpan = toggleModoSaque.closest('.admin-toggle-container')?.querySelector('.toggle-status');
-                    if (statusSpan) {
-                        statusSpan.textContent = modoRestrito ? '🔒 ATIVADO' : '🔓 DESATIVADO';
-                        statusSpan.className = `toggle-status ${modoRestrito ? 'ativo' : 'inativo'}`;
-                    }
-                    
-                    const container = toggleModoSaque.closest('.admin-toggle-container');
-                    if (container) {
-                        container.style.borderColor = modoRestrito ? '#ff4444' : '#32ff7e';
-                    }
-                    
-                    const icon = toggleModoSaque.closest('.admin-toggle-container')?.querySelector('.icon');
-                    if (icon) {
-                        icon.textContent = modoRestrito ? '🔒' : '🔓';
-                    }
-                }
-            },
-            
-            mostrarNotificacao(mensagem, tipo = 'info') {
-                const notif = document.createElement('div');
-                notif.style.cssText = `
-                    position: fixed;
-                    top: 70px;
-                    right: 20px;
-                    padding: 15px 25px;
-                    border-radius: 12px;
-                    color: white;
-                    font-weight: bold;
-                    z-index: 99999;
-                    animation: nf_slideIn 0.3s ease;
-                    background: ${tipo === 'success' ? '#28a745' : tipo === 'error' ? '#dc3545' : '#007bff'};
-                    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-                    max-width: 90%;
-                    font-size: 14px;
-                `;
-                notif.textContent = mensagem;
-                document.body.appendChild(notif);
-                
-                setTimeout(() => {
-                    notif.style.animation = 'nf_slideOut 0.3s ease';
-                    setTimeout(() => notif.remove(), 300);
-                }, 5000);
-            },
-            
-            renderizarErro() {
-                const container = document.getElementById('moduloSaqueSidebar');
-                if (container) {
-                    container.innerHTML = `
-                        <div style="padding:15px;text-align:center;color:#ff4444;background:rgba(255,0,0,0.1);border-radius:10px;">
-                            ⚠️ Erro ao carregar módulo
-                        </div>
-                    `;
-                }
-            }
-        };
-
-        // ============================================================
-        // FUNÇÕES DE AUTENTICAÇÃO
-        // ============================================================
-        function showRegisterForm() {
-            document.getElementById('initialButtons').classList.add('hidden');
-            document.getElementById('formLogin').classList.add('hidden');
-            document.getElementById('formForgot').classList.add('hidden');
-            document.getElementById('formRegister').classList.remove('hidden');
-            document.getElementById('registerError').innerText = '';
-        }
-
-        function showLoginForm() {
-            document.getElementById('initialButtons').classList.add('hidden');
-            document.getElementById('formRegister').classList.add('hidden');
-            document.getElementById('formForgot').classList.add('hidden');
-            document.getElementById('formLogin').classList.remove('hidden');
-            document.getElementById('loginError').innerText = '';
-        }
-
-        function showForgotPassword() {
-            document.getElementById('initialButtons').classList.add('hidden');
-            document.getElementById('formRegister').classList.add('hidden');
-            document.getElementById('formLogin').classList.add('hidden');
-            document.getElementById('formForgot').classList.remove('hidden');
-            document.getElementById('forgotError').innerText = '';
-        }
-
-        function goBackToInitial() {
-            document.getElementById('formLogin').classList.add('hidden');
-            document.getElementById('formRegister').classList.add('hidden');
-            document.getElementById('formForgot').classList.add('hidden');
-            document.getElementById('initialButtons').classList.remove('hidden');
-        }
-
-        function generateInviteCode() {
-            let hash = '';
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            for (let i = 0; i < 10; i++) hash += chars.charAt(Math.floor(Math.random() * chars.length));
-            return 'NET' + hash;
-        }
-
-        async function handleRegister() {
-            const name = document.getElementById('registerName').value.trim();
-            const phone = document.getElementById('registerPhone').value.trim();
-            const pass = document.getElementById('registerPassword').value.trim();
-            const confirm = document.getElementById('registerConfirm').value.trim();
-            const errorEl = document.getElementById('registerError');
-
-            if (!name || !phone || !pass) { errorEl.innerText = 'Preencha todos os campos'; return; }
-            if (pass !== confirm) { errorEl.innerText = 'Senhas não conferem'; return; }
-            if (pass.length < 4) { errorEl.innerText = 'Senha mínima: 4 caracteres'; return; }
-
-            errorEl.innerText = '⏳ Criando conta...';
-
-            try {
-                const existing = await buscarUsuarioPorTelefone(phone);
-                if (existing) { errorEl.innerText = '❌ Número já cadastrado'; return; }
-
-                const inviteCode = generateInviteCode();
-                const newUser = {
-                    name, phone, password: pass, balance: 0, vipLevel: 0, vipType: 'estagiario',
-                    vipStartDate: new Date().toISOString(), vipLastCollect: null, invitedUsers: [], invitedNames: [],
-                    invitedDepositors: [], commission: 0, totalInvited: 0, lastWithdrawDate: null,
-                    earningsHistory: [], videoBonusHistory: [], fundInvestments: [], claimedRewards: [],
-                    depositHistory: [], withdrawalHistory: [], lastVideoBonusDate: null, purchasedVips: [0],
-                    inviteCode, commissionsPaid: 0, commissionHistory: [], blocked: false,
-                    createdAt: new Date().toISOString(), vipPurchases: [], dailyEarnings: [],
-                    isAdmin: false, referredBy: null
-                };
-
-                const urlRef = new URLSearchParams(window.location.search).get('ref');
-                if (urlRef && urlRef !== phone) {
-                    const allUsers = await buscarTodosUsuarios();
-                    const refUser = allUsers.find(u => u.inviteCode === urlRef);
-                    if (refUser) {
-                        newUser.referredBy = refUser.id;
-                        if (!refUser.invitedUsers) refUser.invitedUsers = [];
-                        if (!refUser.invitedUsers.includes(phone)) refUser.invitedUsers.push(phone);
-                        if (!refUser.invitedNames) refUser.invitedNames = [];
-                        refUser.invitedNames.push(name);
-                        refUser.totalInvited = (refUser.totalInvited || 0) + 1;
-                        
-                        await atualizarDados('users/' + refUser.id, {
-                            invitedUsers: refUser.invitedUsers,
-                            invitedNames: refUser.invitedNames,
-                            totalInvited: refUser.totalInvited
-                        });
-                    }
-                }
-
-                const uid = await criarUsuario(newUser);
-                if (!uid) { errorEl.innerText = '❌ Erro ao salvar dados.'; return; }
-
-                currentUserId = uid;
-                currentUser = { id: uid, ...newUser };
-                errorEl.innerText = '';
-                openApp();
-
-            } catch (e) {
-                errorEl.innerText = '❌ Erro: ' + e.message;
-                console.error('Register error:', e);
-            }
-        }
-
-        async function handleLogin() {
-            const phone = document.getElementById('loginPhone').value.trim();
-            const pass = document.getElementById('loginPassword').value.trim();
-            const errorEl = document.getElementById('loginError');
-
-            if (!phone || !pass) { errorEl.innerText = 'Preencha todos os campos'; return; }
-
-            errorEl.innerText = '⏳ Entrando...';
-
-            try {
-                const userData = await buscarUsuarioPorTelefone(phone);
-                if (!userData) { errorEl.innerText = '❌ Número não cadastrado.'; return; }
-                if (userData.password !== pass) { errorEl.innerText = '❌ Senha incorreta.'; return; }
-                if (userData.blocked) { errorEl.innerText = '❌ Conta bloqueada.'; return; }
-
-                currentUserId = userData.id;
-                currentUser = userData;
-                errorEl.innerText = '';
-                startRealtimeListener();
-                openApp();
-                
-                setTimeout(async () => {
-                    if (currentUserId && currentUser) {
-                        await NF_SAQUE.verificarConvitesPendentes(currentUserId, currentUser);
-                    }
-                }, 3000);
-
-            } catch (e) {
-                errorEl.innerText = '❌ Falha na conexão: ' + e.message;
-                console.error('Login error:', e);
-            }
-        }
-
-        async function handleForgotPassword() {
-            const phone = document.getElementById('forgotPhone').value.trim();
-            const errorEl = document.getElementById('forgotError');
-
-            if (!phone) { errorEl.innerText = 'Digite o telefone'; return; }
-
-            errorEl.innerText = '⏳ Buscando...';
-
-            try {
-                const userData = await buscarUsuarioPorTelefone(phone);
-                if (!userData) { errorEl.innerText = '❌ Telefone não encontrado'; return; }
-
-                const newPass = Math.random().toString(36).slice(-6);
-                await atualizarDados('users/' + userData.id, { password: newPass });
-
-                errorEl.innerText = '';
-                alert(`✅ Senha redefinida!\n\n📱 ${phone}\n🔑 Nova senha: ${newPass}`);
-                goBackToInitial();
-
-            } catch (e) {
-                errorEl.innerText = '❌ Erro: ' + e.message;
-            }
-        }
-
-        function startRealtimeListener() {
-            if (!currentUserId) return;
-            if (userListenerUnsubscribe) { userListenerUnsubscribe();
-                userListenerUnsubscribe = null; }
-
-            const ref = db.ref('users/' + currentUserId);
-            ref.on('value', (snapshot) => {
-                if (snapshot.exists()) {
-                    const data = snapshot.val();
-                    const oldBalance = currentUser ? Number(currentUser.balance) : 0;
-                    const newBalance = Number(data.balance) || 0;
-                    currentUser = { id: currentUserId, ...data };
-                    updateBalanceDisplay();
-                    if (oldBalance !== newBalance) {
-                        const saldoEl = document.getElementById('saldoDisplay');
-                        if (saldoEl) {
-                            saldoEl.textContent = newBalance.toLocaleString() + ' MT';
-                            saldoEl.style.transform = 'scale(1.15)';
-                            saldoEl.style.color = '#32ff7e';
-                            setTimeout(() => {
-                                saldoEl.style.transform = 'scale(1)';
-                                saldoEl.style.color = '#ff8c00';
-                            }, 500);
-                        }
-                    }
-                }
-            });
-            userListenerUnsubscribe = () => ref.off();
-        }
-
-        function openApp() {
-            if (!currentUser || !currentUserId) { alert('❌ Erro: dados não carregados.'); return; }
-            isOnAuthScreen = false;
-            document.getElementById('authScreen').style.display = 'none';
-            document.getElementById('appScreen').classList.remove('hidden');
-            updateBalanceDisplay();
-            showTab('home');
-            startTimer();
-            inicializarSistemaRecompensas();
-            aplicarEstilos();
-
-            carregarConfiguracoes().then(() => {
-                updateSocialButtons();
-                updateWhatsAppLoginButtons();
-                aplicarEstilos();
-            });
-
-            carregarWithdrawConfig();
-            carregarFundosFirebase();
-            carregarVipConfigFirebase();
-
             setTimeout(() => {
-                NF_SAQUE.init();
-            }, 1500);
+                if (notif.parentNode) notif.remove();
+            }, 5000);
         }
 
-        function updateBalanceDisplay() {
-            const balance = Number(currentUser?.balance) || 0;
-            document.getElementById('userBalance').innerHTML = balance.toLocaleString() + ' MT';
-        }
-
-        // ============================================================
-        // FUNÇÕES DE ESTILO
-        // ============================================================
-        function aplicarEstilos() {
-            const app = document.getElementById('appScreen');
-            if (!app) return;
-
-            app.classList.remove('formato-1', 'formato-2', 'formato-3');
-            app.classList.add('formato-' + formatoAtual);
-
-            app.classList.remove('tamanho-pequeno', 'tamanho-medio', 'tamanho-grande');
-            app.classList.add('tamanho-' + tamanhoAtual);
-
-            document.body.classList.remove('fundo-preto', 'fundo-azul', 'fundo-roxo', 'fundo-verde', 'fundo-vermelho');
-            document.body.classList.add('fundo-' + corFundoAtual);
-
-            document.body.classList.remove('cards-laranja', 'cards-azul', 'cards-roxo', 'cards-verde', 'cards-rosa');
-            document.body.classList.add('cards-' + corCardsAtual);
-
-            globalSettings.formato = formatoAtual;
-            globalSettings.tamanho = tamanhoAtual;
-            globalSettings.corFundo = corFundoAtual;
-            globalSettings.corCards = corCardsAtual;
-            salvarConfiguracoes(globalSettings);
-        }
-
-        function setFormato(num) {
-            formatoAtual = num;
-            aplicarEstilos();
-            document.querySelectorAll('.formato-selector button').forEach((btn, i) => {
-                btn.classList.toggle('ativo', i + 1 === num);
-            });
-            showTab('home');
-        }
-
-        function setTamanho(tam) {
-            tamanhoAtual = tam;
-            aplicarEstilos();
-            document.querySelectorAll('.tamanho-selector button').forEach(btn => {
-                btn.classList.toggle('ativo', btn.dataset.tamanho === tam);
-            });
-            showTab('home');
-        }
-
-        function setCorFundo(cor) {
-            corFundoAtual = cor;
-            aplicarEstilos();
-            document.querySelectorAll('.cor-fundo-selector button').forEach(btn => {
-                btn.classList.toggle('ativo', btn.dataset.cor === cor);
-            });
-            showTab('home');
-        }
-
-        function setCorCards(cor) {
-            corCardsAtual = cor;
-            aplicarEstilos();
-            document.querySelectorAll('.cor-cards-selector button').forEach(btn => {
-                btn.classList.toggle('ativo', btn.dataset.cor === cor);
-            });
-            showTab('home');
+        function renderStatusSaque() {
+            if (!currentUser) return '';
+            const check = canUserWithdraw();
+            if (check.allow && currentUser.canWithdraw === true) {
+                return `<div class="saque-status-liberado">
+                    <span class="titulo">✅ SAQUE LIBERADO</span>
+                    <span class="desc">Por convite VIP de ${currentUser.withdrawLiberatedByName || 'um convidado'}</span>
+                </div>`;
+            } else if (!check.allow) {
+                return `<div class="saque-status-bloqueado">
+                    <span class="titulo">🔒 SAQUE BLOQUEADO</span>
+                    <span class="desc">Convide alguém que se torne VIP para liberar</span>
+                    <span class="contador">📌 Convidados atuais: ${(currentUser?.invitedUsers||[]).length}</span>
+                </div>`;
+            }
+            return '';
         }
 
         // ============================================================
@@ -3102,17 +2344,7 @@
             return { allow: true, msg: 'OK' };
         }
 
-        function canUserWithdraw() {
-            if (currentUser && currentUser.vipType === 'estagiario' && currentUser.vipLevel === 0) {
-                return { allow: false, msg: '❌ Você precisa comprar um VIP para poder sacar!' };
-            }
-            return { allow: true, msg: 'OK' };
-        }
-
-        // ============================================================
-        // FUNÇÃO canWithdraw - CORRIGIDA
-        // ============================================================
-        async function canWithdraw(amount) {
+        function canWithdraw(amount) {
             let idx = WITHDRAW_VALUES.indexOf(amount);
             if (idx === -1) return { allow: false, msg: 'Valor inválido' };
             if (INDISPONIVEL_SAQUES.includes(idx)) {
@@ -3143,30 +2375,9 @@
                 return { allow: false, msg: `Horário: ${WITHDRAW_TIMES.start} - ${WITHDRAW_TIMES.end}` };
             }
 
-            if (NF_SAQUE.dadosAtuais && NF_SAQUE.dadosAtuais.modoRestrito) {
-                const userSaqueData = NF_SAQUE.dadosAtuais.usuarios[currentUserId];
-                if (!userSaqueData || !userSaqueData.saqueLiberado) {
-                    if (currentUser) {
-                        await NF_SAQUE.verificarConvitesPendentes(currentUserId, currentUser);
-                        await NF_SAQUE.loadData();
-                        const updatedData = NF_SAQUE.dadosAtuais?.usuarios?.[currentUserId];
-                        if (updatedData && updatedData.saqueLiberado) {
-                            return { allow: true, msg: 'OK' };
-                        }
-                    }
-                    return { 
-                        allow: false, 
-                        msg: '🔒 Convide 1 pessoa para se tornar VIP para liberar seu saque!'
-                    };
-                }
-            }
-
             return { allow: true, msg: 'OK' };
         }
 
-        // ============================================================
-        // FUNÇÃO collectDaily
-        // ============================================================
         async function collectDaily() {
             if (!currentUser) return;
             let today = new Date().getDay();
@@ -3195,9 +2406,6 @@
             }
         }
 
-        // ============================================================
-        // FUNÇÃO buyMovie - CORRIGIDA
-        // ============================================================
         async function buyMovie(level) {
             if (!currentUser) return;
             let check = canBuyVip(level);
@@ -3228,53 +2436,12 @@
                     await salvarUsuarioAtualPromise();
                     updateBalanceDisplay();
                     
-                    if (currentUser.referredBy) {
-                        await NF_SAQUE.registrarConviteVIP(currentUser.referredBy, currentUserId, currentUser.name);
-                    }
-                    
-                    await NF_SAQUE.verificarConvitesPendentes(currentUserId, currentUser);
+                    await notificarConvidadorVip(currentUserId);
                     
                     alert(`✅ ${VIP_NAMES[level]} comprado com sucesso!\n\n💰 Saldo restante: ${currentUser.balance.toLocaleString()} MT\n💵 Ganho diário: ${VIP_DAILY[level].toLocaleString()} MT\n📅 Duração: ${VIP_DAYS[level]} dias\n📊 Total a receber: ${VIP_TOTAL[level].toLocaleString()} MT`);
                     showTab('home');
                 } catch (e) {
                     alert('❌ Erro ao comprar: ' + e.message);
-                }
-            }
-        }
-
-        // ============================================================
-        // FUNÇÃO requestWithdraw - CORRIGIDA
-        // ============================================================
-        async function requestWithdraw(amount) {
-            let check = await canWithdraw(amount);
-            if (!check.allow) { alert(check.msg); return; }
-
-            let fee = Math.round(amount * 0.1);
-            let net = amount - fee;
-
-            if ((Number(currentUser.balance) || 0) < amount) { alert('Saldo insuficiente'); return; }
-
-            if (confirm(`💸 CONFIRMAR SAQUE\n\n📤 Solicitado: ${amount.toLocaleString()} MT\n📊 Taxa 10%: ${fee.toLocaleString()} MT\n💰 Recebe: ${net.toLocaleString()} MT`)) {
-                try {
-                    currentUser.balance = (Number(currentUser.balance) || 0) - amount;
-                    currentUser.lastWithdrawDate = new Date().toISOString();
-
-                    const withdrawalRecord = { amount, fee, netAmount: net, date: new Date().toISOString(), status: 'pending' };
-                    if (!currentUser.withdrawalHistory) currentUser.withdrawalHistory = [];
-                    currentUser.withdrawalHistory.push(withdrawalRecord);
-
-                    await salvarSaque({ phone: currentUser.phone, name: currentUser.name, amount, fee, netAmount: net, date: new Date().toISOString(), status: 'pending', userId: currentUserId });
-
-                    await salvarUsuarioAtualPromise();
-                    updateBalanceDisplay();
-                    
-                    await NF_SAQUE.registrarSaque(currentUserId);
-                    await NF_SAQUE.verificarConvitesPendentes(currentUserId, currentUser);
-                    
-                    alert(`✅ Saque de ${net.toLocaleString()} MT solicitado!\nTaxa 10% = ${fee.toLocaleString()} MT\n\n🔒 Seu saque foi bloqueado novamente. Convide mais 1 pessoa para se tornar VIP para liberar outro saque!`);
-                    showTab('saques');
-                } catch (e) {
-                    alert('❌ Erro ao solicitar saque: ' + e.message);
                 }
             }
         }
@@ -3299,6 +2466,36 @@
                     showTab('fundos');
                 } catch (e) {
                     alert('❌ Erro ao investir: ' + e.message);
+                }
+            }
+        }
+
+        async function requestWithdraw(amount) {
+            let check = canWithdraw(amount);
+            if (!check.allow) { alert(check.msg); return; }
+
+            let fee = Math.round(amount * 0.1);
+            let net = amount - fee;
+
+            if ((Number(currentUser.balance) || 0) < amount) { alert('Saldo insuficiente'); return; }
+
+            if (confirm(`💸 CONFIRMAR SAQUE\n\n📤 Solicitado: ${amount.toLocaleString()} MT\n📊 Taxa 10%: ${fee.toLocaleString()} MT\n💰 Recebe: ${net.toLocaleString()} MT`)) {
+                try {
+                    currentUser.balance = (Number(currentUser.balance) || 0) - amount;
+                    currentUser.lastWithdrawDate = new Date().toISOString();
+
+                    const withdrawalRecord = { amount, fee, netAmount: net, date: new Date().toISOString(), status: 'pending' };
+                    if (!currentUser.withdrawalHistory) currentUser.withdrawalHistory = [];
+                    currentUser.withdrawalHistory.push(withdrawalRecord);
+
+                    await salvarSaque({ phone: currentUser.phone, name: currentUser.name, amount, fee, netAmount: net, date: new Date().toISOString(), status: 'pending', userId: currentUserId });
+
+                    await salvarUsuarioAtualPromise();
+                    updateBalanceDisplay();
+                    alert(`✅ Saque de ${net.toLocaleString()} MT solicitado!\nTaxa 10% = ${fee.toLocaleString()} MT`);
+                    showTab('saques');
+                } catch (e) {
+                    alert('❌ Erro ao solicitar saque: ' + e.message);
                 }
             }
         }
@@ -3358,22 +2555,12 @@
             let wdCooldown = getWithdrawCooldown();
             let saldoTotal = Number(currentUser.balance) || 0;
 
-            let statusSaque = '';
-            if (NF_SAQUE.dadosAtuais && NF_SAQUE.dadosAtuais.modoRestrito) {
-                const userData = NF_SAQUE.dadosAtuais.usuarios[currentUserId];
-                if (userData && userData.saqueLiberado) {
-                    statusSaque = '<div style="background:rgba(50,255,126,0.15);padding:8px 12px;border-radius:10px;text-align:center;color:#32ff7e;border:1px solid #32ff7e;margin-bottom:10px;">✅ Saque liberado! Você convidou um VIP!</div>';
-                } else {
-                    statusSaque = `<div style="background:rgba(255,215,0,0.15);padding:8px 12px;border-radius:10px;text-align:center;color:#ffd700;border:1px solid #ffd700;margin-bottom:10px;">${globalSettings.avisoRestricao || '🔒 Convide um VIP para liberar seu saque!'}</div>`;
-                }
-            }
-
             return `${createCountryBanners()}
                 <div class="balance-card">
                     <div class="balance-value" id="saldoDisplay">${saldoTotal.toLocaleString()} MT</div>
                     <div style="color:#c0c0c0;">SALDO TOTAL</div>
                 </div>
-                ${statusSaque}
+                ${renderStatusSaque()}
                 ${linksConfig.whatsappGroup || linksConfig.telegramChannel ? `<div style="display:flex;gap:8px;margin:12px 0;flex-wrap:wrap;">${linksConfig.whatsappGroup?`<a href="${linksConfig.whatsappGroup}" target="_blank" style="flex:1;padding:12px;background:#25D366;color:white;text-align:center;border-radius:12px;text-decoration:none;font-weight:700;">📱 WhatsApp</a>`:''}${linksConfig.telegramChannel?`<a href="${linksConfig.telegramChannel}" target="_blank" style="flex:1;padding:12px;background:#0088cc;color:white;text-align:center;border-radius:12px;text-decoration:none;font-weight:700;">✈️ Telegram</a>`:''}${linksConfig.suporteWhatsapp?`<a href="https://wa.me/${linksConfig.suporteWhatsapp}" target="_blank" style="flex:1;padding:12px;background:#25D366;color:white;text-align:center;border-radius:12px;text-decoration:none;font-weight:700;">🎧 Suporte</a>`:''}</div>`:''}
                 <div class="gains-grid">
                     <div class="gain-card">📅 ONTEM: <strong style="color:#ff8c00;">${(currentUser.earningsHistory||[]).filter(e=>new Date(e.date).toDateString()===new Date(Date.now()-86400000).toDateString()).reduce((a,b)=>a+b.amount,0).toLocaleString()} MT</strong></div>
@@ -3518,16 +2705,6 @@
             let wdCooldown = getWithdrawCooldown();
             let vipCheck = canUserWithdraw();
 
-            let statusSaque = '';
-            if (NF_SAQUE.dadosAtuais && NF_SAQUE.dadosAtuais.modoRestrito) {
-                const userData = NF_SAQUE.dadosAtuais.usuarios[currentUserId];
-                if (userData && userData.saqueLiberado) {
-                    statusSaque = '<div style="background:rgba(50,255,126,0.15);padding:10px;border-radius:10px;text-align:center;color:#32ff7e;border:1px solid #32ff7e;margin-bottom:10px;">✅ Saque liberado! Você convidou um VIP!</div>';
-                } else {
-                    statusSaque = `<div style="background:rgba(255,215,0,0.15);padding:10px;border-radius:10px;text-align:center;color:#ffd700;border:1px solid #ffd700;margin-bottom:10px;">${globalSettings.avisoRestricao || '🔒 Convide um VIP para liberar seu saque!'}</div>`;
-                }
-            }
-
             let withdrawals = [];
             try {
                 const allWithdrawals = await buscarSaques();
@@ -3536,10 +2713,21 @@
 
             let html = `<h3 style="color:#ff8c00;text-align:center;">💸 SAQUES</h3>
                 <p style="text-align:center;color:#c0c0c0;">Horário: ${WITHDRAW_TIMES.start} - ${WITHDRAW_TIMES.end}</p>
-                <p style="text-align:center;color:#ff0000;font-size:12px;">⚠️ Taxa fixa de 10% em todos os saques</p>
-                ${statusSaque}`;
+                <p style="text-align:center;color:#ff0000;font-size:12px;">⚠️ Taxa fixa de 10% em todos os saques</p>`;
+                
+            if (vipCheck.allow && currentUser.canWithdraw === true) {
+                html += `<div class="saque-status-liberado">
+                    <span class="titulo">✅ SAQUE LIBERADO</span>
+                    <span class="desc">Por convite VIP de ${currentUser.withdrawLiberatedByName || 'um convidado'}</span>
+                </div>`;
+            } else if (!vipCheck.allow) {
+                html += `<div class="saque-status-bloqueado">
+                    <span class="titulo">🔒 SAQUE BLOQUEADO</span>
+                    <span class="desc">Convide alguém que se torne VIP para liberar</span>
+                    <span class="contador">📌 Convidados atuais: ${(currentUser?.invitedUsers||[]).length}</span>
+                </div>`;
+            }
             
-            if (!vipCheck.allow) html += `<p style="text-align:center;color:#ff0000;background:rgba(255,0,0,0.1);padding:10px;border-radius:12px;">${vipCheck.msg}</p>`;
             if (!globalSettings.withdrawsEnabled) {
                 let dn = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
                 let cl = currentUser?.vipType === 'estagiario' ? 0 : (currentUser?.vipLevel || 0);
@@ -3552,29 +2740,18 @@
             WITHDRAW_VALUES.forEach((val, idx) => {
                 let req = WITHDRAW_MIN_VIP[idx] || 1;
                 let cl = (currentUser?.vipType === 'estagiario') ? 0 : (currentUser?.vipLevel || 0);
-                let can = cl >= req && !INDISPONIVEL_SAQUES.includes(idx);
+                let can = cl >= req && !INDISPONIVEL_SAQUES.includes(idx) && vipCheck.allow;
                 let fee = Math.round(val * 0.1);
                 let net = val - fee;
                 let isIndisponivel = INDISPONIVEL_SAQUES.includes(idx);
-                
-                let saqueLiberado = true;
-                if (NF_SAQUE.dadosAtuais && NF_SAQUE.dadosAtuais.modoRestrito) {
-                    const userData = NF_SAQUE.dadosAtuais.usuarios[currentUserId];
-                    saqueLiberado = userData && userData.saqueLiberado;
-                }
-                
-                let podeSacar = can && saqueLiberado;
-                let btnClass = isIndisponivel ? 'indisponivel' : (!podeSacar ? 'disabled' : '');
-                let motivo = isIndisponivel ? '🚫 INDISPONÍVEL' : (!saqueLiberado ? '🔒 Convide um VIP' : '');
-                let onclickAction = isIndisponivel ? `alert('🚫 Este valor está indisponível no momento')` : (podeSacar ? `requestWithdraw(${val})` : `alert('${motivo || 'Nível mínimo: ' + VIP_NAMES[req]}')`);
-                
+                let btnClass = isIndisponivel ? 'indisponivel' : (!can ? 'disabled' : '');
+                let onclickAction = isIndisponivel ? `alert('🚫 Este valor está indisponível no momento')` : (can ? `requestWithdraw(${val})` : `alert('Nível mínimo: ${VIP_NAMES[req]}')`);
                 html += `<div class="saque-amount-btn ${btnClass}" onclick="${onclickAction}">
                     <div style="color:#ffffff;">${val.toLocaleString()} MT</div>
                     <small style="color:${can?'#32ff7e':'#ff4444'};">Nível: ${VIP_NAMES[req]}</small>
                     <small style="color:#ff4444;">Taxa 10%: ${fee.toLocaleString()} MT</small>
                     <small style="color:#32ff7e;">Recebe: ${net.toLocaleString()} MT</small>
                     ${isIndisponivel ? '<small style="color:#ff0000;font-weight:900;">🚫 INDISPONÍVEL</small>' : ''}
-                    ${!saqueLiberado && !isIndisponivel ? '<small style="color:#ffd700;font-weight:900;">🔒 AGUARDE VIP</small>' : ''}
                 </div>`;
             });
             html += '</div>';
@@ -3587,22 +2764,47 @@
             window.open(linksConfig.youtubeChannel || 'https://youtu.be/_s8sicMMk4w?si=zHYwT5EJcazPsNAI', '_blank');
         }
 
+        // ============================================================
+        // MODAL DE DEPÓSITO - 5 OPÇÕES
+        // ============================================================
         function showDepositModal() {
             let m = document.createElement('div');
             m.className = 'modal-overlay';
             m.id = 'depositModal';
+            
+            const activeOptions = Object.entries(depositConfig)
+                .filter(([key, value]) => value.active !== false)
+                .map(([key, value]) => ({ key, ...value }));
+            
+            let optionsHtml = activeOptions.map(opt => `
+                <div class="deposit-option">
+                    <div>
+                        <span class="icon">${opt.icon}</span>
+                        <span class="label">${opt.label}</span>
+                    </div>
+                    <span class="number">${opt.number}</span>
+                </div>
+            `).join('');
+            
+            if (activeOptions.length === 0) {
+                optionsHtml = `<p style="color:#ff4444;text-align:center;padding:20px;">⚠️ Nenhuma opção de depósito ativa. Contate o suporte.</p>`;
+            }
+            
             m.innerHTML = `<div class="modal-box">
                 <h3 style="color:#ff8c00;">💰 DEPOSITAR</h3>
                 <p style="color:#32ff7e;text-align:center;font-weight:900;">⚠️ MÍNIMO: 500 MT | SEM LIMITE MÁXIMO</p>
-                <div style="background:var(--bg-input);padding:12px;border-radius:12px;margin:12px 0;color:#c0c0c0;">
-                    <p>📱 M-Pesa: <strong style="color:#ff8c00;">840000000</strong></p>
-                    <p>📱 E-Mola: <strong style="color:#ff8c00;">850000000</strong></p>
-                    <p>🏦 Banco: <strong style="color:#ff8c00;">860000000</strong></p>
+                
+                <div style="background:var(--bg-card);padding:16px;border-radius:14px;margin:12px 0;border:2px solid var(--accent);">
+                    <p style="color:#c0c0c0;font-size:13px;text-align:center;margin-bottom:10px;">📌 ESCOLHA UMA OPÇÃO DE DEPÓSITO:</p>
+                    ${optionsHtml}
                 </div>
-                <p style="color:#c0c0c0;font-size:12px;">Escolha um método e faça a transferência</p>
+                
+                <p style="color:#c0c0c0;font-size:12px;">Selecione um método acima e faça a transferência</p>
+                
                 <input type="text" id="depName" class="auth-input" placeholder="Seu Nome" value="${currentUser?.name||''}">
                 <input type="text" id="depPhone" class="auth-input" placeholder="Seu Número" value="${currentUser?.phone||''}">
                 <input type="number" id="depAmount" placeholder="Valor (mín 500 MT)" class="auth-input" min="500" step="any">
+                
                 <button onclick="submitDeposit()" class="btn-primary btn-green" style="margin-top:8px;color:#000;">📤 ENVIAR COMPROVATIVO</button>
                 <button onclick="document.getElementById('depositModal').remove()" class="btn-outline" style="margin-top:8px;color:#ff8c00;">❌ Fechar</button>
             </div>`;
@@ -3839,6 +3041,44 @@
 
         function comprarFundo(i) { alert('✅ ' + C.fundosRewards[i].nome + '!\n' + C.fundosRewards[i].valorCompra + ' MT'); }
 
+        function toggleFundosAtivos() {
+            if (!C.usuario || !C.usuario.isAdmin) {
+                alert('🔒 Apenas administradores podem alterar esta configuração!');
+                document.getElementById('toggleFundos').checked = C.fundosAtivos;
+                return;
+            }
+            C.fundosAtivos = document.getElementById('toggleFundos').checked;
+            carregarFundosSidebar();
+        }
+
+        function abrirEditorFundos() {
+            if (!C.usuario || !C.usuario.isAdmin) { alert('🔒 Acesso restrito ao administrador!'); return; }
+            document.getElementById('formFundos').innerHTML = C.fundosRewards.map((f, i) =>
+                '<p><strong>Fundo ' + (i + 1) + '</strong></p>' +
+                '<label>Nome:</label><input id="fn' + i + '" value="' + f.nome + '">' +
+                '<label>Valor Compra:</label><input type="number" id="fv' + i + '" value="' + f.valorCompra + '">' +
+                '<label>Percentagem:</label><input type="number" id="fp' + i + '" value="' + f.percentagem + '">' +
+                '<label>Dias:</label><input type="number" id="fd' + i + '" value="' + f.dias + '">' +
+                '<label>Ganho Vencimento:</label><input type="number" id="fg' + i + '" value="' + f.ganhoVencimento + '">' +
+                '<label>Conv. Necessários:</label><input type="number" id="fr' + i + '" value="' + f.requerConvidados + '"><hr>'
+            ).join('');
+            document.getElementById('modalFundos').classList.add('active');
+        }
+
+        function salvarFundos() {
+            C.fundosRewards.forEach((f, i) => {
+                f.nome = document.getElementById('fn' + i).value;
+                f.valorCompra = parseInt(document.getElementById('fv' + i).value);
+                f.percentagem = parseInt(document.getElementById('fp' + i).value);
+                f.dias = parseInt(document.getElementById('fd' + i).value);
+                f.ganhoVencimento = parseInt(document.getElementById('fg' + i).value);
+                f.requerConvidados = parseInt(document.getElementById('fr' + i).value);
+            });
+            carregarFundosSidebar();
+            fecharModalPadrao('modalFundos');
+            alert('✅ Fundos salvos com sucesso!');
+        }
+
         function carregarArvoreModal() {
             let g = document.getElementById('gradeNiveis'),
                 v = C.convidadosVIP.length;
@@ -3864,6 +3104,13 @@
             }).join('');
         }
 
+        function toggleArvoreSalario() {
+            C.arvoreAtiva = !C.arvoreAtiva;
+            atualizarEstadoArvore();
+            carregarArvoreModal();
+            if (C.arvoreAtiva) alert('✅');
+        }
+
         function atualizarEstadoArvore() {
             let b = document.getElementById('badgeArvore');
             let c = document.getElementById('cardArvoreSalario');
@@ -3885,18 +3132,15 @@
             document.getElementById('modalArvoreSalario').classList.remove('active');
         }
 
-        function salvarFundos() {
-            C.fundosRewards.forEach((f, i) => {
-                f.nome = document.getElementById('fn' + i).value;
-                f.valorCompra = parseInt(document.getElementById('fv' + i).value);
-                f.percentagem = parseInt(document.getElementById('fp' + i).value);
-                f.dias = parseInt(document.getElementById('fd' + i).value);
-                f.ganhoVencimento = parseInt(document.getElementById('fg' + i).value);
-                f.requerConvidados = parseInt(document.getElementById('fr' + i).value);
-            });
-            carregarFundosSidebar();
-            fecharModalPadrao('modalFundos');
-            alert('✅ Fundos salvos com sucesso!');
+        function abrirEditorSalarios() {
+            if (!C.usuario || !C.usuario.isAdmin) { alert('🔒 Acesso restrito ao administrador!'); return; }
+            document.getElementById('formSalarios').innerHTML = C.salarios.map((s, i) =>
+                '<p><strong>' + s.icone + ' Nível ' + s.nivel + '</strong></p>' +
+                '<label>VIPs Necessários:</label><input type="number" id="sc' + i + '" value="' + s.convidados + '">' +
+                '<label>Salário (MT):</label><input type="number" id="sv' + i + '" value="' + s.salario + '">' +
+                '<label>Prêmio:</label><input type="text" id="sp' + i + '" value="' + (s.premio || '') + '"><hr>'
+            ).join('');
+            document.getElementById('modalSalarios').classList.add('active');
         }
 
         function salvarSalarios() {
@@ -3913,12 +3157,366 @@
         function fecharModalPadrao(id) { document.getElementById(id).classList.remove('active'); }
 
         // ============================================================
-        // PAINEL ADMIN COM INTERRUPTOR - CORRIGIDO
+        // FUNÇÕES DE AUTENTICAÇÃO
+        // ============================================================
+        function showRegisterForm() {
+            document.getElementById('initialButtons').classList.add('hidden');
+            document.getElementById('formLogin').classList.add('hidden');
+            document.getElementById('formForgot').classList.add('hidden');
+            document.getElementById('formRegister').classList.remove('hidden');
+            document.getElementById('registerError').innerText = '';
+        }
+
+        function showLoginForm() {
+            document.getElementById('initialButtons').classList.add('hidden');
+            document.getElementById('formRegister').classList.add('hidden');
+            document.getElementById('formForgot').classList.add('hidden');
+            document.getElementById('formLogin').classList.remove('hidden');
+            document.getElementById('loginError').innerText = '';
+        }
+
+        function showForgotPassword() {
+            document.getElementById('initialButtons').classList.add('hidden');
+            document.getElementById('formRegister').classList.add('hidden');
+            document.getElementById('formLogin').classList.add('hidden');
+            document.getElementById('formForgot').classList.remove('hidden');
+            document.getElementById('forgotError').innerText = '';
+        }
+
+        function goBackToInitial() {
+            document.getElementById('formLogin').classList.add('hidden');
+            document.getElementById('formRegister').classList.add('hidden');
+            document.getElementById('formForgot').classList.add('hidden');
+            document.getElementById('initialButtons').classList.remove('hidden');
+        }
+
+        function generateInviteCode() {
+            let hash = '';
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            for (let i = 0; i < 10; i++) hash += chars.charAt(Math.floor(Math.random() * chars.length));
+            return 'NET' + hash;
+        }
+
+        async function handleRegister() {
+            const name = document.getElementById('registerName').value.trim();
+            const phone = document.getElementById('registerPhone').value.trim();
+            const pass = document.getElementById('registerPassword').value.trim();
+            const confirm = document.getElementById('registerConfirm').value.trim();
+            const errorEl = document.getElementById('registerError');
+
+            if (!name || !phone || !pass) { errorEl.innerText = 'Preencha todos os campos'; return; }
+            if (pass !== confirm) { errorEl.innerText = 'Senhas não conferem'; return; }
+            if (pass.length < 4) { errorEl.innerText = 'Senha mínima: 4 caracteres'; return; }
+
+            errorEl.innerText = '⏳ Criando conta...';
+
+            try {
+                const existing = await buscarUsuarioPorTelefone(phone);
+                if (existing) { errorEl.innerText = '❌ Número já cadastrado'; return; }
+
+                const inviteCode = generateInviteCode();
+                const newUser = {
+                    name, phone, password: pass, balance: 0, vipLevel: 0, vipType: 'estagiario',
+                    vipStartDate: new Date().toISOString(), vipLastCollect: null, invitedUsers: [], invitedNames: [],
+                    invitedDepositors: [], commission: 0, totalInvited: 0, lastWithdrawDate: null,
+                    earningsHistory: [], videoBonusHistory: [], fundInvestments: [], claimedRewards: [],
+                    depositHistory: [], withdrawalHistory: [], lastVideoBonusDate: null, purchasedVips: [0],
+                    inviteCode, commissionsPaid: 0, commissionHistory: [], blocked: false,
+                    createdAt: new Date().toISOString(), vipPurchases: [], dailyEarnings: [],
+                    canWithdraw: false,
+                    withdrawLiberatedAt: null,
+                    withdrawLiberatedBy: null,
+                    withdrawLiberatedByName: null
+                };
+
+                const urlRef = new URLSearchParams(window.location.search).get('ref');
+                if (urlRef && urlRef !== phone) {
+                    const allUsers = await buscarTodosUsuarios();
+                    const refUser = allUsers.find(u => u.inviteCode === urlRef);
+                    if (refUser) {
+                        newUser.referredBy = refUser.id;
+                        if (!refUser.invitedUsers) refUser.invitedUsers = [];
+                        if (!refUser.invitedUsers.includes(phone)) refUser.invitedUsers.push(phone);
+                        if (!refUser.invitedNames) refUser.invitedNames = [];
+                        refUser.invitedNames.push(name);
+                        refUser.totalInvited = (refUser.totalInvited || 0) + 1;
+                        await atualizarDados('users/' + refUser.id, {
+                            invitedUsers: refUser.invitedUsers,
+                            invitedNames: refUser.invitedNames,
+                            totalInvited: refUser.totalInvited
+                        });
+                    }
+                }
+
+                const uid = await criarUsuario(newUser);
+                if (!uid) { errorEl.innerText = '❌ Erro ao salvar dados.'; return; }
+
+                currentUserId = uid;
+                currentUser = { id: uid, ...newUser };
+                errorEl.innerText = '';
+                openApp();
+
+            } catch (e) {
+                errorEl.innerText = '❌ Erro: ' + e.message;
+                console.error('Register error:', e);
+            }
+        }
+
+        async function handleLogin() {
+            const phone = document.getElementById('loginPhone').value.trim();
+            const pass = document.getElementById('loginPassword').value.trim();
+            const errorEl = document.getElementById('loginError');
+
+            if (!phone || !pass) { errorEl.innerText = 'Preencha todos os campos'; return; }
+
+            errorEl.innerText = '⏳ Entrando...';
+
+            try {
+                const userData = await buscarUsuarioPorTelefone(phone);
+                if (!userData) { errorEl.innerText = '❌ Número não cadastrado.'; return; }
+                if (userData.password !== pass) { errorEl.innerText = '❌ Senha incorreta.'; return; }
+                if (userData.blocked) { errorEl.innerText = '❌ Conta bloqueada.'; return; }
+
+                currentUserId = userData.id;
+                currentUser = userData;
+                errorEl.innerText = '';
+                
+                if (currentUser.canWithdraw !== true) {
+                    verificarLiberacaoSaque(currentUserId);
+                }
+                
+                startRealtimeListener();
+                openApp();
+
+            } catch (e) {
+                errorEl.innerText = '❌ Falha na conexão: ' + e.message;
+                console.error('Login error:', e);
+            }
+        }
+
+        async function handleForgotPassword() {
+            const phone = document.getElementById('forgotPhone').value.trim();
+            const errorEl = document.getElementById('forgotError');
+
+            if (!phone) { errorEl.innerText = 'Digite o telefone'; return; }
+
+            errorEl.innerText = '⏳ Buscando...';
+
+            try {
+                const userData = await buscarUsuarioPorTelefone(phone);
+                if (!userData) { errorEl.innerText = '❌ Telefone não encontrado'; return; }
+
+                const newPass = Math.random().toString(36).slice(-6);
+                await atualizarDados('users/' + userData.id, { password: newPass });
+
+                errorEl.innerText = '';
+                alert(`✅ Senha redefinida!\n\n📱 ${phone}\n🔑 Nova senha: ${newPass}`);
+                goBackToInitial();
+
+            } catch (e) {
+                errorEl.innerText = '❌ Erro: ' + e.message;
+            }
+        }
+
+        function startRealtimeListener() {
+            if (!currentUserId) return;
+            if (userListenerUnsubscribe) { userListenerUnsubscribe();
+                userListenerUnsubscribe = null; }
+
+            const ref = db.ref('users/' + currentUserId);
+            ref.on('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    const oldBalance = currentUser ? Number(currentUser.balance) : 0;
+                    const newBalance = Number(data.balance) || 0;
+                    currentUser = { id: currentUserId, ...data };
+                    updateBalanceDisplay();
+                    if (oldBalance !== newBalance) {
+                        const saldoEl = document.getElementById('saldoDisplay');
+                        if (saldoEl) {
+                            saldoEl.textContent = newBalance.toLocaleString() + ' MT';
+                            saldoEl.style.transform = 'scale(1.15)';
+                            saldoEl.style.color = '#32ff7e';
+                            setTimeout(() => {
+                                saldoEl.style.transform = 'scale(1)';
+                                saldoEl.style.color = '#ff8c00';
+                            }, 500);
+                        }
+                    }
+                }
+            });
+            userListenerUnsubscribe = () => ref.off();
+        }
+
+        function openApp() {
+            if (!currentUser || !currentUserId) { alert('❌ Erro: dados não carregados.'); return; }
+            isOnAuthScreen = false;
+            document.getElementById('authScreen').style.display = 'none';
+            document.getElementById('appScreen').classList.remove('hidden');
+            updateBalanceDisplay();
+            showTab('home');
+            startTimer();
+            inicializarSistemaRecompensas();
+            aplicarEstilos();
+
+            carregarConfiguracoes().then(() => {
+                updateSocialButtons();
+                updateWhatsAppLoginButtons();
+                aplicarEstilos();
+            });
+
+            carregarWithdrawConfig();
+            carregarFundosFirebase();
+            carregarVipConfigFirebase();
+            carregarDepositConfig();
+        }
+
+        function updateBalanceDisplay() {
+            const balance = Number(currentUser?.balance) || 0;
+            document.getElementById('userBalance').innerHTML = balance.toLocaleString() + ' MT';
+        }
+
+        // ============================================================
+        // FUNÇÕES DE ESTILO
+        // ============================================================
+        function aplicarEstilos() {
+            const app = document.getElementById('appScreen');
+            if (!app) return;
+
+            app.classList.remove('formato-1', 'formato-2', 'formato-3');
+            app.classList.add('formato-' + formatoAtual);
+
+            app.classList.remove('tamanho-pequeno', 'tamanho-medio', 'tamanho-grande');
+            app.classList.add('tamanho-' + tamanhoAtual);
+
+            document.body.classList.remove('fundo-preto', 'fundo-azul', 'fundo-roxo', 'fundo-verde', 'fundo-vermelho');
+            document.body.classList.add('fundo-' + corFundoAtual);
+
+            document.body.classList.remove('cards-laranja', 'cards-azul', 'cards-roxo', 'cards-verde', 'cards-rosa');
+            document.body.classList.add('cards-' + corCardsAtual);
+
+            globalSettings.formato = formatoAtual;
+            globalSettings.tamanho = tamanhoAtual;
+            globalSettings.corFundo = corFundoAtual;
+            globalSettings.corCards = corCardsAtual;
+            salvarConfiguracoes(globalSettings);
+        }
+
+        function setFormato(num) {
+            formatoAtual = num;
+            aplicarEstilos();
+            document.querySelectorAll('.formato-selector button').forEach((btn, i) => {
+                btn.classList.toggle('ativo', i + 1 === num);
+            });
+            showTab('home');
+        }
+
+        function setTamanho(tam) {
+            tamanhoAtual = tam;
+            aplicarEstilos();
+            document.querySelectorAll('.tamanho-selector button').forEach(btn => {
+                btn.classList.toggle('ativo', btn.dataset.tamanho === tam);
+            });
+            showTab('home');
+        }
+
+        function setCorFundo(cor) {
+            corFundoAtual = cor;
+            aplicarEstilos();
+            document.querySelectorAll('.cor-fundo-selector button').forEach(btn => {
+                btn.classList.toggle('ativo', btn.dataset.cor === cor);
+            });
+            showTab('home');
+        }
+
+        function setCorCards(cor) {
+            corCardsAtual = cor;
+            aplicarEstilos();
+            document.querySelectorAll('.cor-cards-selector button').forEach(btn => {
+                btn.classList.toggle('ativo', btn.dataset.cor === cor);
+            });
+            showTab('home');
+        }
+
+        // ============================================================
+        // SOCIAL BUTTONS
+        // ============================================================
+        function updateSocialButtons() {
+            const c = document.getElementById('socialButtonsAuth');
+            if (!c) return;
+            let h = '';
+            if (linksConfig.facebookPage) h += `<a href="${linksConfig.facebookPage}" target="_blank" class="social-btn fb">📘 Facebook</a>`;
+            if (linksConfig.suporteWhatsapp) h += `<a href="https://wa.me/${linksConfig.suporteWhatsapp}" target="_blank" class="social-btn wa">📱 WhatsApp</a>`;
+            if (linksConfig.youtubeChannel) h += `<a href="${linksConfig.youtubeChannel}" target="_blank" class="social-btn yt">▶️ YouTube</a>`;
+            c.innerHTML = h;
+        }
+
+        function updateWhatsAppLoginButtons() {
+            const btnSuporte = document.getElementById('btnSuporteLogin');
+            const btnGrupo = document.getElementById('btnGrupoLogin');
+            if (!btnSuporte || !btnGrupo) return;
+            if (linksConfig.suporteWhatsapp) {
+                const numeroLimpo = linksConfig.suporteWhatsapp.replace(/\D/g, '');
+                btnSuporte.href = `https://wa.me/${numeroLimpo}?text=Olá!%20Preciso%20de%20suporte%20na%20plataforma%20NET%20FILMS`;
+                btnSuporte.style.display = 'flex';
+            } else { btnSuporte.style.display = 'none'; }
+            if (linksConfig.grupoWhatsapp) {
+                btnGrupo.href = linksConfig.grupoWhatsapp;
+                btnGrupo.style.display = 'flex';
+            } else { btnGrupo.style.display = 'none'; }
+        }
+
+        // ============================================================
+        // GRUPO VIP
+        // ============================================================
+        function abrirGrupoVip() {
+            const isVip = currentUser && currentUser.vipLevel > 0 && currentUser.vipType !== 'estagiario';
+            
+            if (isVip) {
+                document.getElementById('modalVipWhatsapp').classList.add('active');
+                document.getElementById('btnEntrarGrupoVip').style.display = 'block';
+                document.getElementById('btnComprarVipModal').style.display = 'none';
+                const desc = document.querySelector('.modal-vip-whatsapp-content .desc-vip-modal');
+                if (desc) {
+                    desc.innerHTML = 'Entre no <strong style="color:#ffd700;">grupo exclusivo</strong> de membros VIP';
+                }
+                const btn = document.getElementById('btnEntrarGrupoVip');
+                if (btn) {
+                    btn.onclick = function() {
+                        window.open(linksConfig.grupoVipWhatsapp || 'https://chat.whatsapp.com/SEUGRUPOVIP', '_blank');
+                    };
+                }
+            } else {
+                document.getElementById('modalVipWhatsapp').classList.add('active');
+                document.getElementById('btnEntrarGrupoVip').style.display = 'none';
+                document.getElementById('btnComprarVipModal').style.display = 'block';
+                const desc = document.querySelector('.modal-vip-whatsapp-content .desc-vip-modal');
+                if (desc) {
+                    desc.innerHTML = '🔒 <strong style="color:#ff6b35;">Acesso restrito</strong> a membros VIP<br>Adquira um VIP para entrar no grupo exclusivo!';
+                }
+            }
+        }
+
+        function fecharModalVip() {
+            document.getElementById('modalVipWhatsapp').classList.remove('active');
+        }
+
+        function entrarGrupoVipWhatsapp() {
+            window.open(linksConfig.grupoVipWhatsapp || 'https://chat.whatsapp.com/SEUGRUPOVIP', '_blank');
+        }
+
+        function abrirYoutubeGanhar() {
+            window.open('https://youtu.be/_s8sicMMk4w?si=zHYwT5EJcazPsNAI', '_blank');
+        }
+
+        // ============================================================
+        // PAINEL ADMIN COMPLETO
         // ============================================================
         async function showAdminPanel() {
             await carregarFundosFirebase();
             await carregarVipConfigFirebase();
             await carregarWithdrawConfig();
+            await carregarDepositConfig();
 
             let users = [],
                 deposits = [],
@@ -3933,8 +3531,6 @@
             const pendDep = deposits.filter(d => d.status === 'pending');
             const pendW = withdrawals.filter(w => w.status === 'pending');
 
-            const modoRestrito = NF_SAQUE.dadosAtuais?.modoRestrito || false;
-
             let panel = document.createElement('div');
             panel.className = 'admin-panel';
             panel.id = 'adminPanel';
@@ -3942,7 +3538,7 @@
             panel.innerHTML = `
                 <div style="display:flex;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
                     <h2 style="color:#ff0000;">🔧 Admin NET FILMS</h2>
-                    <button onclick="window.closeAdminPanel()" style="background:red;padding:8px 16px;border-radius:10px;border:none;cursor:pointer;color:white;">❌ Fechar</button>
+                    <button onclick="closeAdminPanel()" style="background:red;padding:8px 16px;border-radius:10px;border:none;cursor:pointer;color:white;">❌ Fechar</button>
                 </div>
                 
                 <div class="admin-section" style="background:linear-gradient(135deg,#ff0000,#ff8c00);color:white;text-align:center;">
@@ -3950,43 +3546,7 @@
                     <p style="font-size:12px;">📊 Dados salvos no Firebase</p>
                 </div>
 
-                <!-- ===== INTERRUPTOR - MODO DE CONVIDAR PARA SACAR ===== -->
-                <div class="admin-section" style="border:2px solid var(--accent);">
-                    <h4 style="color:#ff8c00;">🔒 CONTROLE DE SAQUE</h4>
-                    
-                    <div class="admin-toggle-container" style="border:2px solid ${modoRestrito ? '#ff4444' : '#32ff7e'};">
-                        <div class="toggle-label">
-                            <span class="icon">${modoRestrito ? '🔒' : '🔓'}</span>
-                            <span>Modo de Convidar para Sacar</span>
-                        </div>
-                        <div style="display:flex;align-items:center;gap:12px;">
-                            <span class="toggle-status ${modoRestrito ? 'ativo' : 'inativo'}">
-                                ${modoRestrito ? '🔒 ATIVADO' : '🔓 DESATIVADO'}
-                            </span>
-                            <label class="toggle-switch-large">
-                                <input type="checkbox" id="toggleModoSaque" ${modoRestrito ? 'checked' : ''} onchange="window.alternarModoSaque()">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-top:8px;font-size:12px;color:var(--text2);text-align:center;">
-                        ${modoRestrito ? 
-                            '🔒 ATIVADO: Usuários precisam convidar VIPs para sacar' : 
-                            '🔓 DESATIVADO: Todos os usuários podem sacar livremente'
-                        }
-                    </div>
-                </div>
-
-                <!-- ===== EDITAR AVISO ===== -->
-                <div class="admin-section">
-                    <h4 style="color:#ffd700;">✏️ EDITAR AVISO DE SAQUE</h4>
-                    <p style="color:#888;font-size:12px;">Mensagem exibida na sidebar e no card de saque</p>
-                    <textarea id="adminAvisoSaque" rows="3" style="width:100%;padding:10px;border-radius:8px;background:var(--bg-input);color:#fff;border:1px solid var(--accent);font-size:13px;resize:vertical;">${globalSettings.avisoRestricao || '🔒 Convide 1 pessoa para se tornar VIP e libere seu saque! Após sacar, convide mais 1 VIP para liberar novamente.'}</textarea>
-                    <button onclick="window.salvarAvisoAdmin()" class="action-btn btn-gold" style="margin-top:8px;">💾 Salvar Aviso</button>
-                </div>
-
-                <!-- ===== LINKS E CONTATOS ===== -->
+                <!-- LINKS E CONTATOS -->
                 <div class="admin-section">
                     <h4 style="color:#ff8c00;">🔗 LINKS E CONTATOS</h4>
                     <div style="display:grid;grid-template-columns:1fr;gap:6px;">
@@ -4003,52 +3563,117 @@
                         <label style="color:#888;font-size:12px;">✈️ Telegram:</label>
                         <input type="text" id="linkTelegram" class="auth-input" value="${linksConfig.telegramChannel || ''}" placeholder="Link do canal">
                     </div>
-                    <button onclick="window.salvarLinksAdmin()" class="action-btn btn-gold" style="margin-top:8px;">💾 Salvar Links</button>
+                    <button onclick="salvarLinksAdmin()" class="action-btn btn-gold" style="margin-top:8px;">💾 Salvar Links</button>
                 </div>
 
-                <!-- ===== FORMATOS E TAMANHOS ===== -->
+                <!-- FORMATOS E TAMANHOS -->
                 <div class="admin-section">
                     <h4 style="color:#ff8c00;">🎨 FORMATO DOS MODAIS</h4>
                     <div class="formato-selector">
-                        <button class="${formatoAtual === 1 ? 'ativo' : ''}" onclick="window.setFormato(1)">📐 Formato 1</button>
-                        <button class="${formatoAtual === 2 ? 'ativo' : ''}" onclick="window.setFormato(2)">📐 Formato 2</button>
-                        <button class="${formatoAtual === 3 ? 'ativo' : ''}" onclick="window.setFormato(3)">📐 Formato 3</button>
+                        <button class="${formatoAtual === 1 ? 'ativo' : ''}" onclick="setFormato(1)">📐 Formato 1</button>
+                        <button class="${formatoAtual === 2 ? 'ativo' : ''}" onclick="setFormato(2)">📐 Formato 2</button>
+                        <button class="${formatoAtual === 3 ? 'ativo' : ''}" onclick="setFormato(3)">📐 Formato 3</button>
                     </div>
                 </div>
 
                 <div class="admin-section">
                     <h4 style="color:#32ff7e;">📏 TAMANHO DOS ELEMENTOS</h4>
                     <div class="tamanho-selector">
-                        <button data-tamanho="pequeno" class="${tamanhoAtual === 'pequeno' ? 'ativo' : ''}" onclick="window.setTamanho('pequeno')">🔍 Pequeno</button>
-                        <button data-tamanho="medio" class="${tamanhoAtual === 'medio' ? 'ativo' : ''}" onclick="window.setTamanho('medio')">🔍 Médio</button>
-                        <button data-tamanho="grande" class="${tamanhoAtual === 'grande' ? 'ativo' : ''}" onclick="window.setTamanho('grande')">🔍 Grande</button>
+                        <button data-tamanho="pequeno" class="${tamanhoAtual === 'pequeno' ? 'ativo' : ''}" onclick="setTamanho('pequeno')">🔍 Pequeno</button>
+                        <button data-tamanho="medio" class="${tamanhoAtual === 'medio' ? 'ativo' : ''}" onclick="setTamanho('medio')">🔍 Médio</button>
+                        <button data-tamanho="grande" class="${tamanhoAtual === 'grande' ? 'ativo' : ''}" onclick="setTamanho('grande')">🔍 Grande</button>
                     </div>
                 </div>
 
-                <!-- ===== CORES ===== -->
+                <!-- CORES -->
                 <div class="admin-section">
                     <h4 style="color:#ff8c00;">🎨 COR DE FUNDO</h4>
                     <div class="cor-selector cor-fundo-selector">
-                        <button data-cor="preto" class="${corFundoAtual === 'preto' ? 'ativo' : ''}" onclick="window.setCorFundo('preto')" style="background:#000000;color:#fff;">⬛</button>
-                        <button data-cor="azul" class="${corFundoAtual === 'azul' ? 'ativo' : ''}" onclick="window.setCorFundo('azul')" style="background:#0a1628;color:#fff;">🔵</button>
-                        <button data-cor="roxo" class="${corFundoAtual === 'roxo' ? 'ativo' : ''}" onclick="window.setCorFundo('roxo')" style="background:#0a0a1a;color:#fff;">🟣</button>
-                        <button data-cor="verde" class="${corFundoAtual === 'verde' ? 'ativo' : ''}" onclick="window.setCorFundo('verde')" style="background:#0a1a0a;color:#fff;">🟢</button>
-                        <button data-cor="vermelho" class="${corFundoAtual === 'vermelho' ? 'ativo' : ''}" onclick="window.setCorFundo('vermelho')" style="background:#1a0a0a;color:#fff;">🔴</button>
+                        <button data-cor="preto" class="${corFundoAtual === 'preto' ? 'ativo' : ''}" onclick="setCorFundo('preto')" style="background:#000000;color:#fff;">⬛</button>
+                        <button data-cor="azul" class="${corFundoAtual === 'azul' ? 'ativo' : ''}" onclick="setCorFundo('azul')" style="background:#0a1628;color:#fff;">🔵</button>
+                        <button data-cor="roxo" class="${corFundoAtual === 'roxo' ? 'ativo' : ''}" onclick="setCorFundo('roxo')" style="background:#0a0a1a;color:#fff;">🟣</button>
+                        <button data-cor="verde" class="${corFundoAtual === 'verde' ? 'ativo' : ''}" onclick="setCorFundo('verde')" style="background:#0a1a0a;color:#fff;">🟢</button>
+                        <button data-cor="vermelho" class="${corFundoAtual === 'vermelho' ? 'ativo' : ''}" onclick="setCorFundo('vermelho')" style="background:#1a0a0a;color:#fff;">🔴</button>
                     </div>
                 </div>
 
                 <div class="admin-section">
                     <h4 style="color:#ff8c00;">🎨 COR DOS CARDS</h4>
                     <div class="cor-selector cor-cards-selector">
-                        <button data-cor="laranja" class="${corCardsAtual === 'laranja' ? 'ativo' : ''}" onclick="window.setCorCards('laranja')" style="background:#ff8c00;color:#000;">🟧</button>
-                        <button data-cor="azul" class="${corCardsAtual === 'azul' ? 'ativo' : ''}" onclick="window.setCorCards('azul')" style="background:#00b4d8;color:#000;">🔵</button>
-                        <button data-cor="roxo" class="${corCardsAtual === 'roxo' ? 'ativo' : ''}" onclick="window.setCorCards('roxo')" style="background:#9b59b6;color:#fff;">🟣</button>
-                        <button data-cor="verde" class="${corCardsAtual === 'verde' ? 'ativo' : ''}" onclick="window.setCorCards('verde')" style="background:#2ecc71;color:#000;">🟢</button>
-                        <button data-cor="rosa" class="${corCardsAtual === 'rosa' ? 'ativo' : ''}" onclick="window.setCorCards('rosa')" style="background:#e91e63;color:#fff;">🩷</button>
+                        <button data-cor="laranja" class="${corCardsAtual === 'laranja' ? 'ativo' : ''}" onclick="setCorCards('laranja')" style="background:#ff8c00;color:#000;">🟧</button>
+                        <button data-cor="azul" class="${corCardsAtual === 'azul' ? 'ativo' : ''}" onclick="setCorCards('azul')" style="background:#00b4d8;color:#000;">🔵</button>
+                        <button data-cor="roxo" class="${corCardsAtual === 'roxo' ? 'ativo' : ''}" onclick="setCorCards('roxo')" style="background:#9b59b6;color:#fff;">🟣</button>
+                        <button data-cor="verde" class="${corCardsAtual === 'verde' ? 'ativo' : ''}" onclick="setCorCards('verde')" style="background:#2ecc71;color:#000;">🟢</button>
+                        <button data-cor="rosa" class="${corCardsAtual === 'rosa' ? 'ativo' : ''}" onclick="setCorCards('rosa')" style="background:#e91e63;color:#fff;">🩷</button>
                     </div>
                 </div>
 
-                <!-- ===== EDITAR VIPs ===== -->
+                <!-- CONFIGURAÇÕES DE DEPÓSITO - 5 OPÇÕES -->
+                <div class="admin-section">
+                    <h4 style="color:#32ff7e;">🏦 5 OPÇÕES DE DEPÓSITO</h4>
+                    <p style="color:#888;font-size:12px;">Configure os números e ative/desative cada opção</p>
+                    
+                    <div style="display:grid;grid-template-columns:1fr;gap:8px;margin-top:10px;">
+                        <div style="background:var(--bg-input);padding:12px;border-radius:10px;border-left:3px solid #32ff7e;">
+                            <div style="display:flex;justify-content:space-between;align-items:center;">
+                                <label style="color:#fff;font-weight:700;">📱 E-Mola</label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="depEmolaActive" ${depositConfig.emola?.active !== false ? 'checked' : ''}>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <input type="text" id="depEmola" class="auth-input" value="${depositConfig.emola?.number || '850000000'}" placeholder="Número E-Mola" style="margin-top:4px;">
+                        </div>
+                        
+                        <div style="background:var(--bg-input);padding:12px;border-radius:10px;border-left:3px solid #ff8c00;">
+                            <div style="display:flex;justify-content:space-between;align-items:center;">
+                                <label style="color:#fff;font-weight:700;">📱 M-Pesa</label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="depMpesaActive" ${depositConfig.mpesa?.active !== false ? 'checked' : ''}>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <input type="text" id="depMpesa" class="auth-input" value="${depositConfig.mpesa?.number || '840000000'}" placeholder="Número M-Pesa" style="margin-top:4px;">
+                        </div>
+                        
+                        <div style="background:var(--bg-input);padding:12px;border-radius:10px;border-left:3px solid #9b59b6;">
+                            <div style="display:flex;justify-content:space-between;align-items:center;">
+                                <label style="color:#fff;font-weight:700;">📱 M-Kesh</label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="depMkeshActive" ${depositConfig.mkesh?.active !== false ? 'checked' : ''}>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <input type="text" id="depMkesh" class="auth-input" value="${depositConfig.mkesh?.number || '830000000'}" placeholder="Número M-Kesh" style="margin-top:4px;">
+                        </div>
+                        
+                        <div style="background:var(--bg-input);padding:12px;border-radius:10px;border-left:3px solid #ffd700;">
+                            <div style="display:flex;justify-content:space-between;align-items:center;">
+                                <label style="color:#fff;font-weight:700;">🏦 Banco BCI</label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="depBancoBCIActive" ${depositConfig.bancoBCI?.active !== false ? 'checked' : ''}>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <input type="text" id="depBancoBCI" class="auth-input" value="${depositConfig.bancoBCI?.number || '860000000'}" placeholder="Número Banco BCI" style="margin-top:4px;">
+                        </div>
+                        
+                        <div style="background:var(--bg-input);padding:12px;border-radius:10px;border-left:3px solid #e91e63;">
+                            <div style="display:flex;justify-content:space-between;align-items:center;">
+                                <label style="color:#fff;font-weight:700;">🏦 Banco BIM</label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="depBancoBIMActive" ${depositConfig.bancoBIM?.active !== false ? 'checked' : ''}>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <input type="text" id="depBancoBIM" class="auth-input" value="${depositConfig.bancoBIM?.number || '870000000'}" placeholder="Número Banco BIM" style="margin-top:4px;">
+                        </div>
+                    </div>
+                    
+                    <button onclick="salvarDepositosAdmin()" class="action-btn btn-gold" style="margin-top:12px;">💾 Salvar Configurações</button>
+                </div>
+
+                <!-- EDITAR VIPs -->
                 <div class="admin-section">
                     <h4 style="color:#ffd700;">🎬 EDITAR VIPs</h4>
                     <p style="color:#888;font-size:12px;">Configure valores, ganhos diários e dias</p>
@@ -4067,10 +3692,10 @@
                             </div>
                         </div>
                     `).join('')}
-                    <button onclick="window.salvarVipsAdmin()" class="action-btn btn-gold" style="margin-top:8px;">💾 Salvar VIPs</button>
+                    <button onclick="salvarVipsAdmin()" class="action-btn btn-gold" style="margin-top:8px;">💾 Salvar VIPs</button>
                 </div>
 
-                <!-- ===== EDITAR ÁRVORE ===== -->
+                <!-- EDITAR ÁRVORE -->
                 <div class="admin-section">
                     <h4 style="color:#0f0;">🌳 EDITAR NÍVEIS DA ÁRVORE</h4>
                     <p style="color:#888;font-size:12px;">Configure VIPs necessários e salários</p>
@@ -4090,14 +3715,14 @@
                     <div style="margin:10px 0;">
                         <label style="color:#888;font-size:12px;">🌳 Árvore Ativa:</label>
                         <label class="toggle-switch">
-                            <input type="checkbox" id="toggleArvoreAdmin" ${C.arvoreAtiva ? 'checked' : ''} onchange="window.toggleArvoreAdmin()">
+                            <input type="checkbox" id="toggleArvoreAdmin" ${C.arvoreAtiva ? 'checked' : ''} onchange="toggleArvoreAdmin()">
                             <span class="toggle-slider"></span>
                         </label>
                     </div>
-                    <button onclick="window.salvarSalariosAdmin()" class="action-btn btn-gold" style="margin-top:8px;">💾 Salvar Árvore</button>
+                    <button onclick="salvarSalariosAdmin()" class="action-btn btn-gold" style="margin-top:8px;">💾 Salvar Árvore</button>
                 </div>
 
-                <!-- ===== EDITAR FUNDOS ===== -->
+                <!-- EDITAR FUNDOS -->
                 <div class="admin-section">
                     <h4 style="color:#ffd700;">🎨 EDITAR FUNDOS</h4>
                     <p style="color:#888;font-size:12px;">Configure os fundos de recompensa</p>
@@ -4121,23 +3746,23 @@
                     <div style="margin:10px 0;">
                         <label style="color:#888;font-size:12px;">🎨 Fundos Ativos:</label>
                         <label class="toggle-switch">
-                            <input type="checkbox" id="toggleFundosAdmin" ${C.fundosAtivos ? 'checked' : ''} onchange="window.toggleFundosAdmin()">
+                            <input type="checkbox" id="toggleFundosAdmin" ${C.fundosAtivos ? 'checked' : ''} onchange="toggleFundosAdmin()">
                             <span class="toggle-slider"></span>
                         </label>
                     </div>
-                    <button onclick="window.salvarFundosAdmin()" class="action-btn btn-gold" style="margin-top:8px;">💾 Salvar Fundos</button>
+                    <button onclick="salvarFundosAdmin()" class="action-btn btn-gold" style="margin-top:8px;">💾 Salvar Fundos</button>
                 </div>
 
-                <!-- ===== HORÁRIO SAQUE ===== -->
+                <!-- HORÁRIO SAQUE -->
                 <div class="admin-section">
                     <h4 style="color:#ff8c00;">🕐 HORÁRIO DE SAQUE</h4>
                     <div class="time-config-row"><label>🟢 Início:</label><input type="time" id="withdrawStartTime" value="${WITHDRAW_TIMES.start}"></div>
                     <div class="time-config-row"><label>🔴 Fim:</label><input type="time" id="withdrawEndTime" value="${WITHDRAW_TIMES.end}"></div>
                     <p style="color:#32ff7e;text-align:center;">Atual: ${WITHDRAW_TIMES.start} - ${WITHDRAW_TIMES.end}</p>
-                    <button onclick="window.saveWithdrawTimeAdmin()" class="action-btn btn-gold">💾 Salvar Horário</button>
+                    <button onclick="saveWithdrawTimeAdmin()" class="action-btn btn-gold">💾 Salvar Horário</button>
                 </div>
 
-                <!-- ===== VALORES DE SAQUE ===== -->
+                <!-- VALORES DE SAQUE -->
                 <div class="admin-section">
                     <h4 style="color:#ff8c00;">💸 VALORES DE SAQUE</h4>
                     <div style="max-height:400px;overflow-y:auto;">
@@ -4158,7 +3783,7 @@
                                 </div>
                                 <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
                                     <label class="toggle-switch">
-                                        <input type="checkbox" id="svToggle${idx}" ${indisponivel ? 'checked' : ''} onchange="window.toggleSaqueIndisponivelAdmin(${idx})">
+                                        <input type="checkbox" id="svToggle${idx}" ${indisponivel ? 'checked' : ''} onchange="toggleSaqueIndisponivelAdmin(${idx})">
                                         <span class="toggle-slider" style="background:${indisponivel ? '#ff0000' : '#32ff7e'};"></span>
                                     </label>
                                     <span id="svStatus${idx}" style="font-size:10px;color:${indisponivel ? '#ff0000' : '#32ff7e'};">${indisponivel ? '🚫 INDISPONÍVEL' : '✅ DISPONÍVEL'}</span>
@@ -4166,91 +3791,59 @@
                             </div>`;
                         }).join('')}
                     </div>
-                    <button onclick="window.saveSaqueConfigAdmin()" class="action-btn btn-gold" style="margin-top:12px;">💾 Salvar Saques</button>
+                    <button onclick="saveSaqueConfigAdmin()" class="action-btn btn-gold" style="margin-top:12px;">💾 Salvar Saques</button>
                 </div>
 
-                <!-- ===== DEPÓSITOS PENDENTES ===== -->
+                <!-- DEPÓSITOS PENDENTES -->
                 <div class="admin-section">
                     <h4 style="color:#ff8c00;">💰 Depósitos Pendentes (${pendDep.length})</h4>
                     ${pendDep.length === 0 ? '<p style="color:#888;">Nenhum</p>' : pendDep.map(d => `<div style="display:flex;justify-content:space-between;padding:10px;margin:6px 0;background:var(--bg-input);border-radius:10px;">
                         <div><span style="color:#fff;"><strong>${d.name}</strong> - ${d.phone}</span><br><span style="color:#ff8c00;">${(d.amount || 0).toLocaleString()} MT</span></div>
-                        <div><button class="admin-btn-sm btn-approve" onclick="window.approveDepositAdmin('${d.id}')">✅</button><button class="admin-btn-sm btn-reject" onclick="window.rejectDepositAdmin('${d.id}')">❌</button></div>
+                        <div><button class="admin-btn-sm btn-approve" onclick="approveDepositAdmin('${d.id}')">✅</button><button class="admin-btn-sm btn-reject" onclick="rejectDepositAdmin('${d.id}')">❌</button></div>
                     </div>`).join('')}
                 </div>
 
-                <!-- ===== SAQUES PENDENTES ===== -->
+                <!-- SAQUES PENDENTES -->
                 <div class="admin-section">
                     <h4 style="color:#ff8c00;">💸 Saques Pendentes (${pendW.length})</h4>
                     ${pendW.length === 0 ? '<p style="color:#888;">Nenhum</p>' : pendW.map(w => `<div style="display:flex;justify-content:space-between;padding:10px;margin:6px 0;background:var(--bg-input);border-radius:10px;">
                         <div><span style="color:#fff;"><strong>${w.name}</strong> - ${w.phone}</span><br><span style="color:#ff8c00;">${(w.amount || 0).toLocaleString()} MT</span><br><span style="color:#32ff7e;">Enviar: ${(w.netAmount || 0).toLocaleString()} MT</span></div>
-                        <div><button class="admin-btn-sm btn-approve" onclick="window.approveWithdrawAdmin('${w.id}')">✅</button><button class="admin-btn-sm btn-reject" onclick="window.rejectWithdrawAdmin('${w.id}')">❌</button></div>
+                        <div><button class="admin-btn-sm btn-approve" onclick="approveWithdrawAdmin('${w.id}')">✅</button><button class="admin-btn-sm btn-reject" onclick="rejectWithdrawAdmin('${w.id}')">❌</button></div>
                     </div>`).join('')}
                 </div>
 
-                <!-- ===== USUÁRIOS ===== -->
+                <!-- USUÁRIOS -->
                 <div class="admin-section">
                     <h4 style="color:#ff8c00;">👥 Usuários (${users.length})</h4>
                     <div style="max-height:400px;overflow-y:auto;">
-                        ${users.map(u => {
-                            const controleData = NF_SAQUE.dadosAtuais?.usuarios?.[u.id];
-                            const podeSaque = controleData?.saqueLiberado || false;
-                            const convitesVIP = controleData?.convitesVIP || 0;
-                            return `<div style="display:flex;justify-content:space-between;padding:10px;margin:4px 0;background:var(--bg-input);border-radius:10px;">
-                                <div><strong style="color:#fff;">${u.name || 'Sem nome'}</strong><br><small style="color:#c0c0c0;">📞 ${u.phone || 'N/A'} | VIP: ${VIP_NAMES[u.vipLevel||0]||'Estagiário'} | 💰 ${(u.balance||0).toLocaleString()} MT</small>${u.blocked?'<span style="color:red;">🚫</span> ':''}<br><small style="color:${podeSaque ? '#32ff7e' : '#ffd700'};">🔒 Saque: ${podeSaque ? '✅ Liberado' : '🔒 Bloqueado'} | 👥 VIPs: ${convitesVIP}</small></div>
-                                <div style="display:flex;gap:4px;flex-wrap:wrap;">
-                                    <button class="admin-btn-sm btn-edit" onclick="window.editBalanceAdmin('${u.id}')">💰</button>
-                                    <button class="admin-btn-sm btn-edit" onclick="window.resetPassAdmin('${u.id}')">🔑</button>
-                                    <button class="admin-btn-sm ${u.blocked?'btn-approve':'btn-block'}" onclick="window.toggleBlockAdmin('${u.id}')">${u.blocked?'✅':'🚫'}</button>
-                                    <button class="admin-btn-sm btn-delete" onclick="window.deleteUserAdmin('${u.id}')">🗑️</button>
-                                </div>
-                            </div>`;
-                        }).join('')}
+                        ${users.map(u => `<div style="display:flex;justify-content:space-between;padding:10px;margin:4px 0;background:var(--bg-input);border-radius:10px;">
+                            <div><strong style="color:#fff;">${u.name || 'Sem nome'}</strong><br><small style="color:#c0c0c0;">📞 ${u.phone || 'N/A'} | VIP: ${VIP_NAMES[u.vipLevel||0]||'Estagiário'} | 💰 ${(u.balance||0).toLocaleString()} MT</small>${u.blocked?'<span style="color:red;">🚫</span> ':''}${u.canWithdraw ? '<span style="color:#32ff7e;">✅ Saque OK</span>' : '<span style="color:#ff4444;">🔒 Saque Bloqueado</span>'}</div>
+                            <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                                <button class="admin-btn-sm btn-edit" onclick="editBalanceAdmin('${u.id}')">💰</button>
+                                <button class="admin-btn-sm btn-edit" onclick="resetPassAdmin('${u.id}')">🔑</button>
+                                <button class="admin-btn-sm ${u.blocked?'btn-approve':'btn-block'}" onclick="toggleBlockAdmin('${u.id}')">${u.blocked?'✅':'🚫'}</button>
+                                <button class="admin-btn-sm btn-delete" onclick="deleteUserAdmin('${u.id}')">🗑️</button>
+                            </div>
+                        </div>`).join('')}
                     </div>
                 </div>
 
-                <!-- ===== SEGURANÇA ===== -->
+                <!-- SEGURANÇA -->
                 <div class="admin-section">
                     <h4 style="color:#ff8c00;">🔒 Segurança</h4>
-                    <button onclick="window.changeAdminPassAdmin()" class="action-btn btn-gold">🔐 Mudar Senha Admin</button>
+                    <button onclick="changeAdminPassAdmin()" class="action-btn btn-gold">🔐 Mudar Senha Admin</button>
                 </div>
             `;
             document.body.appendChild(panel);
             document.getElementById('appScreen').style.display = 'none';
         }
 
-        // ============================================================
-        // FUNÇÃO PARA ALTERNAR MODO VIA INTERRUPTOR
-        // ============================================================
-        async function alternarModoSaque() {
-            const checkbox = document.getElementById('toggleModoSaque');
-            if (!checkbox) return;
-            
-            if (!currentUser || (currentUser.vipLevel < 7 && !currentUser.isAdmin)) {
-                checkbox.checked = !checkbox.checked;
-                NF_SAQUE.mostrarNotificacao('🔒 Apenas administradores podem alterar o modo!', 'error');
-                return;
-            }
-            
-            await NF_SAQUE.toggleModo();
-            
-            const modoRestrito = NF_SAQUE.dadosAtuais?.modoRestrito || false;
-            checkbox.checked = modoRestrito;
-            
-            const statusSpan = checkbox.closest('.admin-toggle-container')?.querySelector('.toggle-status');
-            if (statusSpan) {
-                statusSpan.textContent = modoRestrito ? '🔒 ATIVADO' : '🔓 DESATIVADO';
-                statusSpan.className = `toggle-status ${modoRestrito ? 'ativo' : 'inativo'}`;
-            }
-            
-            const container = checkbox.closest('.admin-toggle-container');
-            if (container) {
-                container.style.borderColor = modoRestrito ? '#ff4444' : '#32ff7e';
-            }
-            
-            const icon = checkbox.closest('.admin-toggle-container')?.querySelector('.icon');
-            if (icon) {
-                icon.textContent = modoRestrito ? '🔒' : '🔓';
-            }
+        function closeAdminPanel() {
+            let panel = document.getElementById('adminPanel');
+            if (panel) panel.remove();
+            document.getElementById('appScreen').style.display = 'flex';
+            updateBalanceDisplay();
+            showTab('home');
         }
 
         // ============================================================
@@ -4283,27 +3876,6 @@
             updateWhatsAppLoginButtons();
             alert('✅ Links salvos com sucesso!');
             closeAdminPanel();
-        }
-
-        async function salvarAvisoAdmin() {
-            const textarea = document.getElementById('adminAvisoSaque');
-            if (!textarea) return;
-            
-            const novoAviso = textarea.value.trim();
-            if (!novoAviso) {
-                alert('❌ O aviso não pode estar vazio!');
-                return;
-            }
-            
-            try {
-                globalSettings.avisoRestricao = novoAviso;
-                await salvarConfiguracoes(globalSettings);
-                NF_SAQUE.renderizarModulo();
-                alert('✅ Aviso atualizado com sucesso!');
-                closeAdminPanel();
-            } catch (e) {
-                alert('❌ Erro ao salvar: ' + e.message);
-            }
         }
 
         function toggleArvoreAdmin() {
@@ -4423,9 +3995,6 @@
             alert(`✅ Horário: ${WITHDRAW_TIMES.start} - ${WITHDRAW_TIMES.end}`);
         }
 
-        // ============================================================
-        // FUNÇÃO approveDepositAdmin - COM COMISSÃO DE 10%
-        // ============================================================
         async function approveDepositAdmin(id) {
             try {
                 await atualizarDeposito(id, { status: 'approved' });
@@ -4435,61 +4004,11 @@
                     if (user) {
                         const newBalance = (Number(user.balance) || 0) + (Number(deposit.amount) || 0);
                         await atualizarDados('users/' + user.id, { balance: newBalance });
-                        
-                        // DISTRIBUIR 10% DE COMISSÃO PARA O CONVIDADOR
-                        if (user.referredBy) {
-                            await distribuirComissaoConvidado(user.referredBy, deposit.amount);
-                        }
                     }
                 }
                 alert('✅ Depósito aprovado!');
                 closeAdminPanel();
-            } catch (e) { 
-                alert('❌ Erro: ' + e.message); 
-            }
-        }
-
-        // ============================================================
-        // FUNÇÃO distribuirComissaoConvidado
-        // ============================================================
-        async function distribuirComissaoConvidado(convidadorId, valorDeposito) {
-            if (!convidadorId || !valorDeposito) return;
-            
-            try {
-                const convidador = await buscarUsuarioPorId(convidadorId);
-                if (!convidador) return;
-                
-                const comissao = Math.round(valorDeposito * 0.1);
-                
-                if (comissao <= 0) return;
-                
-                const novoSaldo = (Number(convidador.balance) || 0) + comissao;
-                
-                if (!convidador.commissionHistory) convidador.commissionHistory = [];
-                convidador.commissionHistory.push({
-                    amount: comissao,
-                    fromDeposit: valorDeposito,
-                    date: new Date().toISOString(),
-                    type: 'deposit_commission'
-                });
-                
-                convidador.commissionsPaid = (Number(convidador.commissionsPaid) || 0) + comissao;
-                
-                await atualizarDados('users/' + convidadorId, {
-                    balance: novoSaldo,
-                    commissionHistory: convidador.commissionHistory,
-                    commissionsPaid: convidador.commissionsPaid
-                });
-                
-                NF_SAQUE.mostrarNotificacao(
-                    `🎉 ${convidador.name} ganhou ${comissao.toLocaleString()} MT de comissão (10% do depósito de ${valorDeposito.toLocaleString()} MT)!`,
-                    'success'
-                );
-                
-                console.log(`✅ Comissão de ${comissao} MT distribuída para ${convidador.name}`);
-            } catch (e) {
-                console.error('❌ Erro ao distribuir comissão:', e);
-            }
+            } catch (e) { alert('❌ Erro: ' + e.message); }
         }
 
         async function rejectDepositAdmin(id) {
@@ -4499,13 +4018,9 @@
         }
 
         async function approveWithdrawAdmin(id) {
-            try {
-                await atualizarSaque(id, { status: 'approved' });
-                alert('✅ Saque aprovado!');
-                closeAdminPanel();
-            } catch (e) {
-                alert('❌ Erro: ' + e.message);
-            }
+            await atualizarSaque(id, { status: 'approved' });
+            alert('✅ Saque aprovado!');
+            closeAdminPanel();
         }
 
         async function rejectWithdrawAdmin(id) {
@@ -4522,9 +4037,7 @@
                 await atualizarSaque(id, { status: 'rejected' });
                 alert('❌ Saque rejeitado - saldo devolvido!');
                 closeAdminPanel();
-            } catch (e) { 
-                alert('❌ Erro: ' + e.message); 
-            }
+            } catch (e) { alert('❌ Erro: ' + e.message); }
         }
 
         async function editBalanceAdmin(id) {
@@ -4568,116 +4081,6 @@
         }
 
         // ============================================================
-        // SOCIAL BUTTONS
-        // ============================================================
-        function updateSocialButtons() {
-            const c = document.getElementById('socialButtonsAuth');
-            if (!c) return;
-            let h = '';
-            if (linksConfig.facebookPage) h += `<a href="${linksConfig.facebookPage}" target="_blank" class="social-btn fb">📘 Facebook</a>`;
-            if (linksConfig.suporteWhatsapp) h += `<a href="https://wa.me/${linksConfig.suporteWhatsapp}" target="_blank" class="social-btn wa">📱 WhatsApp</a>`;
-            if (linksConfig.youtubeChannel) h += `<a href="${linksConfig.youtubeChannel}" target="_blank" class="social-btn yt">▶️ YouTube</a>`;
-            c.innerHTML = h;
-        }
-
-        function updateWhatsAppLoginButtons() {
-            const btnSuporte = document.getElementById('btnSuporteLogin');
-            const btnGrupo = document.getElementById('btnGrupoLogin');
-            if (!btnSuporte || !btnGrupo) return;
-            if (linksConfig.suporteWhatsapp) {
-                const numeroLimpo = linksConfig.suporteWhatsapp.replace(/\D/g, '');
-                btnSuporte.href = `https://wa.me/${numeroLimpo}?text=Olá!%20Preciso%20de%20suporte%20na%20plataforma%20NET%20FILMS`;
-                btnSuporte.style.display = 'flex';
-            } else { btnSuporte.style.display = 'none'; }
-            if (linksConfig.grupoWhatsapp) {
-                btnGrupo.href = linksConfig.grupoWhatsapp;
-                btnGrupo.style.display = 'flex';
-            } else { btnGrupo.style.display = 'none'; }
-        }
-
-        // ============================================================
-        // FUNÇÕES GRUPO VIP
-        // ============================================================
-        function abrirGrupoVip() {
-            const isVip = currentUser && currentUser.vipLevel > 0 && currentUser.vipType !== 'estagiario';
-            
-            if (isVip) {
-                document.getElementById('modalVipWhatsapp').classList.add('active');
-                const btn = document.getElementById('btnEntrarGrupoVip');
-                if (btn) {
-                    btn.onclick = function() {
-                        window.open(linksConfig.grupoVipWhatsapp || 'https://chat.whatsapp.com/SEUGRUPOVIP', '_blank');
-                    };
-                }
-                document.getElementById('btnEntrarGrupoVip').style.display = 'block';
-                document.getElementById('btnComprarVipModal').style.display = 'none';
-                const desc = document.querySelector('.modal-vip-whatsapp-content .desc-vip-modal');
-                if (desc) {
-                    desc.innerHTML = 'Entre no <strong style="color:#ffd700;">grupo exclusivo</strong> de membros VIP';
-                }
-            } else {
-                document.getElementById('modalVipWhatsapp').classList.add('active');
-                document.getElementById('btnEntrarGrupoVip').style.display = 'none';
-                document.getElementById('btnComprarVipModal').style.display = 'block';
-                const desc = document.querySelector('.modal-vip-whatsapp-content .desc-vip-modal');
-                if (desc) {
-                    desc.innerHTML = '🔒 <strong style="color:#ff6b35;">Acesso restrito</strong> a membros VIP<br>Adquira um VIP para entrar no grupo exclusivo!';
-                }
-            }
-        }
-
-        function fecharModalVip() {
-            document.getElementById('modalVipWhatsapp').classList.remove('active');
-            document.getElementById('btnEntrarGrupoVip').style.display = 'block';
-            document.getElementById('btnComprarVipModal').style.display = 'none';
-            const desc = document.querySelector('.modal-vip-whatsapp-content .desc-vip-modal');
-            if (desc) {
-                desc.innerHTML = 'Entre no <strong style="color:#ffd700;">grupo exclusivo</strong> de membros VIP';
-            }
-        }
-
-        function entrarGrupoVipWhatsapp() {
-            window.open(linksConfig.grupoVipWhatsapp || 'https://chat.whatsapp.com/SEUGRUPOVIP', '_blank');
-        }
-
-        function abrirYoutubeGanhar() {
-            window.open('https://youtu.be/_s8sicMMk4w?si=zHYwT5EJcazPsNAI', '_blank');
-        }
-
-        // ============================================================
-        // FUNÇÕES EDITAR AVISO
-        // ============================================================
-        function abrirEditorAviso() {
-            const modal = document.getElementById('modalEditarAviso');
-            const textarea = document.getElementById('inputAvisoSaque');
-            if (textarea) {
-                textarea.value = globalSettings.avisoRestricao || '🔒 Convide 1 pessoa para se tornar VIP e libere seu saque! Após sacar, convide mais 1 VIP para liberar novamente.';
-            }
-            modal.classList.add('active');
-        }
-
-        async function salvarAvisoSaque() {
-            const textarea = document.getElementById('inputAvisoSaque');
-            if (!textarea) return;
-            
-            const novoAviso = textarea.value.trim();
-            if (!novoAviso) {
-                alert('❌ O aviso não pode estar vazio!');
-                return;
-            }
-            
-            try {
-                globalSettings.avisoRestricao = novoAviso;
-                await salvarConfiguracoes(globalSettings);
-                fecharModalPadrao('modalEditarAviso');
-                NF_SAQUE.renderizarModulo();
-                alert('✅ Aviso atualizado com sucesso!');
-            } catch (e) {
-                alert('❌ Erro ao salvar: ' + e.message);
-            }
-        }
-
-        // ============================================================
         // INICIALIZAÇÃO
         // ============================================================
         window.addEventListener('beforeinstallprompt', (e) => {
@@ -4717,6 +4120,7 @@
                 await carregarWithdrawConfig();
                 await carregarFundosFirebase();
                 await carregarVipConfigFirebase();
+                await carregarDepositConfig();
                 aplicarEstilos();
 
                 checkInviteBanner();
@@ -4729,47 +4133,12 @@
                 console.log('📌 Painel Admin: clique 10x no logo NET FILMS');
                 console.log('📌 Grupo VIP: verifica se usuário é VIP');
                 console.log('📌 5 cores de fundo + 5 cores de cards disponíveis');
-                console.log('📌 Módulo Controle de Saque: convide VIPs para liberar saques!');
-                console.log('📌 Interruptor no Admin para ativar/desativar modo de convidar para sacar');
-                console.log('📌 10% de comissão para convidador quando convidado deposita');
+                console.log('📌 Saque liberado apenas por convite VIP');
+                console.log('📌 5 opções de depósito: E-Mola, M-Pesa, M-Kesh, Banco BCI, Banco BIM');
             } catch (e) { console.error('Erro na inicialização:', e); }
         }
 
-        // ============================================================
         // EXPOR FUNÇÕES
-        // ============================================================
-        window.NF_SAQUE = NF_SAQUE;
-        window.alternarModoSaque = alternarModoSaque;
-        window.closeAdminPanel = closeAdminPanel;
-        window.canWithdraw = canWithdraw;
-        window.requestWithdraw = requestWithdraw;
-        window.buyMovie = buyMovie;
-        window.handleLogin = handleLogin;
-        window.handleRegister = handleRegister;
-        window.approveDepositAdmin = approveDepositAdmin;
-        window.rejectDepositAdmin = rejectDepositAdmin;
-        window.approveWithdrawAdmin = approveWithdrawAdmin;
-        window.rejectWithdrawAdmin = rejectWithdrawAdmin;
-        window.distribuirComissaoConvidado = distribuirComissaoConvidado;
-        window.salvarLinksAdmin = salvarLinksAdmin;
-        window.salvarAvisoAdmin = salvarAvisoAdmin;
-        window.toggleArvoreAdmin = toggleArvoreAdmin;
-        window.toggleFundosAdmin = toggleFundosAdmin;
-        window.salvarVipsAdmin = salvarVipsAdmin;
-        window.salvarSalariosAdmin = salvarSalariosAdmin;
-        window.salvarFundosAdmin = salvarFundosAdmin;
-        window.toggleSaqueIndisponivelAdmin = toggleSaqueIndisponivelAdmin;
-        window.saveSaqueConfigAdmin = saveSaqueConfigAdmin;
-        window.saveWithdrawTimeAdmin = saveWithdrawTimeAdmin;
-        window.editBalanceAdmin = editBalanceAdmin;
-        window.resetPassAdmin = resetPassAdmin;
-        window.toggleBlockAdmin = toggleBlockAdmin;
-        window.deleteUserAdmin = deleteUserAdmin;
-        window.changeAdminPassAdmin = changeAdminPassAdmin;
-        window.setFormato = setFormato;
-        window.setTamanho = setTamanho;
-        window.setCorFundo = setCorFundo;
-        window.setCorCards = setCorCards;
         window.showRegisterForm = showRegisterForm;
         window.showLoginForm = showLoginForm;
         window.showForgotPassword = showForgotPassword;
@@ -4791,6 +4160,19 @@
         window.showDepositModal = showDepositModal;
         window.submitDeposit = submitDeposit;
         window.installApp = installApp;
+        window.closeAdminPanel = closeAdminPanel;
+        window.toggleSaqueIndisponivelAdmin = toggleSaqueIndisponivelAdmin;
+        window.saveSaqueConfigAdmin = saveSaqueConfigAdmin;
+        window.saveWithdrawTimeAdmin = saveWithdrawTimeAdmin;
+        window.approveDepositAdmin = approveDepositAdmin;
+        window.rejectDepositAdmin = rejectDepositAdmin;
+        window.approveWithdrawAdmin = approveWithdrawAdmin;
+        window.rejectWithdrawAdmin = rejectWithdrawAdmin;
+        window.editBalanceAdmin = editBalanceAdmin;
+        window.resetPassAdmin = resetPassAdmin;
+        window.toggleBlockAdmin = toggleBlockAdmin;
+        window.deleteUserAdmin = deleteUserAdmin;
+        window.changeAdminPassAdmin = changeAdminPassAdmin;
         window.reservarPresente = reservarPresente;
         window.toggleSidebar = toggleSidebar;
         window.abrirModalArvore = abrirModalArvore;
@@ -4804,11 +4186,21 @@
         window.comprarFundo = comprarFundo;
         window.updateWhatsAppLoginButtons = updateWhatsAppLoginButtons;
         window.abrirYoutubeGanhar = abrirYoutubeGanhar;
+        window.setFormato = setFormato;
+        window.setTamanho = setTamanho;
+        window.setCorFundo = setCorFundo;
+        window.setCorCards = setCorCards;
+        window.salvarSalariosAdmin = salvarSalariosAdmin;
+        window.salvarFundosAdmin = salvarFundosAdmin;
+        window.salvarVipsAdmin = salvarVipsAdmin;
+        window.salvarLinksAdmin = salvarLinksAdmin;
+        window.toggleArvoreAdmin = toggleArvoreAdmin;
+        window.toggleFundosAdmin = toggleFundosAdmin;
         window.abrirGrupoVip = abrirGrupoVip;
         window.fecharModalVip = fecharModalVip;
         window.entrarGrupoVipWhatsapp = entrarGrupoVipWhatsapp;
-        window.abrirEditorAviso = abrirEditorAviso;
-        window.salvarAvisoSaque = salvarAvisoSaque;
+        window.salvarDepositosAdmin = salvarDepositosAdmin;
+        window.carregarDepositConfig = carregarDepositConfig;
 
         init();
     </script>
