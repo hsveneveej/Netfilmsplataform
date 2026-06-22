@@ -1555,6 +1555,277 @@
             position: relative;
             z-index: 1;
         }
+
+        /* ============================================================ */
+        /* ESTILOS DO MÓDULO DE CONTROLE DE SAQUE */
+        /* ============================================================ */
+        .nf_saque_container {
+            max-width: 100%;
+            margin: 10px 0;
+        }
+
+        .nf_card_saque {
+            background: var(--bg-card);
+            border-radius: var(--borda-radius);
+            padding: 16px;
+            border: 2px solid var(--accent);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .nf_card_saque h3 {
+            color: var(--accent);
+            margin-bottom: 12px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nf_status_indicator {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            background: var(--bg-input);
+            border-radius: 10px;
+            margin-bottom: 12px;
+            color: var(--text);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .nf_badge {
+            padding: 6px 16px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nf_badge_livre {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .nf_badge_restrito {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        .nf_dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            animation: nf_pulse 2s infinite;
+        }
+
+        .nf_dot_green {
+            background: #28a745;
+            box-shadow: 0 0 10px #28a745;
+        }
+
+        .nf_dot_red {
+            background: #dc3545;
+            box-shadow: 0 0 10px #dc3545;
+        }
+
+        @keyframes nf_pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .nf_info_box {
+            background: var(--bg-input);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 12px 0;
+            border-left: 4px solid var(--accent);
+            font-size: 12px;
+            color: var(--text);
+        }
+
+        .nf_info_box p {
+            margin: 4px 0;
+            color: var(--text2);
+        }
+
+        .nf_mensagem_status {
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .nf_mensagem_status.livre {
+            background: rgba(50, 255, 126, 0.15);
+            color: #32ff7e;
+            border: 1px solid #32ff7e;
+        }
+
+        .nf_mensagem_status.restrito {
+            background: rgba(255, 68, 68, 0.15);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+
+        .nf_mensagem_status.liberado {
+            background: rgba(50, 255, 126, 0.15);
+            color: #32ff7e;
+            border: 1px solid #32ff7e;
+        }
+
+        .nf_mensagem_status.bloqueado {
+            background: rgba(255, 215, 0, 0.15);
+            color: #ffd700;
+            border: 1px solid #ffd700;
+        }
+
+        .nf_aviso_editavel {
+            background: var(--bg-input);
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin: 8px 0;
+            font-size: 12px;
+            color: var(--text2);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .nf_aviso_editavel strong {
+            color: var(--accent);
+        }
+
+        .nf_btn_editar_aviso {
+            background: rgba(255, 215, 0, 0.15);
+            color: #ffd700;
+            border: 1px solid #ffd700;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-top: 6px;
+            width: 100%;
+        }
+
+        .nf_btn_editar_aviso:hover {
+            background: rgba(255, 215, 0, 0.25);
+            transform: scale(1.02);
+        }
+
+        /* Interruptor estilizado para o admin */
+        .admin-toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: var(--bg-input);
+            border-radius: 12px;
+            margin: 8px 0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .admin-toggle-container .toggle-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text);
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .admin-toggle-container .toggle-label .icon {
+            font-size: 20px;
+        }
+
+        .admin-toggle-container .toggle-status {
+            font-size: 12px;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+
+        .admin-toggle-container .toggle-status.ativo {
+            background: rgba(50, 255, 126, 0.2);
+            color: #32ff7e;
+        }
+
+        .admin-toggle-container .toggle-status.inativo {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+        }
+
+        /* Toggle grande para admin */
+        .toggle-switch-large {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch-large input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-switch-large .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #444;
+            transition: 0.4s;
+            border-radius: 30px;
+        }
+
+        .toggle-switch-large .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        .toggle-switch-large input:checked + .slider {
+            background: #32ff7e;
+        }
+
+        .toggle-switch-large input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        .toggle-switch-large input:disabled + .slider {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @keyframes nf_slideIn {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes nf_slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100px); opacity: 0; }
+        }
     </style>
 </head>
 <body>
@@ -1710,6 +1981,10 @@
                 
                 <div class="sidebar-titulo">🎨 FUNDOS</div>
                 <div id="fundosSidebar"></div>
+
+                <!-- ==================== MÓDULO DE CONTROLE DE SAQUE ==================== -->
+                <div class="sidebar-titulo">🔒 STATUS DO SAQUE</div>
+                <div id="moduloSaqueSidebar"></div>
             </div>
         </div>
         
@@ -1744,7 +2019,7 @@
                 <button class="btn-entrar-vip" id="btnEntrarGrupoVip" onclick="entrarGrupoVipWhatsapp()">
                     💬 ENTRAR NO GRUPO VIP
                 </button>
-                <button class="btn-comprar-vip-modal" id="btnComprarVipModal" onclick="fecharModalVip();showTab('vips')">
+                <button class="btn-comprar-vip-modal" id="btnComprarVipModal" onclick="fecharModalVip();showTab('vips')" style="display:none;">
                     🎬 COMPRAR VIP AGORA
                 </button>
                 <button class="btn-fechar-modal-vip" onclick="fecharModalVip()">❌ Fechar</button>
@@ -1767,6 +2042,19 @@
                 <div id="formSalarios"></div>
                 <button onclick="salvarSalarios()">💾 Salvar</button>
                 <button class="btn-fechar-modal-padrao" onclick="fecharModalPadrao('modalSalarios')">❌ Cancelar</button>
+            </div>
+        </div>
+
+        <!-- MODAL EDITAR AVISO -->
+        <div class="modal-padrao" id="modalEditarAviso">
+            <div class="modal-padrao-content">
+                <h3>✏️ EDITAR AVISO DE SAQUE</h3>
+                <p style="color:#c0c0c0;font-size:12px;text-align:center;margin-bottom:10px;">Mensagem exibida no card de saque e na sidebar</p>
+                <textarea id="inputAvisoSaque" rows="4" style="width:100%;padding:10px;border-radius:8px;background:var(--bg-input);color:#fff;border:1px solid var(--accent);font-size:14px;resize:vertical;"></textarea>
+                <div style="display:flex;gap:8px;margin-top:12px;">
+                    <button onclick="salvarAvisoSaque()" class="action-btn btn-gold" style="flex:1;padding:10px;">💾 Salvar</button>
+                    <button onclick="fecharModalPadrao('modalEditarAviso')" class="btn-fechar-modal-padrao" style="flex:1;">❌ Cancelar</button>
+                </div>
             </div>
         </div>
 
@@ -1912,7 +2200,8 @@
             tamanho: 'medio',
             corFundo: 'preto',
             corCards: 'laranja',
-            grupoVipWhatsapp: 'https://chat.whatsapp.com/SEUGRUPOVIP'
+            grupoVipWhatsapp: 'https://chat.whatsapp.com/SEUGRUPOVIP',
+            avisoRestricao: '🔒 Convide 1 pessoa para se tornar VIP e libere seu saque! Após sacar, convide mais 1 VIP para liberar novamente.'
         };
 
         let WITHDRAW_TIMES = { start: "06:30", end: "18:30" };
@@ -2017,6 +2306,11 @@
                         if (data.youtubeChannel) linksConfig.youtubeChannel = data.youtubeChannel;
                         if (data.facebookPage) linksConfig.facebookPage = data.facebookPage;
                         if (data.telegramChannel) linksConfig.telegramChannel = data.telegramChannel;
+                        if (!data.avisoRestricao) {
+                            globalSettings.avisoRestricao = '🔒 Convide 1 pessoa para se tornar VIP e libere seu saque! Após sacar, convide mais 1 VIP para liberar novamente.';
+                        }
+                    } else {
+                        globalSettings.avisoRestricao = '🔒 Convide 1 pessoa para se tornar VIP e libere seu saque! Após sacar, convide mais 1 VIP para liberar novamente.';
                     }
                     return globalSettings;
                 });
@@ -2025,6 +2319,9 @@
         function salvarConfiguracoes(data) {
             globalSettings = data;
             if (!globalSettings.withdrawTimes) globalSettings.withdrawTimes = WITHDRAW_TIMES;
+            if (!globalSettings.avisoRestricao) {
+                globalSettings.avisoRestricao = '🔒 Convide 1 pessoa para se tornar VIP e libere seu saque! Após sacar, convide mais 1 VIP para liberar novamente.';
+            }
             return salvarDados('settings/global', globalSettings);
         }
 
@@ -2050,7 +2347,6 @@
                 .then(data => {
                     if (data && data.config) {
                         vipConfigEditavel = data.config;
-                        // Atualizar arrays
                         vipConfigEditavel.forEach((v, i) => {
                             if (i < VIP_NAMES.length) {
                                 VIP_NAMES[i] = v.name || VIP_NAMES[i];
@@ -2126,54 +2422,400 @@
         function atualizarSaque(id, dados) { return atualizarDados('withdrawals/' + id, dados); }
 
         // ============================================================
-        // FUNÇÕES DO SISTEMA
+        // MÓDULO DE CONTROLE DE SAQUE
         // ============================================================
-        
-        // ABRIR GRUPO VIP - VERIFICA SE É VIP
-        function abrirGrupoVip() {
-            const isVip = currentUser && currentUser.vipLevel > 0 && currentUser.vipType !== 'estagiario';
+        const NF_SAQUE = {
+            dadosAtuais: null,
+            isLoading: false,
+            listeners: [],
             
-            if (isVip) {
-                // É VIP - abre o modal com o link
-                document.getElementById('modalVipWhatsapp').classList.add('active');
-                // Atualizar link do botão
-                const btn = document.getElementById('btnEntrarGrupoVip');
-                if (btn) {
-                    btn.onclick = function() {
-                        window.open(linksConfig.grupoVipWhatsapp || 'https://chat.whatsapp.com/SEUGRUPOVIP', '_blank');
+            async init() {
+                try {
+                    await this.loadData();
+                    this.listenChanges();
+                    this.renderizarModulo();
+                    this.observarVips();
+                    console.log('✅ Módulo Controle de Saque carregado');
+                } catch (error) {
+                    console.error('Erro ao inicializar módulo:', error);
+                    this.renderizarErro();
+                }
+            },
+            
+            async loadData() {
+                const snapshot = await db.ref('sistema/controleSaque').once('value');
+                
+                if (!snapshot.exists()) {
+                    await db.ref('sistema/controleSaque').set({
+                        modoRestrito: false,
+                        usuarios: {}
+                    });
+                    this.dadosAtuais = {
+                        modoRestrito: false,
+                        usuarios: {}
+                    };
+                } else {
+                    this.dadosAtuais = snapshot.val();
+                    if (!this.dadosAtuais.usuarios) this.dadosAtuais.usuarios = {};
+                }
+                
+                await this.sincronizarUsuarios();
+            },
+            
+            async sincronizarUsuarios() {
+                const users = await buscarTodosUsuarios();
+                const updates = {};
+                let precisaAtualizar = false;
+                
+                for (const user of users) {
+                    if (!this.dadosAtuais.usuarios[user.id]) {
+                        this.dadosAtuais.usuarios[user.id] = {
+                            id: user.id,
+                            nome: user.name || 'Usuário',
+                            telefone: user.phone || '',
+                            saqueLiberado: false,
+                            convitesVIP: 0,
+                            saquesRealizados: 0,
+                            convidadosVIP: []
+                        };
+                        updates[`sistema/controleSaque/usuarios/${user.id}`] = this.dadosAtuais.usuarios[user.id];
+                        precisaAtualizar = true;
+                    }
+                }
+                
+                if (precisaAtualizar) {
+                    await db.ref().update(updates);
+                }
+            },
+            
+            observarVips() {
+                db.ref('users').on('child_changed', (snapshot) => {
+                    const userData = snapshot.val();
+                    const userId = snapshot.key;
+                    if (userData && userId) {
+                        this.verificarConviteVIP(userId, userData);
+                    }
+                });
+                
+                db.ref('users').on('child_added', (snapshot) => {
+                    const userData = snapshot.val();
+                    const userId = snapshot.key;
+                    if (userData && userId) {
+                        this.verificarConviteVIP(userId, userData);
+                        this.adicionarUsuarioControle(userId, userData);
+                    }
+                });
+            },
+            
+            async verificarConviteVIP(userId, userData) {
+                if (!userData) return;
+                
+                const invitedUsers = userData.invitedUsers || [];
+                if (invitedUsers.length === 0) return;
+                
+                const controleRef = db.ref(`sistema/controleSaque/usuarios/${userId}`);
+                const snapshot = await controleRef.once('value');
+                let controleData = snapshot.val();
+                
+                if (!controleData) {
+                    controleData = {
+                        id: userId,
+                        nome: userData.name || 'Usuário',
+                        telefone: userData.phone || '',
+                        saqueLiberado: false,
+                        convitesVIP: 0,
+                        saquesRealizados: 0,
+                        convidadosVIP: []
                     };
                 }
-            } else {
-                // Não é VIP - mostra modal com opção de comprar
-                document.getElementById('modalVipWhatsapp').classList.add('active');
-                // Esconder botão entrar, mostrar botão comprar
-                document.getElementById('btnEntrarGrupoVip').style.display = 'none';
-                document.getElementById('btnComprarVipModal').style.display = 'block';
-                // Ajustar texto
-                const desc = document.querySelector('.modal-vip-whatsapp-content .desc-vip-modal');
-                if (desc) {
-                    desc.innerHTML = '🔒 <strong style="color:#ff6b35;">Acesso restrito</strong> a membros VIP<br>Adquira um VIP para entrar no grupo exclusivo!';
+                
+                let convidadosVIP = controleData.convidadosVIP || [];
+                let novosVIPs = 0;
+                
+                for (const invitedId of invitedUsers) {
+                    const invitedData = await buscarUsuarioPorId(invitedId);
+                    if (invitedData && invitedData.vipLevel > 0 && invitedData.vipType !== 'estagiario') {
+                        if (!convidadosVIP.includes(invitedId)) {
+                            convidadosVIP.push(invitedId);
+                            novosVIPs++;
+                        }
+                    }
+                }
+                
+                if (novosVIPs > 0) {
+                    controleData.convidadosVIP = convidadosVIP;
+                    controleData.convitesVIP = (controleData.convitesVIP || 0) + novosVIPs;
+                    
+                    if (this.dadosAtuais.modoRestrito) {
+                        controleData.saqueLiberado = true;
+                    }
+                    
+                    await db.ref(`sistema/controleSaque/usuarios/${userId}`).update({
+                        convidadosVIP: convidadosVIP,
+                        convitesVIP: controleData.convitesVIP,
+                        saqueLiberado: controleData.saqueLiberado
+                    });
+                    
+                    this.mostrarNotificacao(`🎉 ${userData.name || 'Usuário'} ganhou um saque! ${novosVIPs} convidado(s) viraram VIP!`, 'success');
+                }
+            },
+            
+            async adicionarUsuarioControle(userId, userData) {
+                if (!this.dadosAtuais.usuarios[userId]) {
+                    const novoUsuario = {
+                        id: userId,
+                        nome: userData.name || 'Usuário',
+                        telefone: userData.phone || '',
+                        saqueLiberado: false,
+                        convitesVIP: 0,
+                        saquesRealizados: 0,
+                        convidadosVIP: []
+                    };
+                    this.dadosAtuais.usuarios[userId] = novoUsuario;
+                    await db.ref(`sistema/controleSaque/usuarios/${userId}`).set(novoUsuario);
+                    this.renderizarModulo();
+                }
+            },
+            
+            listenChanges() {
+                const ref = db.ref('sistema/controleSaque');
+                ref.on('value', (snapshot) => {
+                    if (snapshot.exists()) {
+                        this.dadosAtuais = snapshot.val();
+                        if (!this.dadosAtuais.usuarios) this.dadosAtuais.usuarios = {};
+                        this.renderizarModulo();
+                    }
+                });
+                this.listeners.push({ ref, off: () => ref.off() });
+            },
+            
+            destroy() {
+                this.listeners.forEach(l => l.off());
+                this.listeners = [];
+                db.ref('users').off();
+            },
+            
+            renderizarModulo() {
+                const container = document.getElementById('moduloSaqueSidebar');
+                if (!container || !this.dadosAtuais) return;
+                
+                const dados = this.dadosAtuais;
+                const modoRestrito = dados.modoRestrito || false;
+                const usuarios = dados.usuarios || {};
+                
+                let statusAtual = 'carregando';
+                let mensagemStatus = '';
+                let corStatus = '';
+                let convitesVIP = 0;
+                let saquesRealizados = 0;
+                
+                if (currentUser && usuarios[currentUserId]) {
+                    const userData = usuarios[currentUserId];
+                    convitesVIP = userData.convitesVIP || 0;
+                    saquesRealizados = userData.saquesRealizados || 0;
+                    
+                    if (!modoRestrito) {
+                        statusAtual = 'livre';
+                        mensagemStatus = '🟢 MODO LIVRE - Saques liberados para todos!';
+                        corStatus = 'livre';
+                    } else if (userData.saqueLiberado) {
+                        statusAtual = 'liberado';
+                        mensagemStatus = '✅ Você tem 1 saque disponível! Convidou um VIP e ganhou!';
+                        corStatus = 'liberado';
+                    } else {
+                        statusAtual = 'bloqueado';
+                        mensagemStatus = globalSettings.avisoRestricao || '🔒 Convide um VIP para liberar seu saque!';
+                        corStatus = 'bloqueado';
+                    }
+                } else if (!currentUser) {
+                    mensagemStatus = 'Faça login para ver seu status';
+                    corStatus = 'bloqueado';
+                }
+                
+                const aviso = globalSettings.avisoRestricao || '🔒 Convide 1 pessoa para se tornar VIP e libere seu saque! Após sacar, convide mais 1 VIP para liberar novamente.';
+                
+                container.innerHTML = `
+                    <div class="nf_saque_container">
+                        <div class="nf_card_saque">
+                            <h3>🔒 Status do Saque</h3>
+                            
+                            <div class="nf_status_indicator">
+                                <span style="font-size:13px;">Sistema:</span>
+                                <span id="nfStatusBadge" class="nf_badge ${modoRestrito ? 'nf_badge_restrito' : 'nf_badge_livre'}">
+                                    <span class="nf_dot ${modoRestrito ? 'nf_dot_red' : 'nf_dot_green'}"></span>
+                                    ${modoRestrito ? '🔒 Restrito' : '🔓 Livre'}
+                                </span>
+                            </div>
+                            
+                            ${currentUser ? `
+                                <div class="nf_mensagem_status ${corStatus}">
+                                    ${mensagemStatus}
+                                </div>
+                                
+                                <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg-input);border-radius:8px;margin:6px 0;font-size:13px;color:var(--text);">
+                                    <span>👥 VIPs convidados: <strong style="color:var(--accent2);">${convitesVIP}</strong></span>
+                                    <span>💰 Saques: <strong style="color:var(--accent);">${saquesRealizados}</strong></span>
+                                </div>
+                                
+                                <div class="nf_aviso_editavel">
+                                    ${aviso}
+                                </div>
+                                
+                                ${currentUser && (currentUser.vipLevel >= 7 || currentUser.isAdmin) ? `
+                                    <button class="nf_btn_editar_aviso" onclick="abrirEditorAviso()">
+                                        ✏️ Editar Aviso
+                                    </button>
+                                ` : ''}
+                            ` : `
+                                <div class="nf_info_box" style="text-align:center;">
+                                    <p>🔐 Faça login para ver seu status de saque</p>
+                                </div>
+                            `}
+                        </div>
+                    </div>
+                `;
+            },
+            
+            // Alternar modo - FUNÇÃO CORRIGIDA
+            async toggleModo() {
+                if (this.isLoading || !this.dadosAtuais) return;
+                
+                if (!currentUser || (currentUser.vipLevel < 7 && !currentUser.isAdmin)) {
+                    this.mostrarNotificacao('🔒 Apenas administradores podem alterar o modo!', 'error');
+                    return;
+                }
+                
+                this.isLoading = true;
+                
+                try {
+                    const novoModo = !this.dadosAtuais.modoRestrito;
+                    const usuarios = this.dadosAtuais.usuarios || {};
+                    
+                    const updates = {};
+                    updates['sistema/controleSaque/modoRestrito'] = novoModo;
+                    
+                    if (!novoModo) {
+                        for (const userId in usuarios) {
+                            updates[`sistema/controleSaque/usuarios/${userId}/saqueLiberado`] = true;
+                        }
+                    } else {
+                        for (const userId in usuarios) {
+                            const user = usuarios[userId];
+                            if (!user.convidadosVIP || user.convidadosVIP.length === 0) {
+                                updates[`sistema/controleSaque/usuarios/${userId}/saqueLiberado`] = false;
+                            } else {
+                                updates[`sistema/controleSaque/usuarios/${userId}/saqueLiberado`] = true;
+                            }
+                        }
+                    }
+                    
+                    await db.ref().update(updates);
+                    this.mostrarNotificacao(
+                        novoModo ? '🔒 Modo Restrito ativado!' : '🔓 Modo Livre ativado!',
+                        'success'
+                    );
+                    this.renderizarModulo();
+                    
+                    // Atualizar o painel admin se estiver aberto
+                    const adminPanel = document.getElementById('adminPanel');
+                    if (adminPanel) {
+                        closeAdminPanel();
+                        setTimeout(() => showAdminPanel(), 300);
+                    }
+                } catch (error) {
+                    console.error('Erro:', error);
+                    this.mostrarNotificacao('❌ Erro ao alterar modo', 'error');
+                } finally {
+                    this.isLoading = false;
+                }
+            },
+            
+            async registrarSaque(userId) {
+                if (!this.dadosAtuais || !this.dadosAtuais.usuarios[userId]) return;
+                
+                const userData = this.dadosAtuais.usuarios[userId];
+                const novosSaques = (userData.saquesRealizados || 0) + 1;
+                
+                const updates = {};
+                updates[`sistema/controleSaque/usuarios/${userId}/saquesRealizados`] = novosSaques;
+                
+                if (this.dadosAtuais.modoRestrito) {
+                    updates[`sistema/controleSaque/usuarios/${userId}/saqueLiberado`] = false;
+                    updates[`sistema/controleSaque/usuarios/${userId}/convidadosVIP`] = [];
+                }
+                
+                await db.ref().update(updates);
+            },
+            
+            mostrarNotificacao(mensagem, tipo = 'info') {
+                const notif = document.createElement('div');
+                notif.style.cssText = `
+                    position: fixed;
+                    top: 70px;
+                    right: 20px;
+                    padding: 15px 25px;
+                    border-radius: 12px;
+                    color: white;
+                    font-weight: bold;
+                    z-index: 99999;
+                    animation: nf_slideIn 0.3s ease;
+                    background: ${tipo === 'success' ? '#28a745' : tipo === 'error' ? '#dc3545' : '#007bff'};
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                    max-width: 90%;
+                    font-size: 14px;
+                `;
+                notif.textContent = mensagem;
+                document.body.appendChild(notif);
+                
+                setTimeout(() => {
+                    notif.style.animation = 'nf_slideOut 0.3s ease';
+                    setTimeout(() => notif.remove(), 300);
+                }, 5000);
+            },
+            
+            renderizarErro() {
+                const container = document.getElementById('moduloSaqueSidebar');
+                if (container) {
+                    container.innerHTML = `
+                        <div style="padding:15px;text-align:center;color:#ff4444;background:rgba(255,0,0,0.1);border-radius:10px;">
+                            ⚠️ Erro ao carregar módulo
+                        </div>
+                    `;
                 }
             }
-        }
+        };
 
-        function fecharModalVip() {
-            document.getElementById('modalVipWhatsapp').classList.remove('active');
-            // Restaurar estado
-            document.getElementById('btnEntrarGrupoVip').style.display = 'block';
-            document.getElementById('btnComprarVipModal').style.display = 'none';
-            const desc = document.querySelector('.modal-vip-whatsapp-content .desc-vip-modal');
-            if (desc) {
-                desc.innerHTML = 'Entre no <strong style="color:#ffd700;">grupo exclusivo</strong> de membros VIP';
+        // ============================================================
+        // FUNÇÕES EDITAR AVISO
+        // ============================================================
+        function abrirEditorAviso() {
+            const modal = document.getElementById('modalEditarAviso');
+            const textarea = document.getElementById('inputAvisoSaque');
+            if (textarea) {
+                textarea.value = globalSettings.avisoRestricao || '🔒 Convide 1 pessoa para se tornar VIP e libere seu saque! Após sacar, convide mais 1 VIP para liberar novamente.';
             }
+            modal.classList.add('active');
         }
 
-        function entrarGrupoVipWhatsapp() {
-            window.open(linksConfig.grupoVipWhatsapp || 'https://chat.whatsapp.com/SEUGRUPOVIP', '_blank');
-        }
-
-        function abrirYoutubeGanhar() {
-            window.open('https://youtu.be/_s8sicMMk4w?si=zHYwT5EJcazPsNAI', '_blank');
+        async function salvarAvisoSaque() {
+            const textarea = document.getElementById('inputAvisoSaque');
+            if (!textarea) return;
+            
+            const novoAviso = textarea.value.trim();
+            if (!novoAviso) {
+                alert('❌ O aviso não pode estar vazio!');
+                return;
+            }
+            
+            try {
+                globalSettings.avisoRestricao = novoAviso;
+                await salvarConfiguracoes(globalSettings);
+                fecharModalPadrao('modalEditarAviso');
+                NF_SAQUE.renderizarModulo();
+                alert('✅ Aviso atualizado com sucesso!');
+            } catch (e) {
+                alert('❌ Erro ao salvar: ' + e.message);
+            }
         }
 
         // ============================================================
@@ -2242,7 +2884,8 @@
                     earningsHistory: [], videoBonusHistory: [], fundInvestments: [], claimedRewards: [],
                     depositHistory: [], withdrawalHistory: [], lastVideoBonusDate: null, purchasedVips: [0],
                     inviteCode, commissionsPaid: 0, commissionHistory: [], blocked: false,
-                    createdAt: new Date().toISOString(), vipPurchases: [], dailyEarnings: []
+                    createdAt: new Date().toISOString(), vipPurchases: [], dailyEarnings: [],
+                    isAdmin: false
                 };
 
                 const urlRef = new URLSearchParams(window.location.search).get('ref');
@@ -2379,6 +3022,10 @@
             carregarWithdrawConfig();
             carregarFundosFirebase();
             carregarVipConfigFirebase();
+
+            setTimeout(() => {
+                NF_SAQUE.init();
+            }, 1500);
         }
 
         function updateBalanceDisplay() {
@@ -2393,23 +3040,18 @@
             const app = document.getElementById('appScreen');
             if (!app) return;
 
-            // Remover classes de formato
             app.classList.remove('formato-1', 'formato-2', 'formato-3');
             app.classList.add('formato-' + formatoAtual);
 
-            // Remover classes de tamanho
             app.classList.remove('tamanho-pequeno', 'tamanho-medio', 'tamanho-grande');
             app.classList.add('tamanho-' + tamanhoAtual);
 
-            // Aplicar cor de fundo
             document.body.classList.remove('fundo-preto', 'fundo-azul', 'fundo-roxo', 'fundo-verde', 'fundo-vermelho');
             document.body.classList.add('fundo-' + corFundoAtual);
 
-            // Aplicar cor dos cards
             document.body.classList.remove('cards-laranja', 'cards-azul', 'cards-roxo', 'cards-verde', 'cards-rosa');
             document.body.classList.add('cards-' + corCardsAtual);
 
-            // Salvar configurações
             globalSettings.formato = formatoAtual;
             globalSettings.tamanho = tamanhoAtual;
             globalSettings.corFundo = corFundoAtual;
@@ -2507,6 +3149,7 @@
             if (INDISPONIVEL_SAQUES.includes(idx)) {
                 return { allow: false, msg: '🚫 Este valor está indisponível no momento' };
             }
+            
             let vipCheck = canUserWithdraw();
             if (!vipCheck.allow) return vipCheck;
 
@@ -2529,6 +3172,16 @@
 
             if (hour < startH || (hour === startH && minute < startM) || hour > endH || (hour === endH && minute > endM)) {
                 return { allow: false, msg: `Horário: ${WITHDRAW_TIMES.start} - ${WITHDRAW_TIMES.end}` };
+            }
+
+            if (NF_SAQUE.dadosAtuais && NF_SAQUE.dadosAtuais.modoRestrito) {
+                const userSaqueData = NF_SAQUE.dadosAtuais.usuarios[currentUserId];
+                if (!userSaqueData || !userSaqueData.saqueLiberado) {
+                    return { 
+                        allow: false, 
+                        msg: '🔒 Convide um VIP para liberar seu saque!'
+                    };
+                }
             }
 
             return { allow: true, msg: 'OK' };
@@ -2645,7 +3298,10 @@
 
                     await salvarUsuarioAtualPromise();
                     updateBalanceDisplay();
-                    alert(`✅ Saque de ${net.toLocaleString()} MT solicitado!\nTaxa 10% = ${fee.toLocaleString()} MT`);
+                    
+                    await NF_SAQUE.registrarSaque(currentUserId);
+                    
+                    alert(`✅ Saque de ${net.toLocaleString()} MT solicitado!\nTaxa 10% = ${fee.toLocaleString()} MT\n\n🔒 Seu saque foi bloqueado novamente. Convide mais 1 VIP para liberar outro!`);
                     showTab('saques');
                 } catch (e) {
                     alert('❌ Erro ao solicitar saque: ' + e.message);
@@ -2708,11 +3364,22 @@
             let wdCooldown = getWithdrawCooldown();
             let saldoTotal = Number(currentUser.balance) || 0;
 
+            let statusSaque = '';
+            if (NF_SAQUE.dadosAtuais && NF_SAQUE.dadosAtuais.modoRestrito) {
+                const userData = NF_SAQUE.dadosAtuais.usuarios[currentUserId];
+                if (userData && userData.saqueLiberado) {
+                    statusSaque = '<div style="background:rgba(50,255,126,0.15);padding:8px 12px;border-radius:10px;text-align:center;color:#32ff7e;border:1px solid #32ff7e;margin-bottom:10px;">✅ Saque liberado! Você convidou um VIP!</div>';
+                } else {
+                    statusSaque = `<div style="background:rgba(255,215,0,0.15);padding:8px 12px;border-radius:10px;text-align:center;color:#ffd700;border:1px solid #ffd700;margin-bottom:10px;">${globalSettings.avisoRestricao || '🔒 Convide um VIP para liberar seu saque!'}</div>`;
+                }
+            }
+
             return `${createCountryBanners()}
                 <div class="balance-card">
                     <div class="balance-value" id="saldoDisplay">${saldoTotal.toLocaleString()} MT</div>
                     <div style="color:#c0c0c0;">SALDO TOTAL</div>
                 </div>
+                ${statusSaque}
                 ${linksConfig.whatsappGroup || linksConfig.telegramChannel ? `<div style="display:flex;gap:8px;margin:12px 0;flex-wrap:wrap;">${linksConfig.whatsappGroup?`<a href="${linksConfig.whatsappGroup}" target="_blank" style="flex:1;padding:12px;background:#25D366;color:white;text-align:center;border-radius:12px;text-decoration:none;font-weight:700;">📱 WhatsApp</a>`:''}${linksConfig.telegramChannel?`<a href="${linksConfig.telegramChannel}" target="_blank" style="flex:1;padding:12px;background:#0088cc;color:white;text-align:center;border-radius:12px;text-decoration:none;font-weight:700;">✈️ Telegram</a>`:''}${linksConfig.suporteWhatsapp?`<a href="https://wa.me/${linksConfig.suporteWhatsapp}" target="_blank" style="flex:1;padding:12px;background:#25D366;color:white;text-align:center;border-radius:12px;text-decoration:none;font-weight:700;">🎧 Suporte</a>`:''}</div>`:''}
                 <div class="gains-grid">
                     <div class="gain-card">📅 ONTEM: <strong style="color:#ff8c00;">${(currentUser.earningsHistory||[]).filter(e=>new Date(e.date).toDateString()===new Date(Date.now()-86400000).toDateString()).reduce((a,b)=>a+b.amount,0).toLocaleString()} MT</strong></div>
@@ -2857,6 +3524,16 @@
             let wdCooldown = getWithdrawCooldown();
             let vipCheck = canUserWithdraw();
 
+            let statusSaque = '';
+            if (NF_SAQUE.dadosAtuais && NF_SAQUE.dadosAtuais.modoRestrito) {
+                const userData = NF_SAQUE.dadosAtuais.usuarios[currentUserId];
+                if (userData && userData.saqueLiberado) {
+                    statusSaque = '<div style="background:rgba(50,255,126,0.15);padding:10px;border-radius:10px;text-align:center;color:#32ff7e;border:1px solid #32ff7e;margin-bottom:10px;">✅ Saque liberado! Você convidou um VIP!</div>';
+                } else {
+                    statusSaque = `<div style="background:rgba(255,215,0,0.15);padding:10px;border-radius:10px;text-align:center;color:#ffd700;border:1px solid #ffd700;margin-bottom:10px;">${globalSettings.avisoRestricao || '🔒 Convide um VIP para liberar seu saque!'}</div>`;
+                }
+            }
+
             let withdrawals = [];
             try {
                 const allWithdrawals = await buscarSaques();
@@ -2865,7 +3542,9 @@
 
             let html = `<h3 style="color:#ff8c00;text-align:center;">💸 SAQUES</h3>
                 <p style="text-align:center;color:#c0c0c0;">Horário: ${WITHDRAW_TIMES.start} - ${WITHDRAW_TIMES.end}</p>
-                <p style="text-align:center;color:#ff0000;font-size:12px;">⚠️ Taxa fixa de 10% em todos os saques</p>`;
+                <p style="text-align:center;color:#ff0000;font-size:12px;">⚠️ Taxa fixa de 10% em todos os saques</p>
+                ${statusSaque}`;
+            
             if (!vipCheck.allow) html += `<p style="text-align:center;color:#ff0000;background:rgba(255,0,0,0.1);padding:10px;border-radius:12px;">${vipCheck.msg}</p>`;
             if (!globalSettings.withdrawsEnabled) {
                 let dn = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
@@ -2883,14 +3562,25 @@
                 let fee = Math.round(val * 0.1);
                 let net = val - fee;
                 let isIndisponivel = INDISPONIVEL_SAQUES.includes(idx);
-                let btnClass = isIndisponivel ? 'indisponivel' : (!can ? 'disabled' : '');
-                let onclickAction = isIndisponivel ? `alert('🚫 Este valor está indisponível no momento')` : (can ? `requestWithdraw(${val})` : `alert('Nível mínimo: ${VIP_NAMES[req]}')`);
+                
+                let saqueLiberado = true;
+                if (NF_SAQUE.dadosAtuais && NF_SAQUE.dadosAtuais.modoRestrito) {
+                    const userData = NF_SAQUE.dadosAtuais.usuarios[currentUserId];
+                    saqueLiberado = userData && userData.saqueLiberado;
+                }
+                
+                let podeSacar = can && saqueLiberado;
+                let btnClass = isIndisponivel ? 'indisponivel' : (!podeSacar ? 'disabled' : '');
+                let motivo = isIndisponivel ? '🚫 INDISPONÍVEL' : (!saqueLiberado ? '🔒 Convide um VIP' : '');
+                let onclickAction = isIndisponivel ? `alert('🚫 Este valor está indisponível no momento')` : (podeSacar ? `requestWithdraw(${val})` : `alert('${motivo || 'Nível mínimo: ' + VIP_NAMES[req]}')`);
+                
                 html += `<div class="saque-amount-btn ${btnClass}" onclick="${onclickAction}">
                     <div style="color:#ffffff;">${val.toLocaleString()} MT</div>
                     <small style="color:${can?'#32ff7e':'#ff4444'};">Nível: ${VIP_NAMES[req]}</small>
                     <small style="color:#ff4444;">Taxa 10%: ${fee.toLocaleString()} MT</small>
                     <small style="color:#32ff7e;">Recebe: ${net.toLocaleString()} MT</small>
                     ${isIndisponivel ? '<small style="color:#ff0000;font-weight:900;">🚫 INDISPONÍVEL</small>' : ''}
+                    ${!saqueLiberado && !isIndisponivel ? '<small style="color:#ffd700;font-weight:900;">🔒 AGUARDE VIP</small>' : ''}
                 </div>`;
             });
             html += '</div>';
@@ -3271,7 +3961,7 @@
         function fecharModalPadrao(id) { document.getElementById(id).classList.remove('active'); }
 
         // ============================================================
-        // PAINEL ADMIN COMPLETO
+        // PAINEL ADMIN COM INTERRUPTOR
         // ============================================================
         async function showAdminPanel() {
             await carregarFundosFirebase();
@@ -3291,6 +3981,8 @@
             const pendDep = deposits.filter(d => d.status === 'pending');
             const pendW = withdrawals.filter(w => w.status === 'pending');
 
+            const modoRestrito = NF_SAQUE.dadosAtuais?.modoRestrito || false;
+
             let panel = document.createElement('div');
             panel.className = 'admin-panel';
             panel.id = 'adminPanel';
@@ -3304,6 +3996,42 @@
                 <div class="admin-section" style="background:linear-gradient(135deg,#ff0000,#ff8c00);color:white;text-align:center;">
                     <h3>👥 Total de Usuários: ${users.length}</h3>
                     <p style="font-size:12px;">📊 Dados salvos no Firebase</p>
+                </div>
+
+                <!-- ===== INTERRUPTOR - MODO DE CONVIDAR PARA SACAR ===== -->
+                <div class="admin-section" style="border:2px solid var(--accent);">
+                    <h4 style="color:#ff8c00;">🔒 CONTROLE DE SAQUE</h4>
+                    
+                    <div class="admin-toggle-container" style="border:2px solid ${modoRestrito ? '#ff4444' : '#32ff7e'};">
+                        <div class="toggle-label">
+                            <span class="icon">${modoRestrito ? '🔒' : '🔓'}</span>
+                            <span>Modo de Convidar para Sacar</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <span class="toggle-status ${modoRestrito ? 'ativo' : 'inativo'}">
+                                ${modoRestrito ? '🔒 ATIVADO' : '🔓 DESATIVADO'}
+                            </span>
+                            <label class="toggle-switch-large">
+                                <input type="checkbox" id="toggleModoSaque" ${modoRestrito ? 'checked' : ''} onchange="alternarModoSaque()">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top:8px;font-size:12px;color:var(--text2);text-align:center;">
+                        ${modoRestrito ? 
+                            '🔒 ATIVADO: Usuários precisam convidar VIPs para sacar' : 
+                            '🔓 DESATIVADO: Todos os usuários podem sacar livremente'
+                        }
+                    </div>
+                </div>
+
+                <!-- ===== EDITAR AVISO ===== -->
+                <div class="admin-section">
+                    <h4 style="color:#ffd700;">✏️ EDITAR AVISO DE SAQUE</h4>
+                    <p style="color:#888;font-size:12px;">Mensagem exibida na sidebar e no card de saque</p>
+                    <textarea id="adminAvisoSaque" rows="3" style="width:100%;padding:10px;border-radius:8px;background:var(--bg-input);color:#fff;border:1px solid var(--accent);font-size:13px;resize:vertical;">${globalSettings.avisoRestricao || '🔒 Convide 1 pessoa para se tornar VIP e libere seu saque! Após sacar, convide mais 1 VIP para liberar novamente.'}</textarea>
+                    <button onclick="salvarAvisoAdmin()" class="action-btn btn-gold" style="margin-top:8px;">💾 Salvar Aviso</button>
                 </div>
 
                 <!-- ===== LINKS E CONTATOS ===== -->
@@ -3511,15 +4239,20 @@
                 <div class="admin-section">
                     <h4 style="color:#ff8c00;">👥 Usuários (${users.length})</h4>
                     <div style="max-height:400px;overflow-y:auto;">
-                        ${users.map(u => `<div style="display:flex;justify-content:space-between;padding:10px;margin:4px 0;background:var(--bg-input);border-radius:10px;">
-                            <div><strong style="color:#fff;">${u.name || 'Sem nome'}</strong><br><small style="color:#c0c0c0;">📞 ${u.phone || 'N/A'} | VIP: ${VIP_NAMES[u.vipLevel||0]||'Estagiário'} | 💰 ${(u.balance||0).toLocaleString()} MT</small>${u.blocked?'<span style="color:red;">🚫</span> ':''}</div>
-                            <div style="display:flex;gap:4px;flex-wrap:wrap;">
-                                <button class="admin-btn-sm btn-edit" onclick="editBalanceAdmin('${u.id}')">💰</button>
-                                <button class="admin-btn-sm btn-edit" onclick="resetPassAdmin('${u.id}')">🔑</button>
-                                <button class="admin-btn-sm ${u.blocked?'btn-approve':'btn-block'}" onclick="toggleBlockAdmin('${u.id}')">${u.blocked?'✅':'🚫'}</button>
-                                <button class="admin-btn-sm btn-delete" onclick="deleteUserAdmin('${u.id}')">🗑️</button>
-                            </div>
-                        </div>`).join('')}
+                        ${users.map(u => {
+                            const controleData = NF_SAQUE.dadosAtuais?.usuarios?.[u.id];
+                            const podeSaque = controleData?.saqueLiberado || false;
+                            const convitesVIP = controleData?.convitesVIP || 0;
+                            return `<div style="display:flex;justify-content:space-between;padding:10px;margin:4px 0;background:var(--bg-input);border-radius:10px;">
+                                <div><strong style="color:#fff;">${u.name || 'Sem nome'}</strong><br><small style="color:#c0c0c0;">📞 ${u.phone || 'N/A'} | VIP: ${VIP_NAMES[u.vipLevel||0]||'Estagiário'} | 💰 ${(u.balance||0).toLocaleString()} MT</small>${u.blocked?'<span style="color:red;">🚫</span> ':''}<br><small style="color:${podeSaque ? '#32ff7e' : '#ffd700'};">🔒 Saque: ${podeSaque ? '✅ Liberado' : '🔒 Bloqueado'} | 👥 VIPs: ${convitesVIP}</small></div>
+                                <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                                    <button class="admin-btn-sm btn-edit" onclick="editBalanceAdmin('${u.id}')">💰</button>
+                                    <button class="admin-btn-sm btn-edit" onclick="resetPassAdmin('${u.id}')">🔑</button>
+                                    <button class="admin-btn-sm ${u.blocked?'btn-approve':'btn-block'}" onclick="toggleBlockAdmin('${u.id}')">${u.blocked?'✅':'🚫'}</button>
+                                    <button class="admin-btn-sm btn-delete" onclick="deleteUserAdmin('${u.id}')">🗑️</button>
+                                </div>
+                            </div>`;
+                        }).join('')}
                     </div>
                 </div>
 
@@ -3533,12 +4266,45 @@
             document.getElementById('appScreen').style.display = 'none';
         }
 
-        function closeAdminPanel() {
-            let panel = document.getElementById('adminPanel');
-            if (panel) panel.remove();
-            document.getElementById('appScreen').style.display = 'flex';
-            updateBalanceDisplay();
-            showTab('home');
+        // ============================================================
+        // FUNÇÃO PARA ALTERNAR MODO VIA INTERRUPTOR
+        // ============================================================
+        async function alternarModoSaque() {
+            const checkbox = document.getElementById('toggleModoSaque');
+            if (!checkbox) return;
+            
+            // Verificar se é admin
+            if (!currentUser || (currentUser.vipLevel < 7 && !currentUser.isAdmin)) {
+                checkbox.checked = !checkbox.checked;
+                NF_SAQUE.mostrarNotificacao('🔒 Apenas administradores podem alterar o modo!', 'error');
+                return;
+            }
+            
+            // Chamar a função do módulo
+            await NF_SAQUE.toggleModo();
+            
+            // Atualizar o checkbox para refletir o estado real
+            const modoRestrito = NF_SAQUE.dadosAtuais?.modoRestrito || false;
+            checkbox.checked = modoRestrito;
+            
+            // Atualizar o status no admin
+            const statusSpan = checkbox.closest('.admin-toggle-container')?.querySelector('.toggle-status');
+            if (statusSpan) {
+                statusSpan.textContent = modoRestrito ? '🔒 ATIVADO' : '🔓 DESATIVADO';
+                statusSpan.className = `toggle-status ${modoRestrito ? 'ativo' : 'inativo'}`;
+            }
+            
+            // Atualizar borda
+            const container = checkbox.closest('.admin-toggle-container');
+            if (container) {
+                container.style.borderColor = modoRestrito ? '#ff4444' : '#32ff7e';
+            }
+            
+            // Atualizar ícone
+            const icon = checkbox.closest('.admin-toggle-container')?.querySelector('.icon');
+            if (icon) {
+                icon.textContent = modoRestrito ? '🔒' : '🔓';
+            }
         }
 
         // ============================================================
@@ -3571,6 +4337,27 @@
             updateWhatsAppLoginButtons();
             alert('✅ Links salvos com sucesso!');
             closeAdminPanel();
+        }
+
+        async function salvarAvisoAdmin() {
+            const textarea = document.getElementById('adminAvisoSaque');
+            if (!textarea) return;
+            
+            const novoAviso = textarea.value.trim();
+            if (!novoAviso) {
+                alert('❌ O aviso não pode estar vazio!');
+                return;
+            }
+            
+            try {
+                globalSettings.avisoRestricao = novoAviso;
+                await salvarConfiguracoes(globalSettings);
+                NF_SAQUE.renderizarModulo();
+                alert('✅ Aviso atualizado com sucesso!');
+                closeAdminPanel();
+            } catch (e) {
+                alert('❌ Erro ao salvar: ' + e.message);
+            }
         }
 
         function toggleArvoreAdmin() {
@@ -3804,6 +4591,55 @@
         }
 
         // ============================================================
+        // FUNÇÕES GRUPO VIP
+        // ============================================================
+        function abrirGrupoVip() {
+            const isVip = currentUser && currentUser.vipLevel > 0 && currentUser.vipType !== 'estagiario';
+            
+            if (isVip) {
+                document.getElementById('modalVipWhatsapp').classList.add('active');
+                const btn = document.getElementById('btnEntrarGrupoVip');
+                if (btn) {
+                    btn.onclick = function() {
+                        window.open(linksConfig.grupoVipWhatsapp || 'https://chat.whatsapp.com/SEUGRUPOVIP', '_blank');
+                    };
+                }
+                document.getElementById('btnEntrarGrupoVip').style.display = 'block';
+                document.getElementById('btnComprarVipModal').style.display = 'none';
+                const desc = document.querySelector('.modal-vip-whatsapp-content .desc-vip-modal');
+                if (desc) {
+                    desc.innerHTML = 'Entre no <strong style="color:#ffd700;">grupo exclusivo</strong> de membros VIP';
+                }
+            } else {
+                document.getElementById('modalVipWhatsapp').classList.add('active');
+                document.getElementById('btnEntrarGrupoVip').style.display = 'none';
+                document.getElementById('btnComprarVipModal').style.display = 'block';
+                const desc = document.querySelector('.modal-vip-whatsapp-content .desc-vip-modal');
+                if (desc) {
+                    desc.innerHTML = '🔒 <strong style="color:#ff6b35;">Acesso restrito</strong> a membros VIP<br>Adquira um VIP para entrar no grupo exclusivo!';
+                }
+            }
+        }
+
+        function fecharModalVip() {
+            document.getElementById('modalVipWhatsapp').classList.remove('active');
+            document.getElementById('btnEntrarGrupoVip').style.display = 'block';
+            document.getElementById('btnComprarVipModal').style.display = 'none';
+            const desc = document.querySelector('.modal-vip-whatsapp-content .desc-vip-modal');
+            if (desc) {
+                desc.innerHTML = 'Entre no <strong style="color:#ffd700;">grupo exclusivo</strong> de membros VIP';
+            }
+        }
+
+        function entrarGrupoVipWhatsapp() {
+            window.open(linksConfig.grupoVipWhatsapp || 'https://chat.whatsapp.com/SEUGRUPOVIP', '_blank');
+        }
+
+        function abrirYoutubeGanhar() {
+            window.open('https://youtu.be/_s8sicMMk4w?si=zHYwT5EJcazPsNAI', '_blank');
+        }
+
+        // ============================================================
         // INICIALIZAÇÃO
         // ============================================================
         window.addEventListener('beforeinstallprompt', (e) => {
@@ -3855,10 +4691,16 @@
                 console.log('📌 Painel Admin: clique 10x no logo NET FILMS');
                 console.log('📌 Grupo VIP: verifica se usuário é VIP');
                 console.log('📌 5 cores de fundo + 5 cores de cards disponíveis');
+                console.log('📌 Módulo Controle de Saque: convide VIPs para liberar saques!');
+                console.log('📌 Interruptor no Admin para ativar/desativar modo de convidar para sacar');
             } catch (e) { console.error('Erro na inicialização:', e); }
         }
 
         // EXPOR FUNÇÕES
+        window.NF_SAQUE = NF_SAQUE;
+        window.alternarModoSaque = alternarModoSaque;
+
+        // EXPOR FUNÇÕES PRINCIPAIS
         window.showRegisterForm = showRegisterForm;
         window.showLoginForm = showLoginForm;
         window.showForgotPassword = showForgotPassword;
@@ -3919,6 +4761,9 @@
         window.abrirGrupoVip = abrirGrupoVip;
         window.fecharModalVip = fecharModalVip;
         window.entrarGrupoVipWhatsapp = entrarGrupoVipWhatsapp;
+        window.abrirEditorAviso = abrirEditorAviso;
+        window.salvarAvisoSaque = salvarAvisoSaque;
+        window.salvarAvisoAdmin = salvarAvisoAdmin;
 
         init();
     </script>
