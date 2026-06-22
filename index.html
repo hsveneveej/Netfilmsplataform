@@ -779,6 +779,7 @@
         .btn-edit { background: var(--accent); color: #000000; }
         .btn-block { background: #333; color: white; }
         .btn-delete { background: #ff0000; color: white; }
+        .btn-search { background: #0088cc; color: white; }
         .floating-notifications {
             position: fixed;
             top: 0;
@@ -1511,7 +1512,6 @@
         .modal-vip-whatsapp-content .btn-fechar-modal-vip:hover { background: rgba(255, 255, 255, 0.2); }
         .modal-vip-whatsapp-content .vip-badge-modal { display: inline-block; background: #ffd700; color: #000; padding: 4px 16px; border-radius: 20px; font-size: 12px; font-weight: 900; position: relative; z-index: 1; }
 
-        /* ESTILOS PARA STATUS DE SAQUE */
         .saque-status-bloqueado {
             background: rgba(255, 0, 0, 0.15);
             border: 2px solid #ff0000;
@@ -1535,7 +1535,6 @@
         .saque-status-liberado .titulo { color: #32ff7e; font-weight: 700; font-size: 16px; }
         .saque-status-liberado .desc { color: #c0c0c0; font-size: 13px; display: block; margin-top: 4px; }
 
-        /* ESTILOS PARA OPÇÕES DE DEPÓSITO */
         .deposit-option {
             display: flex;
             justify-content: space-between;
@@ -1553,6 +1552,59 @@
         .deposit-option .number { color: #ff8c00; font-weight: 900; font-size: 16px; background: rgba(255,140,0,0.1); padding: 4px 12px; border-radius: 8px; }
         .deposit-option.inactive { opacity: 0.4; border-left-color: #666; }
         .deposit-option.inactive .number { color: #666; background: transparent; }
+
+        .admin-user-card {
+            background: var(--bg-input);
+            border-radius: 12px;
+            padding: 12px;
+            margin: 6px 0;
+            border-left: 3px solid var(--accent);
+            transition: all 0.2s;
+        }
+        .admin-user-card:hover { background: var(--bg-card); }
+        .admin-user-card .user-phone { color: #ff8c00; font-weight: 700; }
+        .admin-user-card .user-name { color: #ffffff; font-weight: 700; }
+        .admin-user-card .user-vip { color: #32ff7e; font-size: 12px; }
+        .admin-user-card .user-status { font-size: 11px; }
+        .search-box {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .search-box input {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 2px solid var(--accent);
+            background: var(--bg-input);
+            color: #fff;
+            font-size: 14px;
+        }
+        .search-box input::placeholder { color: #666; }
+        .search-box button {
+            padding: 10px 20px;
+            border-radius: 12px;
+            border: none;
+            background: var(--accent);
+            color: #000;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .search-box button:hover { background: var(--accent2); }
+        .vip-user-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: var(--bg-body);
+            border-radius: 8px;
+            margin: 4px 0;
+            border-left: 3px solid #ffd700;
+        }
+        .vip-user-item .name { color: #fff; font-weight: 600; }
+        .vip-user-item .phone { color: #ff8c00; font-size: 12px; }
+        .vip-user-item .level { color: #ffd700; font-size: 12px; font-weight: 700; }
+        .vip-user-item .date { color: #888; font-size: 10px; }
     </style>
 </head>
 <body>
@@ -1825,6 +1877,13 @@
         let isOnAuthScreen = true;
         let userListenerUnsubscribe = null;
 
+        // CONFIGURAÇÕES DE BLOQUEIO DE SAQUE
+        let withdrawBlockConfig = {
+            enabled: true,  // true = 1 convidado VIP, false = 5 convidados totais
+            requiredVipForLiberation: 1,
+            requiredInvitesWhenDisabled: 5
+        };
+
         // CONFIGURAÇÕES DE ESTILO
         let formatoAtual = 1;
         let tamanhoAtual = 'medio';
@@ -1915,7 +1974,8 @@
             tamanho: 'medio',
             corFundo: 'preto',
             corCards: 'laranja',
-            grupoVipWhatsapp: 'https://chat.whatsapp.com/SEUGRUPOVIP'
+            grupoVipWhatsapp: 'https://chat.whatsapp.com/SEUGRUPOVIP',
+            withdrawBlock: { enabled: true }
         };
 
         let WITHDRAW_TIMES = { start: "06:30", end: "18:30" };
@@ -2020,6 +2080,7 @@
                         if (data.youtubeChannel) linksConfig.youtubeChannel = data.youtubeChannel;
                         if (data.facebookPage) linksConfig.facebookPage = data.facebookPage;
                         if (data.telegramChannel) linksConfig.telegramChannel = data.telegramChannel;
+                        if (data.withdrawBlock) withdrawBlockConfig = { ...withdrawBlockConfig, ...data.withdrawBlock };
                     }
                     return globalSettings;
                 });
@@ -2028,6 +2089,7 @@
         function salvarConfiguracoes(data) {
             globalSettings = data;
             if (!globalSettings.withdrawTimes) globalSettings.withdrawTimes = WITHDRAW_TIMES;
+            if (!globalSettings.withdrawBlock) globalSettings.withdrawBlock = withdrawBlockConfig;
             return salvarDados('settings/global', globalSettings);
         }
 
@@ -2196,11 +2258,32 @@
                 return { allow: true, msg: '✅ Saque liberado por convite VIP!' };
             }
             
-            if (currentUser.vipType !== 'estagiario' && currentUser.vipLevel > 0) {
-                return { allow: true, msg: 'OK' };
+            // Se o sistema está ativado (enabled = true), precisa de 1 convidado VIP
+            if (withdrawBlockConfig.enabled) {
+                // Verifica se tem algum convidado que se tornou VIP
+                const invitedUsers = currentUser.invitedUsers || [];
+                if (invitedUsers.length === 0) {
+                    return { 
+                        allow: false, 
+                        msg: `❌ Convide 1 pessoa que se torne VIP para liberar seus saques!` 
+                    };
+                }
+                // Verificação assíncrona será feita pelo verificarLiberacaoSaque
+                return { 
+                    allow: false, 
+                    msg: `❌ Aguardando verificação de convidado VIP...` 
+                };
+            } else {
+                // Sistema desligado: precisa de 5 convidados totais
+                const totalInvited = (currentUser.invitedUsers || []).length;
+                if (totalInvited < withdrawBlockConfig.requiredInvitesWhenDisabled) {
+                    return {
+                        allow: false,
+                        msg: `❌ Convide ${withdrawBlockConfig.requiredInvitesWhenDisabled} pessoas para liberar seus saques! (${totalInvited}/${withdrawBlockConfig.requiredInvitesWhenDisabled})`
+                    };
+                }
+                return { allow: true, msg: '✅ Saque liberado!' };
             }
-            
-            return { allow: false, msg: '❌ Convide alguém que se torne VIP para liberar seus saques!' };
         }
 
         async function verificarLiberacaoSaque(usuarioId) {
@@ -2210,6 +2293,25 @@
                 
                 if (user.canWithdraw === true) return true;
                 
+                // Se o sistema está desligado, verifica apenas quantidade de convidados
+                if (!withdrawBlockConfig.enabled) {
+                    const totalInvited = (user.invitedUsers || []).length;
+                    if (totalInvited >= withdrawBlockConfig.requiredInvitesWhenDisabled) {
+                        await atualizarDados('users/' + usuarioId, { 
+                            canWithdraw: true,
+                            withdrawLiberatedAt: new Date().toISOString(),
+                            withdrawLiberatedBy: 'system',
+                            withdrawLiberatedByName: `${totalInvited} convidados`
+                        });
+                        if (currentUserId === usuarioId) {
+                            currentUser.canWithdraw = true;
+                        }
+                        return true;
+                    }
+                    return false;
+                }
+                
+                // Sistema ligado: verifica convidados VIP
                 const invitedUsers = user.invitedUsers || [];
                 if (invitedUsers.length === 0) return false;
                 
@@ -2228,6 +2330,8 @@
                             currentUser.withdrawLiberatedBy = phone;
                             currentUser.withdrawLiberatedByName = invitedUser.name;
                         }
+                        // Notifica o usuário
+                        mostrarNotificacaoSaqueLiberado(user.name, invitedUser.name);
                         return true;
                     }
                 }
@@ -2288,16 +2392,26 @@
         function renderStatusSaque() {
             if (!currentUser) return '';
             const check = canUserWithdraw();
+            const totalInvited = (currentUser.invitedUsers || []).length;
+            
             if (check.allow && currentUser.canWithdraw === true) {
+                let motivo = currentUser.withdrawLiberatedByName || 'por convite VIP';
                 return `<div class="saque-status-liberado">
                     <span class="titulo">✅ SAQUE LIBERADO</span>
-                    <span class="desc">Por convite VIP de ${currentUser.withdrawLiberatedByName || 'um convidado'}</span>
+                    <span class="desc">Por: ${motivo}</span>
                 </div>`;
             } else if (!check.allow) {
+                let motivo = '';
+                if (withdrawBlockConfig.enabled) {
+                    motivo = `Convide 1 pessoa que se torne VIP para liberar seus saques!`;
+                } else {
+                    motivo = `Convide ${withdrawBlockConfig.requiredInvitesWhenDisabled} pessoas para liberar seus saques! (${totalInvited}/${withdrawBlockConfig.requiredInvitesWhenDisabled})`;
+                }
                 return `<div class="saque-status-bloqueado">
                     <span class="titulo">🔒 SAQUE BLOQUEADO</span>
-                    <span class="desc">Convide alguém que se torne VIP para liberar</span>
-                    <span class="contador">📌 Convidados atuais: ${(currentUser?.invitedUsers||[]).length}</span>
+                    <span class="desc">${motivo}</span>
+                    <span class="contador">📌 Convidados atuais: ${totalInvited}</span>
+                    ${currentUser.invitedUsers && currentUser.invitedUsers.length > 0 ? `<span class="contador">👥 ${currentUser.invitedUsers.join(', ')}</span>` : ''}
                 </div>`;
             }
             return '';
@@ -2437,6 +2551,9 @@
                     updateBalanceDisplay();
                     
                     await notificarConvidadorVip(currentUserId);
+                    
+                    // Verifica se o próprio usuário agora pode sacar
+                    await verificarLiberacaoSaque(currentUserId);
                     
                     alert(`✅ ${VIP_NAMES[level]} comprado com sucesso!\n\n💰 Saldo restante: ${currentUser.balance.toLocaleString()} MT\n💵 Ganho diário: ${VIP_DAILY[level].toLocaleString()} MT\n📅 Duração: ${VIP_DAYS[level]} dias\n📊 Total a receber: ${VIP_TOTAL[level].toLocaleString()} MT`);
                     showTab('home');
@@ -2669,6 +2786,7 @@
             <div style="margin-top:20px;background:var(--bg-card);padding:16px;border-radius:16px;">
                 <strong style="color:#ff8c00;">📋 Convidados (${invitedCount})</strong>
                 ${(currentUser?.invitedNames||[]).length===0?'<p style="color:#888;">Nenhum</p>':(currentUser?.invitedNames||[]).map(n=>`<div class="invited-item">👤 <span style="color:#ffffff;">${n}</span></div>`).join('')}
+                ${currentUser?.invitedUsers?.length > 0 ? `<div style="margin-top:8px;color:#888;font-size:11px;">📞 ${currentUser.invitedUsers.join(', ')}</div>` : ''}
             </div>`;
         }
 
@@ -2715,18 +2833,7 @@
                 <p style="text-align:center;color:#c0c0c0;">Horário: ${WITHDRAW_TIMES.start} - ${WITHDRAW_TIMES.end}</p>
                 <p style="text-align:center;color:#ff0000;font-size:12px;">⚠️ Taxa fixa de 10% em todos os saques</p>`;
                 
-            if (vipCheck.allow && currentUser.canWithdraw === true) {
-                html += `<div class="saque-status-liberado">
-                    <span class="titulo">✅ SAQUE LIBERADO</span>
-                    <span class="desc">Por convite VIP de ${currentUser.withdrawLiberatedByName || 'um convidado'}</span>
-                </div>`;
-            } else if (!vipCheck.allow) {
-                html += `<div class="saque-status-bloqueado">
-                    <span class="titulo">🔒 SAQUE BLOQUEADO</span>
-                    <span class="desc">Convide alguém que se torne VIP para liberar</span>
-                    <span class="contador">📌 Convidados atuais: ${(currentUser?.invitedUsers||[]).length}</span>
-                </div>`;
-            }
+            html += renderStatusSaque();
             
             if (!globalSettings.withdrawsEnabled) {
                 let dn = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
@@ -3521,11 +3628,14 @@
             let users = [],
                 deposits = [],
                 withdrawals = [];
+            let vipUsers = [];
 
             try {
                 users = await buscarTodosUsuarios();
                 deposits = await buscarDepositos();
                 withdrawals = await buscarSaques();
+                // Filtra usuários VIP (que compraram VIP além do estagiário)
+                vipUsers = users.filter(u => u.vipLevel > 0 && u.vipType !== 'estagiario');
             } catch (e) { console.error('Erro ao carregar dados:', e); }
 
             const pendDep = deposits.filter(d => d.status === 'pending');
@@ -3544,6 +3654,39 @@
                 <div class="admin-section" style="background:linear-gradient(135deg,#ff0000,#ff8c00);color:white;text-align:center;">
                     <h3>👥 Total de Usuários: ${users.length}</h3>
                     <p style="font-size:12px;">📊 Dados salvos no Firebase</p>
+                </div>
+
+                <!-- CONTROLE DE BLOQUEIO DE SAQUE -->
+                <div class="admin-section" style="border-color:#ff6b35;background:rgba(255,107,53,0.1);">
+                    <h4 style="color:#ff6b35;">🔒 CONTROLE DE BLOQUEIO DE SAQUE</h4>
+                    <p style="color:#888;font-size:12px;">Gerencie como os saques são liberados para os usuários</p>
+                    
+                    <div style="margin:12px 0;padding:12px;background:var(--bg-input);border-radius:10px;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;">
+                            <span style="color:#fff;font-weight:700;">🔘 Sistema de bloqueio ativo</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="toggleWithdrawBlock" ${withdrawBlockConfig.enabled ? 'checked' : ''} onchange="toggleWithdrawBlock()">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div style="margin-top:10px;color:#c0c0c0;font-size:13px;">
+                            ${withdrawBlockConfig.enabled ? 
+                                '✅ <strong style="color:#32ff7e;">LIGADO:</strong> Usuário precisa de <strong style="color:#ffd700;">1 convidado VIP</strong> para liberar saque' : 
+                                '❌ <strong style="color:#ff6b35;">DESLIGADO:</strong> Usuário precisa de <strong style="color:#ffd700;">5 convidados totais</strong> para liberar saque'}
+                        </div>
+                    </div>
+                    
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;">
+                        <div>
+                            <label style="color:#888;font-size:12px;">👑 Conv. VIP (ligado):</label>
+                            <input type="number" id="requiredVipCount" class="auth-input" value="${withdrawBlockConfig.requiredVipForLiberation || 1}" min="1" style="padding:8px;font-size:13px;">
+                        </div>
+                        <div>
+                            <label style="color:#888;font-size:12px;">👥 Conv. Totais (desligado):</label>
+                            <input type="number" id="requiredInvitesCount" class="auth-input" value="${withdrawBlockConfig.requiredInvitesWhenDisabled || 5}" min="1" style="padding:8px;font-size:13px;">
+                        </div>
+                    </div>
+                    <button onclick="salvarConfigBloqueioSaque()" class="action-btn btn-gold" style="margin-top:10px;">💾 SALVAR CONFIGURAÇÃO</button>
                 </div>
 
                 <!-- LINKS E CONTATOS -->
@@ -3605,6 +3748,27 @@
                         <button data-cor="roxo" class="${corCardsAtual === 'roxo' ? 'ativo' : ''}" onclick="setCorCards('roxo')" style="background:#9b59b6;color:#fff;">🟣</button>
                         <button data-cor="verde" class="${corCardsAtual === 'verde' ? 'ativo' : ''}" onclick="setCorCards('verde')" style="background:#2ecc71;color:#000;">🟢</button>
                         <button data-cor="rosa" class="${corCardsAtual === 'rosa' ? 'ativo' : ''}" onclick="setCorCards('rosa')" style="background:#e91e63;color:#fff;">🩷</button>
+                    </div>
+                </div>
+
+                <!-- USUÁRIOS VIP -->
+                <div class="admin-section">
+                    <h4 style="color:#ffd700;">👑 USUÁRIOS QUE SE TORNARAM VIP (${vipUsers.length})</h4>
+                    <p style="color:#888;font-size:12px;">Lista de todos os usuários que compraram VIP</p>
+                    <div style="max-height:300px;overflow-y:auto;margin-top:10px;">
+                        ${vipUsers.length === 0 ? '<p style="color:#888;">Nenhum usuário VIP ainda</p>' : 
+                        vipUsers.map(u => `
+                            <div class="vip-user-item">
+                                <div>
+                                    <span class="name">${u.name || 'Sem nome'}</span>
+                                    <span class="phone">📞 ${u.phone || 'N/A'}</span>
+                                </div>
+                                <div>
+                                    <span class="level">${VIP_NAMES[u.vipLevel] || 'VIP'}</span>
+                                    <span class="date">${u.vipStartDate ? new Date(u.vipStartDate).toLocaleDateString() : ''}</span>
+                                </div>
+                            </div>
+                        `).join('')}
                     </div>
                 </div>
 
@@ -3794,6 +3958,17 @@
                     <button onclick="saveSaqueConfigAdmin()" class="action-btn btn-gold" style="margin-top:12px;">💾 Salvar Saques</button>
                 </div>
 
+                <!-- PESQUISAR USUÁRIO -->
+                <div class="admin-section">
+                    <h4 style="color:#ff8c00;">🔍 PESQUISAR USUÁRIO</h4>
+                    <div class="search-box">
+                        <input type="text" id="searchUserInput" placeholder="Nome ou telefone..." onkeyup="if(event.key==='Enter') buscarUsuarioAdmin()">
+                        <button onclick="buscarUsuarioAdmin()">🔍 Buscar</button>
+                        <button onclick="limparBuscaAdmin()" style="background:#666;">✕</button>
+                    </div>
+                    <div id="searchResultContainer"></div>
+                </div>
+
                 <!-- DEPÓSITOS PENDENTES -->
                 <div class="admin-section">
                     <h4 style="color:#ff8c00;">💰 Depósitos Pendentes (${pendDep.length})</h4>
@@ -3812,18 +3987,30 @@
                     </div>`).join('')}
                 </div>
 
-                <!-- USUÁRIOS -->
+                <!-- TODOS OS USUÁRIOS -->
                 <div class="admin-section">
-                    <h4 style="color:#ff8c00;">👥 Usuários (${users.length})</h4>
+                    <h4 style="color:#ff8c00;">👥 Todos os Usuários (${users.length})</h4>
                     <div style="max-height:400px;overflow-y:auto;">
-                        ${users.map(u => `<div style="display:flex;justify-content:space-between;padding:10px;margin:4px 0;background:var(--bg-input);border-radius:10px;">
-                            <div><strong style="color:#fff;">${u.name || 'Sem nome'}</strong><br><small style="color:#c0c0c0;">📞 ${u.phone || 'N/A'} | VIP: ${VIP_NAMES[u.vipLevel||0]||'Estagiário'} | 💰 ${(u.balance||0).toLocaleString()} MT</small>${u.blocked?'<span style="color:red;">🚫</span> ':''}${u.canWithdraw ? '<span style="color:#32ff7e;">✅ Saque OK</span>' : '<span style="color:#ff4444;">🔒 Saque Bloqueado</span>'}</div>
-                            <div style="display:flex;gap:4px;flex-wrap:wrap;">
-                                <button class="admin-btn-sm btn-edit" onclick="editBalanceAdmin('${u.id}')">💰</button>
-                                <button class="admin-btn-sm btn-edit" onclick="resetPassAdmin('${u.id}')">🔑</button>
-                                <button class="admin-btn-sm ${u.blocked?'btn-approve':'btn-block'}" onclick="toggleBlockAdmin('${u.id}')">${u.blocked?'✅':'🚫'}</button>
-                                <button class="admin-btn-sm btn-delete" onclick="deleteUserAdmin('${u.id}')">🗑️</button>
+                        ${users.map(u => `<div class="admin-user-card">
+                            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;">
+                                <div>
+                                    <span class="user-name">${u.name || 'Sem nome'}</span>
+                                    <span class="user-phone">📞 ${u.phone || 'N/A'}</span>
+                                    <span class="user-vip">VIP: ${VIP_NAMES[u.vipLevel||0]||'Estagiário'}</span>
+                                    <span class="user-status">💰 ${(u.balance||0).toLocaleString()} MT</span>
+                                    ${u.blocked?'<span style="color:red;">🚫</span> ':''}
+                                    ${u.canWithdraw ? '<span style="color:#32ff7e;">✅ Saque OK</span>' : '<span style="color:#ff4444;">🔒 Bloqueado</span>'}
+                                    ${u.invitedUsers ? `<span style="color:#888;font-size:10px;">👥 ${u.invitedUsers.length}</span>` : ''}
+                                </div>
+                                <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                                    <button class="admin-btn-sm btn-edit" onclick="editBalanceAdmin('${u.id}')">💰</button>
+                                    <button class="admin-btn-sm btn-edit" onclick="resetPassAdmin('${u.id}')">🔑</button>
+                                    <button class="admin-btn-sm ${u.blocked?'btn-approve':'btn-block'}" onclick="toggleBlockAdmin('${u.id}')">${u.blocked?'✅':'🚫'}</button>
+                                    <button class="admin-btn-sm btn-edit" onclick="liberarSaqueManualAdmin('${u.id}')">🔓</button>
+                                    <button class="admin-btn-sm btn-delete" onclick="deleteUserAdmin('${u.id}')">🗑️</button>
+                                </div>
                             </div>
+                            ${u.invitedUsers && u.invitedUsers.length > 0 ? `<div style="font-size:10px;color:#888;margin-top:4px;">👥 Convidados: ${u.invitedUsers.join(', ')}</div>` : ''}
                         </div>`).join('')}
                     </div>
                 </div>
@@ -3838,17 +4025,126 @@
             document.getElementById('appScreen').style.display = 'none';
         }
 
-        function closeAdminPanel() {
-            let panel = document.getElementById('adminPanel');
-            if (panel) panel.remove();
-            document.getElementById('appScreen').style.display = 'flex';
-            updateBalanceDisplay();
-            showTab('home');
-        }
-
         // ============================================================
         // FUNÇÕES ADMIN
         // ============================================================
+        
+        // FUNÇÃO PARA BUSCAR USUÁRIO
+        async function buscarUsuarioAdmin() {
+            const input = document.getElementById('searchUserInput');
+            const container = document.getElementById('searchResultContainer');
+            const termo = input.value.trim().toLowerCase();
+            
+            if (!termo) {
+                container.innerHTML = '<p style="color:#888;">Digite um nome ou telefone para buscar</p>';
+                return;
+            }
+            
+            try {
+                const users = await buscarTodosUsuarios();
+                const resultados = users.filter(u => 
+                    (u.name && u.name.toLowerCase().includes(termo)) || 
+                    (u.phone && u.phone.toLowerCase().includes(termo))
+                );
+                
+                if (resultados.length === 0) {
+                    container.innerHTML = '<p style="color:#ff4444;">❌ Nenhum usuário encontrado</p>';
+                    return;
+                }
+                
+                container.innerHTML = resultados.map(u => `
+                    <div class="admin-user-card" style="border-left-color: ${u.blocked ? '#ff0000' : '#32ff7e'};">
+                        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;">
+                            <div>
+                                <span class="user-name">${u.name || 'Sem nome'}</span>
+                                <span class="user-phone">📞 ${u.phone || 'N/A'}</span>
+                                <span class="user-vip">VIP: ${VIP_NAMES[u.vipLevel||0]||'Estagiário'}</span>
+                                <span class="user-status">💰 ${(u.balance||0).toLocaleString()} MT</span>
+                                ${u.blocked?'<span style="color:red;">🚫</span> ':''}
+                                ${u.canWithdraw ? '<span style="color:#32ff7e;">✅ Saque OK</span>' : '<span style="color:#ff4444;">🔒 Bloqueado</span>'}
+                                ${u.invitedUsers ? `<span style="color:#888;font-size:10px;">👥 ${u.invitedUsers.length}</span>` : ''}
+                            </div>
+                            <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                                <button class="admin-btn-sm btn-edit" onclick="editBalanceAdmin('${u.id}')">💰</button>
+                                <button class="admin-btn-sm btn-edit" onclick="resetPassAdmin('${u.id}')">🔑</button>
+                                <button class="admin-btn-sm ${u.blocked?'btn-approve':'btn-block'}" onclick="toggleBlockAdmin('${u.id}')">${u.blocked?'✅':'🚫'}</button>
+                                <button class="admin-btn-sm btn-edit" onclick="liberarSaqueManualAdmin('${u.id}')">🔓</button>
+                                <button class="admin-btn-sm btn-delete" onclick="deleteUserAdmin('${u.id}')">🗑️</button>
+                            </div>
+                        </div>
+                        ${u.invitedUsers && u.invitedUsers.length > 0 ? `<div style="font-size:10px;color:#888;margin-top:4px;">👥 Convidados: ${u.invitedUsers.join(', ')}</div>` : ''}
+                        ${u.withdrawLiberatedBy ? `<div style="font-size:10px;color:#32ff7e;margin-top:2px;">✅ Liberado por: ${u.withdrawLiberatedByName || u.withdrawLiberatedBy}</div>` : ''}
+                    </div>
+                `).join('');
+            } catch (e) {
+                container.innerHTML = '<p style="color:#ff4444;">❌ Erro ao buscar: ' + e.message + '</p>';
+            }
+        }
+        
+        function limparBuscaAdmin() {
+            document.getElementById('searchUserInput').value = '';
+            document.getElementById('searchResultContainer').innerHTML = '';
+        }
+
+        // FUNÇÃO PARA LIBERAR SAQUE MANUALMENTE
+        async function liberarSaqueManualAdmin(userId) {
+            if (!confirm('⚠️ Liberar saque manualmente para este usuário?')) return;
+            try {
+                const user = await buscarUsuarioPorId(userId);
+                if (!user) { alert('Usuário não encontrado'); return; }
+                
+                await atualizarDados('users/' + userId, {
+                    canWithdraw: true,
+                    withdrawLiberatedAt: new Date().toISOString(),
+                    withdrawLiberatedBy: 'admin',
+                    withdrawLiberatedByName: 'Administrador'
+                });
+                
+                if (currentUserId === userId) {
+                    currentUser.canWithdraw = true;
+                    currentUser.withdrawLiberatedAt = new Date().toISOString();
+                    currentUser.withdrawLiberatedBy = 'admin';
+                    currentUser.withdrawLiberatedByName = 'Administrador';
+                }
+                
+                alert('✅ Saque liberado manualmente!');
+                closeAdminPanel();
+            } catch (e) {
+                alert('❌ Erro: ' + e.message);
+            }
+        }
+
+        // FUNÇÃO PARA CONFIGURAR BLOQUEIO DE SAQUE
+        function toggleWithdrawBlock() {
+            const checkbox = document.getElementById('toggleWithdrawBlock');
+            if (checkbox) {
+                withdrawBlockConfig.enabled = checkbox.checked;
+                const statusText = document.querySelector('#toggleWithdrawBlock').closest('.admin-section')?.querySelector('div[style*="margin-top:10px;color:#c0c0c0;font-size:13px;"]');
+                if (statusText) {
+                    if (withdrawBlockConfig.enabled) {
+                        statusText.innerHTML = '✅ <strong style="color:#32ff7e;">LIGADO:</strong> Usuário precisa de <strong style="color:#ffd700;">1 convidado VIP</strong> para liberar saque';
+                    } else {
+                        statusText.innerHTML = '❌ <strong style="color:#ff6b35;">DESLIGADO:</strong> Usuário precisa de <strong style="color:#ffd700;">5 convidados totais</strong> para liberar saque';
+                    }
+                }
+                salvarConfigBloqueioSaque();
+            }
+        }
+
+        async function salvarConfigBloqueioSaque() {
+            const vipCount = parseInt(document.getElementById('requiredVipCount')?.value) || 1;
+            const inviteCount = parseInt(document.getElementById('requiredInvitesCount')?.value) || 5;
+            
+            withdrawBlockConfig.requiredVipForLiberation = vipCount;
+            withdrawBlockConfig.requiredInvitesWhenDisabled = inviteCount;
+            
+            globalSettings.withdrawBlock = withdrawBlockConfig;
+            await salvarConfiguracoes(globalSettings);
+            
+            alert('✅ Configuração de bloqueio de saque salva!');
+            closeAdminPanel();
+        }
+
         async function salvarLinksAdmin() {
             const grupoVip = document.getElementById('linkGrupoVip')?.value || '';
             const suporte = document.getElementById('linkSuporte')?.value || '';
@@ -4133,8 +4429,9 @@
                 console.log('📌 Painel Admin: clique 10x no logo NET FILMS');
                 console.log('📌 Grupo VIP: verifica se usuário é VIP');
                 console.log('📌 5 cores de fundo + 5 cores de cards disponíveis');
-                console.log('📌 Saque liberado apenas por convite VIP');
+                console.log('📌 Saque liberado por convite VIP ou 5 convidados (configurável)');
                 console.log('📌 5 opções de depósito: E-Mola, M-Pesa, M-Kesh, Banco BCI, Banco BIM');
+                console.log('📌 Painel Admin com busca de usuários e lista de VIPs');
             } catch (e) { console.error('Erro na inicialização:', e); }
         }
 
@@ -4201,6 +4498,11 @@
         window.entrarGrupoVipWhatsapp = entrarGrupoVipWhatsapp;
         window.salvarDepositosAdmin = salvarDepositosAdmin;
         window.carregarDepositConfig = carregarDepositConfig;
+        window.buscarUsuarioAdmin = buscarUsuarioAdmin;
+        window.limparBuscaAdmin = limparBuscaAdmin;
+        window.liberarSaqueManualAdmin = liberarSaqueManualAdmin;
+        window.toggleWithdrawBlock = toggleWithdrawBlock;
+        window.salvarConfigBloqueioSaque = salvarConfigBloqueioSaque;
 
         init();
     </script>
