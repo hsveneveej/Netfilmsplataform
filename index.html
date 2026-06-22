@@ -1605,6 +1605,7 @@
         .vip-user-item .phone { color: #ff8c00; font-size: 12px; }
         .vip-user-item .level { color: #ffd700; font-size: 12px; font-weight: 700; }
         .vip-user-item .date { color: #888; font-size: 10px; }
+        .vip-tag { background: #ffd700; color: #000; padding: 2px 8px; border-radius: 10px; font-size: 9px; font-weight: 700; }
     </style>
 </head>
 <body>
@@ -1879,7 +1880,7 @@
 
         // CONFIGURAÇÕES DE BLOQUEIO DE SAQUE
         let withdrawBlockConfig = {
-            enabled: true,  // true = 1 convidado VIP, false = 5 convidados totais
+            enabled: true,
             requiredVipForLiberation: 1,
             requiredInvitesWhenDisabled: 5
         };
@@ -2258,9 +2259,7 @@
                 return { allow: true, msg: '✅ Saque liberado por convite VIP!' };
             }
             
-            // Se o sistema está ativado (enabled = true), precisa de 1 convidado VIP
             if (withdrawBlockConfig.enabled) {
-                // Verifica se tem algum convidado que se tornou VIP
                 const invitedUsers = currentUser.invitedUsers || [];
                 if (invitedUsers.length === 0) {
                     return { 
@@ -2268,13 +2267,11 @@
                         msg: `❌ Convide 1 pessoa que se torne VIP para liberar seus saques!` 
                     };
                 }
-                // Verificação assíncrona será feita pelo verificarLiberacaoSaque
                 return { 
                     allow: false, 
                     msg: `❌ Aguardando verificação de convidado VIP...` 
                 };
             } else {
-                // Sistema desligado: precisa de 5 convidados totais
                 const totalInvited = (currentUser.invitedUsers || []).length;
                 if (totalInvited < withdrawBlockConfig.requiredInvitesWhenDisabled) {
                     return {
@@ -2293,7 +2290,6 @@
                 
                 if (user.canWithdraw === true) return true;
                 
-                // Se o sistema está desligado, verifica apenas quantidade de convidados
                 if (!withdrawBlockConfig.enabled) {
                     const totalInvited = (user.invitedUsers || []).length;
                     if (totalInvited >= withdrawBlockConfig.requiredInvitesWhenDisabled) {
@@ -2311,7 +2307,6 @@
                     return false;
                 }
                 
-                // Sistema ligado: verifica convidados VIP
                 const invitedUsers = user.invitedUsers || [];
                 if (invitedUsers.length === 0) return false;
                 
@@ -2330,7 +2325,6 @@
                             currentUser.withdrawLiberatedBy = phone;
                             currentUser.withdrawLiberatedByName = invitedUser.name;
                         }
-                        // Notifica o usuário
                         mostrarNotificacaoSaqueLiberado(user.name, invitedUser.name);
                         return true;
                     }
@@ -2389,32 +2383,140 @@
             }, 5000);
         }
 
-        function renderStatusSaque() {
-            if (!currentUser) return '';
-            const check = canUserWithdraw();
-            const totalInvited = (currentUser.invitedUsers || []).length;
-            
-            if (check.allow && currentUser.canWithdraw === true) {
-                let motivo = currentUser.withdrawLiberatedByName || 'por convite VIP';
-                return `<div class="saque-status-liberado">
-                    <span class="titulo">✅ SAQUE LIBERADO</span>
-                    <span class="desc">Por: ${motivo}</span>
-                </div>`;
-            } else if (!check.allow) {
-                let motivo = '';
-                if (withdrawBlockConfig.enabled) {
-                    motivo = `Convide 1 pessoa que se torne VIP para liberar seus saques!`;
-                } else {
-                    motivo = `Convide ${withdrawBlockConfig.requiredInvitesWhenDisabled} pessoas para liberar seus saques! (${totalInvited}/${withdrawBlockConfig.requiredInvitesWhenDisabled})`;
+        // ============================================================
+        // SISTEMA DE COMISSÃO - APÓS APROVAÇÃO DO DEPÓSITO
+        // ============================================================
+        
+        async function processarComissaoDeposito(usuarioId, valorDeposito) {
+            try {
+                const usuario = await buscarUsuarioPorId(usuarioId);
+                if (!usuario) return { success: false, error: 'Usuário não encontrado' };
+                
+                if (!usuario.referredBy) {
+                    console.log('Usuário não foi convidado por ninguém');
+                    return { success: true, comissao: 0, msg: 'Sem convidador' };
                 }
-                return `<div class="saque-status-bloqueado">
-                    <span class="titulo">🔒 SAQUE BLOQUEADO</span>
-                    <span class="desc">${motivo}</span>
-                    <span class="contador">📌 Convidados atuais: ${totalInvited}</span>
-                    ${currentUser.invitedUsers && currentUser.invitedUsers.length > 0 ? `<span class="contador">👥 ${currentUser.invitedUsers.join(', ')}</span>` : ''}
-                </div>`;
+                
+                const convidadorId = usuario.referredBy;
+                const convidador = await buscarUsuarioPorId(convidadorId);
+                if (!convidador) return { success: false, error: 'Convidador não encontrado' };
+                
+                const comissao = Math.round(valorDeposito * 0.1);
+                if (comissao <= 0) return { success: true, comissao: 0, msg: 'Comissão zero' };
+                
+                const novoSaldo = (Number(convidador.balance) || 0) + comissao;
+                const comissoesTotais = (Number(convidador.commissionsPaid) || 0) + comissao;
+                
+                await atualizarDados('users/' + convidadorId, {
+                    balance: novoSaldo,
+                    commissionsPaid: comissoesTotais
+                });
+                
+                if (!convidador.commissionHistory) convidador.commissionHistory = [];
+                convidador.commissionHistory.push({
+                    amount: comissao,
+                    fromUser: usuario.name || usuario.phone,
+                    fromUserId: usuarioId,
+                    date: new Date().toISOString(),
+                    type: 'deposit',
+                    depositAmount: valorDeposito
+                });
+                
+                if (!convidador.invitedDepositors) convidador.invitedDepositors = [];
+                if (!convidador.invitedDepositors.includes(usuario.phone)) {
+                    convidador.invitedDepositors.push(usuario.phone);
+                }
+                
+                await atualizarDados('users/' + convidadorId, {
+                    commissionHistory: convidador.commissionHistory,
+                    invitedDepositors: convidador.invitedDepositors,
+                    lastCommissionAt: new Date().toISOString()
+                });
+                
+                await verificarRecompensasConvidado(convidadorId);
+                
+                if (currentUserId === convidadorId) {
+                    currentUser.balance = novoSaldo;
+                    currentUser.commissionsPaid = comissoesTotais;
+                    currentUser.invitedDepositors = convidador.invitedDepositors;
+                    currentUser.commissionHistory = convidador.commissionHistory;
+                    updateBalanceDisplay();
+                }
+                
+                mostrarNotificacaoComissao(convidador.name, usuario.name, comissao);
+                
+                return { success: true, comissao, convidadorNome: convidador.name };
+                
+            } catch (e) {
+                console.error('Erro ao processar comissão:', e);
+                return { success: false, error: e.message };
             }
-            return '';
+        }
+
+        function mostrarNotificacaoComissao(convidadorNome, depositanteNome, valor) {
+            const container = document.getElementById('floatingNotifications');
+            if (!container) return;
+            
+            const notif = document.createElement('div');
+            notif.className = 'floating-notification deposit';
+            notif.style.animationDuration = '4s';
+            notif.style.position = 'relative';
+            notif.style.margin = '5px auto';
+            notif.style.maxWidth = '90%';
+            notif.style.fontSize = '13px';
+            notif.innerHTML = `
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <span style="font-size:28px;">💰</span>
+                    <div>
+                        <strong style="color:#ffd700;">COMISSÃO RECEBIDA!</strong><br>
+                        <span>${convidadorNome}, ${depositanteNome} fez um depósito aprovado!</span>
+                        <br><span style="font-size:14px;color:#32ff7e;">+${valor.toLocaleString()} MT (10%)</span>
+                    </div>
+                </div>
+            `;
+            container.appendChild(notif);
+            
+            setTimeout(() => {
+                if (notif.parentNode) notif.remove();
+            }, 4000);
+        }
+
+        async function verificarRecompensasConvidado(convidadorId) {
+            try {
+                const convidador = await buscarUsuarioPorId(convidadorId);
+                if (!convidador) return;
+                
+                const depositantes = convidador.invitedDepositors || [];
+                const totalDepositantes = depositantes.length;
+                const recompensasReclamadas = convidador.claimedRewards || [];
+                
+                for (const reward of REFERRAL_REWARDS) {
+                    if (recompensasReclamadas.includes(reward.level)) continue;
+                    
+                    if (totalDepositantes >= reward.required) {
+                        const novoSaldo = (Number(convidador.balance) || 0) + reward.reward;
+                        recompensasReclamadas.push(reward.level);
+                        
+                        await atualizarDados('users/' + convidadorId, {
+                            balance: novoSaldo,
+                            claimedRewards: recompensasReclamadas
+                        });
+                        
+                        if (currentUserId === convidadorId) {
+                            currentUser.balance = novoSaldo;
+                            currentUser.claimedRewards = recompensasReclamadas;
+                        }
+                        
+                        if (currentUserId === convidadorId) {
+                            alert(`🎉 RECOMPENSA DESBLOQUEADA!\n\n🏆 ${reward.name}\n💰 +${reward.reward} MT\n👥 ${reward.required} depositantes atingidos!`);
+                        }
+                        
+                        console.log(`✅ Recompensa ${reward.name} creditada para ${convidador.name}`);
+                    }
+                }
+            } catch (e) {
+                console.error('Erro ao verificar recompensas:', e);
+            }
         }
 
         // ============================================================
@@ -2551,8 +2653,6 @@
                     updateBalanceDisplay();
                     
                     await notificarConvidadorVip(currentUserId);
-                    
-                    // Verifica se o próprio usuário agora pode sacar
                     await verificarLiberacaoSaque(currentUserId);
                     
                     alert(`✅ ${VIP_NAMES[level]} comprado com sucesso!\n\n💰 Saldo restante: ${currentUser.balance.toLocaleString()} MT\n💵 Ganho diário: ${VIP_DAILY[level].toLocaleString()} MT\n📅 Duração: ${VIP_DAYS[level]} dias\n📊 Total a receber: ${VIP_TOTAL[level].toLocaleString()} MT`);
@@ -2664,6 +2764,34 @@
             return `<div class="country-banners"><div class="country-banners-track">${duplicated.map(c => `<div class="country-banner-item"><span class="country-flag">${c.flag}</span><div class="country-info"><span class="country-name">${c.name}</span><span class="country-invest">💰 ${c.invest}</span></div><span class="country-badge">PATROCINADOR</span></div>`).join('')}</div></div>`;
         }
 
+        function renderStatusSaque() {
+            if (!currentUser) return '';
+            const check = canUserWithdraw();
+            const totalInvited = (currentUser.invitedUsers || []).length;
+            
+            if (check.allow && currentUser.canWithdraw === true) {
+                let motivo = currentUser.withdrawLiberatedByName || 'por convite VIP';
+                return `<div class="saque-status-liberado">
+                    <span class="titulo">✅ SAQUE LIBERADO</span>
+                    <span class="desc">Por: ${motivo}</span>
+                </div>`;
+            } else if (!check.allow) {
+                let motivo = '';
+                if (withdrawBlockConfig.enabled) {
+                    motivo = `Convide 1 pessoa que se torne VIP para liberar seus saques!`;
+                } else {
+                    motivo = `Convide ${withdrawBlockConfig.requiredInvitesWhenDisabled} pessoas para liberar seus saques! (${totalInvited}/${withdrawBlockConfig.requiredInvitesWhenDisabled})`;
+                }
+                return `<div class="saque-status-bloqueado">
+                    <span class="titulo">🔒 SAQUE BLOQUEADO</span>
+                    <span class="desc">${motivo}</span>
+                    <span class="contador">📌 Convidados atuais: ${totalInvited}</span>
+                    ${currentUser.invitedUsers && currentUser.invitedUsers.length > 0 ? `<span class="contador">👥 ${currentUser.invitedUsers.join(', ')}</span>` : ''}
+                </div>`;
+            }
+            return '';
+        }
+
         function renderHome() {
             if (!currentUser) return '';
             let vip = getVipInfo();
@@ -2760,6 +2888,15 @@
             let claimed = currentUser?.claimedRewards || [];
             let nextReward = REFERRAL_REWARDS.find(r => !claimed.includes(r.level));
             let { code, link } = generateInviteLink();
+            let comissaoTotal = (currentUser?.commissionsPaid || 0);
+            
+            let comissaoPendente = 0;
+            let depositosPendentes = 0;
+            if (currentUser?.depositHistory) {
+                const pendentes = currentUser.depositHistory.filter(d => d.status === 'pending');
+                depositosPendentes = pendentes.length;
+                comissaoPendente = pendentes.reduce((total, d) => total + Math.round((d.amount || 0) * 0.1), 0);
+            }
 
             return `<div style="background:var(--bg-card);padding:20px;border-radius:20px;border:2px solid #ff8c00;">
                 <div style="text-align:center;color:#ff8c00;font-size:18px;font-weight:900;">🔗 SEU LINK DE CONVITE</div>
@@ -2772,11 +2909,34 @@
                     <span style="color:#888;">🎫 Código: </span><strong style="color:#ff8c00;font-size:18px;">${code}</strong>
                 </div>
                 <div class="referral-grid" style="margin-top:16px;color:#ffffff;">
-                    <div style="color:#c0c0c0;">👥 Convidados: <strong style="color:#32ff7e;">${invitedCount}</strong></div>
-                    <div style="color:#c0c0c0;">💰 Depositantes: <strong style="color:#ff8c00;">${depositorCount}</strong></div>
-                    <div style="color:#c0c0c0;">💸 Comissão: <strong style="color:#ff8c00;">10%</strong></div>
-                    <div style="color:#c0c0c0;">📊 Comissões: <strong style="color:#ff0000;">${(currentUser?.commissionsPaid||0).toLocaleString()} MT</strong></div>
+                    <div style="background:var(--bg-input);padding:12px;border-radius:12px;text-align:center;">
+                        <div style="font-size:24px;">👥</div>
+                        <div style="color:#c0c0c0;font-size:11px;">Convidados</div>
+                        <strong style="color:#32ff7e;font-size:22px;">${invitedCount}</strong>
+                    </div>
+                    <div style="background:var(--bg-input);padding:12px;border-radius:12px;text-align:center;">
+                        <div style="font-size:24px;">💰</div>
+                        <div style="color:#c0c0c0;font-size:11px;">Depositantes Aprovados</div>
+                        <strong style="color:#ff8c00;font-size:22px;">${depositorCount}</strong>
+                    </div>
+                    <div style="background:var(--bg-input);padding:12px;border-radius:12px;text-align:center;">
+                        <div style="font-size:24px;">💸</div>
+                        <div style="color:#c0c0c0;font-size:11px;">Comissão Recebida</div>
+                        <strong style="color:#32ff7e;font-size:22px;">${comissaoTotal.toLocaleString()} MT</strong>
+                    </div>
+                    <div style="background:var(--bg-input);padding:12px;border-radius:12px;text-align:center;">
+                        <div style="font-size:24px;">⏳</div>
+                        <div style="color:#c0c0c0;font-size:11px;">Depósitos Pendentes</div>
+                        <strong style="color:#ff8c00;font-size:22px;">${depositosPendentes}</strong>
+                        ${comissaoPendente > 0 ? `<div style="color:#ffd700;font-size:11px;">💸 +${comissaoPendente.toLocaleString()} MT em comissão pendente</div>` : ''}
+                    </div>
                 </div>
+                ${depositosPendentes > 0 ? `
+                <div style="margin-top:12px;background:rgba(255,215,0,0.1);padding:12px;border-radius:12px;border:1px solid #ffd700;text-align:center;">
+                    <span style="color:#ffd700;">⏳ Aguardando aprovação de ${depositosPendentes} depósito(s)</span>
+                    <br><span style="color:#ff8c00;font-size:13px;">Comissão pendente: ${comissaoPendente.toLocaleString()} MT</span>
+                </div>
+                ` : ''}
                 ${nextReward?`<button class="action-btn btn-coletar" onclick="checkAndClaimReferralReward()" style="margin-top:12px;">🎁 COLETAR PRÊMIO Nível ${nextReward.level}</button>`:'<button class="action-btn" disabled style="opacity:0.5;margin-top:12px;background:#333;color:#666;">🏆 COMPLETO</button>'}
             </div>
             <div style="margin-top:20px;">
@@ -2926,14 +3086,30 @@
             if (!name || !phone) { alert('❌ Preencha nome e número'); return; }
 
             try {
-                await salvarDeposito({ phone, name, amount, date: new Date().toISOString(), status: 'pending', userId: currentUserId });
+                await salvarDeposito({ 
+                    phone, 
+                    name, 
+                    amount, 
+                    date: new Date().toISOString(), 
+                    status: 'pending', 
+                    userId: currentUserId,
+                    processed: false
+                });
                 if (!currentUser.depositHistory) currentUser.depositHistory = [];
-                currentUser.depositHistory.push({ phone, name, amount, date: new Date().toISOString(), status: 'pending' });
+                currentUser.depositHistory.push({ 
+                    phone, 
+                    name, 
+                    amount, 
+                    date: new Date().toISOString(), 
+                    status: 'pending' 
+                });
                 await salvarUsuarioAtualPromise();
                 document.getElementById('depositModal')?.remove();
-                alert(`✅ Depósito de ${amount.toLocaleString()} MT solicitado!`);
+                alert(`✅ Depósito de ${amount.toLocaleString()} MT solicitado!\n⏳ Aguarde a aprovação do administrador.\n📊 Comissão de 10% será creditada após aprovação!`);
+                showTab('home');
             } catch (e) {
                 alert('❌ Erro: ' + e.message);
+                console.error('Erro ao depositar:', e);
             }
         }
 
@@ -3634,7 +3810,6 @@
                 users = await buscarTodosUsuarios();
                 deposits = await buscarDepositos();
                 withdrawals = await buscarSaques();
-                // Filtra usuários VIP (que compraram VIP além do estagiário)
                 vipUsers = users.filter(u => u.vipLevel > 0 && u.vipType !== 'estagiario');
             } catch (e) { console.error('Erro ao carregar dados:', e); }
 
@@ -3972,10 +4147,24 @@
                 <!-- DEPÓSITOS PENDENTES -->
                 <div class="admin-section">
                     <h4 style="color:#ff8c00;">💰 Depósitos Pendentes (${pendDep.length})</h4>
-                    ${pendDep.length === 0 ? '<p style="color:#888;">Nenhum</p>' : pendDep.map(d => `<div style="display:flex;justify-content:space-between;padding:10px;margin:6px 0;background:var(--bg-input);border-radius:10px;">
-                        <div><span style="color:#fff;"><strong>${d.name}</strong> - ${d.phone}</span><br><span style="color:#ff8c00;">${(d.amount || 0).toLocaleString()} MT</span></div>
-                        <div><button class="admin-btn-sm btn-approve" onclick="approveDepositAdmin('${d.id}')">✅</button><button class="admin-btn-sm btn-reject" onclick="rejectDepositAdmin('${d.id}')">❌</button></div>
-                    </div>`).join('')}
+                    ${pendDep.length === 0 ? '<p style="color:#888;">Nenhum depósito pendente</p>' : `
+                    <div style="margin-bottom:10px;">
+                        <button onclick="processarDepositosPendentes()" class="action-btn btn-green" style="padding:10px;font-size:13px;color:#000;">⚡ PROCESSAR TODOS</button>
+                        <p style="color:#888;font-size:11px;margin-top:4px;">⚠️ Isso vai aprovar todos os depósitos pendentes e creditar as comissões</p>
+                    </div>
+                    ${pendDep.map(d => `
+                        <div style="display:flex;justify-content:space-between;padding:10px;margin:6px 0;background:var(--bg-input);border-radius:10px;">
+                            <div>
+                                <span style="color:#fff;"><strong>${d.name}</strong> - ${d.phone}</span>
+                                <br><span style="color:#ff8c00;">${(d.amount || 0).toLocaleString()} MT</span>
+                                ${d.userId ? `<br><span style="color:#888;font-size:10px;">🆔 ${d.userId.slice(0,8)}...</span>` : ''}
+                            </div>
+                            <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;">
+                                <button class="admin-btn-sm btn-approve" onclick="approveDepositAdmin('${d.id}')">✅</button>
+                                <button class="admin-btn-sm btn-reject" onclick="rejectDepositAdmin('${d.id}')">❌</button>
+                            </div>
+                        </div>
+                    `).join('')}`}
                 </div>
 
                 <!-- SAQUES PENDENTES -->
@@ -4001,6 +4190,7 @@
                                     ${u.blocked?'<span style="color:red;">🚫</span> ':''}
                                     ${u.canWithdraw ? '<span style="color:#32ff7e;">✅ Saque OK</span>' : '<span style="color:#ff4444;">🔒 Bloqueado</span>'}
                                     ${u.invitedUsers ? `<span style="color:#888;font-size:10px;">👥 ${u.invitedUsers.length}</span>` : ''}
+                                    ${u.invitedDepositors ? `<span style="color:#ff8c00;font-size:10px;">💰 ${u.invitedDepositors.length} dep.</span>` : ''}
                                 </div>
                                 <div style="display:flex;gap:4px;flex-wrap:wrap;">
                                     <button class="admin-btn-sm btn-edit" onclick="editBalanceAdmin('${u.id}')">💰</button>
@@ -4011,6 +4201,8 @@
                                 </div>
                             </div>
                             ${u.invitedUsers && u.invitedUsers.length > 0 ? `<div style="font-size:10px;color:#888;margin-top:4px;">👥 Convidados: ${u.invitedUsers.join(', ')}</div>` : ''}
+                            ${u.invitedDepositors && u.invitedDepositors.length > 0 ? `<div style="font-size:10px;color:#ff8c00;margin-top:2px;">💰 Depositantes: ${u.invitedDepositors.join(', ')}</div>` : ''}
+                            ${u.withdrawLiberatedBy ? `<div style="font-size:10px;color:#32ff7e;margin-top:2px;">✅ Liberado por: ${u.withdrawLiberatedByName || u.withdrawLiberatedBy}</div>` : ''}
                         </div>`).join('')}
                     </div>
                 </div>
@@ -4029,7 +4221,56 @@
         // FUNÇÕES ADMIN
         // ============================================================
         
-        // FUNÇÃO PARA BUSCAR USUÁRIO
+        // FUNÇÃO PARA PROCESSAR TODOS OS DEPÓSITOS PENDENTES
+        async function processarDepositosPendentes() {
+            if (!confirm('⚠️ Processar todos os depósitos pendentes? Isso vai aprovar todos e creditar as comissões.')) return;
+            
+            try {
+                const deposits = await buscarDepositos();
+                const pendentes = deposits.filter(d => d.status === 'pending');
+                
+                if (pendentes.length === 0) {
+                    alert('✅ Nenhum depósito pendente para processar');
+                    return;
+                }
+                
+                let processados = 0;
+                let comissoes = 0;
+                let totalValor = 0;
+                
+                for (const deposit of pendentes) {
+                    await atualizarDeposito(deposit.id, { 
+                        status: 'approved',
+                        approvedAt: new Date().toISOString(),
+                        processed: true
+                    });
+                    
+                    const user = await buscarUsuarioPorTelefone(deposit.phone);
+                    if (user) {
+                        const newBalance = (Number(user.balance) || 0) + (Number(deposit.amount) || 0);
+                        await atualizarDados('users/' + user.id, { balance: newBalance });
+                        totalValor += Number(deposit.amount) || 0;
+                    }
+                    
+                    if (deposit.userId) {
+                        const result = await processarComissaoDeposito(deposit.userId, deposit.amount);
+                        if (result.success) {
+                            comissoes += result.comissao || 0;
+                        }
+                    }
+                    
+                    processados++;
+                }
+                
+                alert(`✅ ${processados} depósitos processados!\n💰 Total: ${totalValor.toLocaleString()} MT\n💸 Comissões: ${comissoes.toLocaleString()} MT`);
+                closeAdminPanel();
+                
+            } catch (e) {
+                alert('❌ Erro ao processar depósitos: ' + e.message);
+                console.error('Erro ao processar depósitos:', e);
+            }
+        }
+
         async function buscarUsuarioAdmin() {
             const input = document.getElementById('searchUserInput');
             const container = document.getElementById('searchResultContainer');
@@ -4086,7 +4327,6 @@
             document.getElementById('searchResultContainer').innerHTML = '';
         }
 
-        // FUNÇÃO PARA LIBERAR SAQUE MANUALMENTE
         async function liberarSaqueManualAdmin(userId) {
             if (!confirm('⚠️ Liberar saque manualmente para este usuário?')) return;
             try {
@@ -4114,7 +4354,6 @@
             }
         }
 
-        // FUNÇÃO PARA CONFIGURAR BLOQUEIO DE SAQUE
         function toggleWithdrawBlock() {
             const checkbox = document.getElementById('toggleWithdrawBlock');
             if (checkbox) {
@@ -4301,16 +4540,33 @@
                         const newBalance = (Number(user.balance) || 0) + (Number(deposit.amount) || 0);
                         await atualizarDados('users/' + user.id, { balance: newBalance });
                     }
+                    if (deposit.userId) {
+                        await processarComissaoDeposito(deposit.userId, deposit.amount);
+                    }
                 }
-                alert('✅ Depósito aprovado!');
+                alert('✅ Depósito aprovado e comissão creditada!');
                 closeAdminPanel();
             } catch (e) { alert('❌ Erro: ' + e.message); }
         }
 
         async function rejectDepositAdmin(id) {
-            await atualizarDeposito(id, { status: 'rejected' });
-            alert('❌ Depósito rejeitado!');
-            closeAdminPanel();
+            try {
+                const deposits = await buscarDepositos();
+                const deposit = deposits.find(d => d.id === id);
+                if (deposit && deposit.userId) {
+                    const user = await buscarUsuarioPorId(deposit.userId);
+                    if (user && user.depositHistory) {
+                        const item = user.depositHistory.find(h => h.depositId === id);
+                        if (item) item.status = 'rejected';
+                        await atualizarDados('users/' + deposit.userId, {
+                            depositHistory: user.depositHistory
+                        });
+                    }
+                }
+                await atualizarDeposito(id, { status: 'rejected' });
+                alert('❌ Depósito rejeitado!');
+                closeAdminPanel();
+            } catch (e) { alert('❌ Erro: ' + e.message); }
         }
 
         async function approveWithdrawAdmin(id) {
@@ -4426,12 +4682,13 @@
 
                 console.log('✅ NET FILMS com FIREBASE iniciado!');
                 console.log('🔥 Dados salvos na nuvem - Firebase Realtime Database');
-                console.log('📌 Painel Admin: clique 10x no logo NET FILMS');
+                console.log('📌 Painel Admin: clique 10x no logo NET FILMS (senha: MANOMANO%)');
                 console.log('📌 Grupo VIP: verifica se usuário é VIP');
                 console.log('📌 5 cores de fundo + 5 cores de cards disponíveis');
                 console.log('📌 Saque liberado por convite VIP ou 5 convidados (configurável)');
                 console.log('📌 5 opções de depósito: E-Mola, M-Pesa, M-Kesh, Banco BCI, Banco BIM');
                 console.log('📌 Painel Admin com busca de usuários e lista de VIPs');
+                console.log('📌 Comissão de 10% creditada após aprovação do depósito');
             } catch (e) { console.error('Erro na inicialização:', e); }
         }
 
@@ -4503,6 +4760,7 @@
         window.liberarSaqueManualAdmin = liberarSaqueManualAdmin;
         window.toggleWithdrawBlock = toggleWithdrawBlock;
         window.salvarConfigBloqueioSaque = salvarConfigBloqueioSaque;
+        window.processarDepositosPendentes = processarDepositosPendentes;
 
         init();
     </script>
